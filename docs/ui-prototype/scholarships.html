@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarships - UniCoFinder</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <div class="bg-glow"></div>
+
+    <div class="app-container has-sidebar">
+        <aside class="sidebar">
+            <div class="navbar-brand" style="padding: 1rem 1rem 2rem;">
+                <a href="index.html" class="text-gradient">UniCoFinder</a>
+            </div>
+            <a href="dashboard.html">📊 Dashboard</a>
+            <a href="universities.html">🏫 Universities</a>
+            <a href="scholarships.html" class="active">🎓 Scholarships</a>
+            <a href="compare.html">⚖️ Compare</a>
+            <a href="tracker.html">📋 Applications</a>
+            <a href="budget.html">💰 Budget</a>
+        </aside>
+
+        <main class="main-content">
+            <header style="margin-bottom: 2rem;">
+                <h2>Global Scholarships</h2>
+                <p class="text-secondary">Discover funding opportunities tailored for international students.</p>
+            </header>
+
+            <div class="filters-bar" style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                <input type="text" class="form-control" style="flex: 1;" placeholder="Search scholarships...">
+                <select class="form-control" style="width: auto;">
+                    <option>All Countries</option>
+                    <option>USA</option>
+                    <option>UK</option>
+                </select>
+                <select class="form-control" style="width: auto;">
+                    <option>Type (Any)</option>
+                    <option>Merit-Based</option>
+                    <option>Need-Based</option>
+                </select>
+            </div>
+
+            <div class="grid-cards">
+                <div class="card">
+                    <div class="card-header">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <h3 class="card-title text-gradient">Fulbright Foreign Student Program</h3>
+                            <span class="badge badge-blue">USA</span>
+                        </div>
+                        <p class="text-secondary mt-1">U.S. Department of State</p>
+                    </div>
+                    <div class="card-body">
+                        <p style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">Fully Funded</p>
+                        <ul style="list-style: none; padding: 0; color: var(--text-secondary); font-size: 0.9rem;">
+                            <li style="margin-bottom: 0.5rem;">📅 Deadline: Oct 15, 2024</li>
+                            <li style="margin-bottom: 0.5rem;">🎓 Level: Masters, PhD</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary btn-block" data-modal-target="scholarship-modal">View Details</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <h3 class="card-title text-gradient">Chevening Scholarship</h3>
+                            <span class="badge badge-purple">UK</span>
+                        </div>
+                        <p class="text-secondary mt-1">UK Government</p>
+                    </div>
+                    <div class="card-body">
+                        <p style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">Full Tuition + Stipend</p>
+                        <ul style="list-style: none; padding: 0; color: var(--text-secondary); font-size: 0.9rem;">
+                            <li style="margin-bottom: 0.5rem;">📅 Deadline: Nov 7, 2024</li>
+                            <li style="margin-bottom: 0.5rem;">🎓 Level: Masters</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary btn-block" data-modal-target="scholarship-modal">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Template -->
+    <div class="modal-backdrop" id="scholarship-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="card-title text-gradient">Scholarship Details</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h4 style="margin-bottom: 0.5rem;">Fulbright Foreign Student Program</h4>
+                <p class="text-secondary" style="margin-bottom: 1rem;">This program enables graduate students, young professionals, and artists from abroad to study and conduct research in the United States.</p>
+                
+                <h5 style="margin-bottom: 0.5rem;">Eligibility:</h5>
+                <ul style="padding-left: 1.5rem; margin-bottom: 1rem; color: var(--text-secondary);">
+                    <li>Must be an international student.</li>
+                    <li>Completed undergraduate degree.</li>
+                    <li>High English proficiency (IELTS/TOEFL).</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close">Close</button>
+                <button class="btn btn-primary" data-simulate>Apply Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

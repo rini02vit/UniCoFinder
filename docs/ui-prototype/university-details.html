@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harvard University - UniCoFinder</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        .uni-hero {
+            height: 250px;
+            background: linear-gradient(rgba(5, 8, 22, 0.5), rgba(5, 8, 22, 1)), url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=80') center/cover;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: flex-end;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+        .details-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        .info-list {
+            list-style: none;
+        }
+        .info-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+        }
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+        .predictor-box {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+
+    <div class="app-container has-sidebar">
+        <aside class="sidebar">
+            <div class="navbar-brand" style="padding: 1rem 1rem 2rem;">
+                <a href="index.html" class="text-gradient">UniCoFinder</a>
+            </div>
+            <a href="dashboard.html">📊 Dashboard</a>
+            <a href="universities.html" class="active">🏫 Universities</a>
+            <a href="scholarships.html">🎓 Scholarships</a>
+            <a href="compare.html">⚖️ Compare</a>
+            <a href="tracker.html">📋 Applications</a>
+            <a href="budget.html">💰 Budget</a>
+        </aside>
+
+        <main class="main-content">
+            <a href="universities.html" style="color: var(--text-secondary); text-decoration: none; margin-bottom: 1rem; display: inline-block;">&larr; Back to Results</a>
+            
+            <div class="uni-hero">
+                <div>
+                    <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Harvard University</h1>
+                    <p style="font-size: 1.1rem; color: var(--text-secondary);">Cambridge, Massachusetts, USA</p>
+                </div>
+            </div>
+
+            <div class="details-grid">
+                <!-- Left Column -->
+                <div>
+                    <h3 style="margin-bottom: 1rem;">Overview</h3>
+                    <p class="text-secondary" style="margin-bottom: 2rem; line-height: 1.7;">
+                        Harvard University is a private Ivy League research university in Cambridge, Massachusetts. Founded in 1636 as Harvard College and named for its first benefactor, the Puritan clergyman John Harvard, it is the oldest institution of higher learning in the United States.
+                    </p>
+
+                    <h3 style="margin-bottom: 1rem;">Key Statistics</h3>
+                    <div class="card" style="padding: 0 1.5rem;">
+                        <ul class="info-list">
+                            <li><span class="text-secondary">World Ranking (QS)</span> <span>#1</span></li>
+                            <li><span class="text-secondary">Acceptance Rate</span> <span>4.0%</span></li>
+                            <li><span class="text-secondary">Average Tuition</span> <span>$54,269 / year</span></li>
+                            <li><span class="text-secondary">Estimated Living Cost</span> <span>$25,000 / year</span></li>
+                            <li><span class="text-secondary">Minimum CGPA Required</span> <span>3.8 / 4.0</span></li>
+                            <li><span class="text-secondary">Employment Rate</span> <span>95%</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div>
+                    <!-- Admission Predictor -->
+                    <div class="predictor-box">
+                        <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">Admission Predictor</h4>
+                        <div style="font-size: 3rem; font-weight: 800; color: var(--success); margin-bottom: 0.5rem;">78%</div>
+                        <span class="badge badge-green" style="font-size: 1rem; padding: 0.5rem 1rem;">Safe Match</span>
+                        <p class="text-secondary mt-2" style="font-size: 0.85rem;">Based on your CGPA and test scores.</p>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="card">
+                        <button class="btn btn-primary btn-block mb-2" data-simulate data-simulate-redirect="tracker.html">Start Application</button>
+                        <button class="btn btn-outline btn-block mb-2" data-simulate>Save to Wishlist</button>
+                        <button class="btn btn-secondary btn-block">Add to Compare</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
