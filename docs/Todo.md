@@ -12,7 +12,7 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 # Development Phases
 
-- [ ] Phase 1 – Project Setup (Varun)
+- [x] Phase 1 – Project Setup (Varun)
 - [ ] Phase 2 – UI Development (Rakshita)
 - [ ] Phase 3 – Authentication (Varun)
 - [ ] Phase 4 – Backend APIs (Varun)
@@ -28,16 +28,16 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## Repository
 
-- [ ] Create GitHub repository
-- [ ] Initialize MERN project
-- [ ] Configure Vite (React)
-- [ ] Configure Express server
-- [ ] Connect MongoDB Atlas
-- [ ] Setup environment variables
-- [ ] Configure CORS
-- [ ] Install required dependencies
-- [ ] Create folder structure
-- [ ] Configure ESLint & Prettier
+- [x] Create GitHub repository
+- [x] Initialize MERN project
+- [x] Configure Vite (React)
+- [x] Configure Express server
+- [x] Connect MongoDB Atlas
+- [x] Setup environment variables
+- [x] Configure CORS
+- [x] Install required dependencies
+- [x] Create folder structure
+- [x] Configure ESLint & Prettier
 
 ---
 
