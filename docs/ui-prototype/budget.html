@@ -1,120 +1,231 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Budget - UniCoFinder</title>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/components.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+  </head>
+  <body>
     <div class="bg-glow"></div>
 
     <div class="app-container has-sidebar">
-        <aside class="sidebar">
-            <div class="navbar-brand" style="padding: 1rem 1rem 2rem;">
-                <a href="index.html" class="text-gradient">UniCoFinder</a>
+      <aside class="sidebar">
+        <div class="navbar-brand" style="padding: 1rem 1rem 2rem">
+          <a href="index.html" class="text-gradient">UniCoFinder</a>
+        </div>
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="universities.html">🏫 Universities</a>
+        <a href="scholarships.html">🎓 Scholarships</a>
+        <a href="compare.html">⚖️ Compare</a>
+        <a href="tracker.html">📋 Applications</a>
+        <a href="budget.html" class="active">💰 Budget</a>
+      </aside>
+
+      <main class="main-content">
+        <header style="margin-bottom: 2rem">
+          <h2>Budget Calculator</h2>
+          <p class="text-secondary">Estimate your total expenses for studying abroad.</p>
+        </header>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem">
+          <!-- Calculator Form -->
+          <div class="card">
+            <h3 class="card-title mb-3">Expenses Breakdown</h3>
+
+            <div class="form-group">
+              <label class="form-label">Tuition Fee (Yearly)</label>
+              <div style="display: flex; align-items: center">
+                <span style="position: absolute; margin-left: 1rem; color: var(--text-secondary)"
+                  >$</span
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  style="padding-left: 2.5rem"
+                  value="30000"
+                  id="tuition"
+                />
+              </div>
             </div>
-            <a href="dashboard.html">📊 Dashboard</a>
-            <a href="universities.html">🏫 Universities</a>
-            <a href="scholarships.html">🎓 Scholarships</a>
-            <a href="compare.html">⚖️ Compare</a>
-            <a href="tracker.html">📋 Applications</a>
-            <a href="budget.html" class="active">💰 Budget</a>
-        </aside>
 
-        <main class="main-content">
-            <header style="margin-bottom: 2rem;">
-                <h2>Budget Calculator</h2>
-                <p class="text-secondary">Estimate your total expenses for studying abroad.</p>
-            </header>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                
-                <!-- Calculator Form -->
-                <div class="card">
-                    <h3 class="card-title mb-3">Expenses Breakdown</h3>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Tuition Fee (Yearly)</label>
-                        <div style="display: flex; align-items: center;">
-                            <span style="position: absolute; margin-left: 1rem; color: var(--text-secondary);">$</span>
-                            <input type="number" class="form-control" style="padding-left: 2.5rem;" value="30000" id="tuition">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Accommodation (Monthly)</label>
-                        <div style="display: flex; align-items: center;">
-                            <span style="position: absolute; margin-left: 1rem; color: var(--text-secondary);">$</span>
-                            <input type="number" class="form-control" style="padding-left: 2.5rem;" value="800" id="accom">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Food & Groceries (Monthly)</label>
-                        <div style="display: flex; align-items: center;">
-                            <span style="position: absolute; margin-left: 1rem; color: var(--text-secondary);">$</span>
-                            <input type="number" class="form-control" style="padding-left: 2.5rem;" value="400" id="food">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Transportation & Misc (Monthly)</label>
-                        <div style="display: flex; align-items: center;">
-                            <span style="position: absolute; margin-left: 1rem; color: var(--text-secondary);">$</span>
-                            <input type="number" class="form-control" style="padding-left: 2.5rem;" value="200" id="misc">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Result -->
-                <div>
-                    <div class="card" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(167, 139, 250, 0.1)); border-color: var(--primary-cyan);">
-                        <h3 class="card-title text-center mb-1">Estimated Annual Cost</h3>
-                        <div class="text-center" style="font-size: 3.5rem; font-weight: 800; color: var(--primary-cyan); margin-bottom: 1rem;" id="total-cost">
-                            $46,800
-                        </div>
-                        <p class="text-center text-secondary mb-3">Includes 1 year of tuition and 12 months of living expenses.</p>
-                        
-                        <!-- Visual Bar -->
-                        <div style="width: 100%; height: 20px; border-radius: 10px; display: flex; overflow: hidden; margin-bottom: 1rem;">
-                            <div style="background: var(--primary-purple); width: 64%;" title="Tuition"></div>
-                            <div style="background: var(--primary-cyan); width: 20%;" title="Accommodation"></div>
-                            <div style="background: var(--primary-green); width: 10%;" title="Food"></div>
-                            <div style="background: var(--warning); width: 6%;" title="Misc"></div>
-                        </div>
-                        
-                        <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; font-size: 0.85rem;">
-                            <span style="display: flex; align-items: center; gap: 0.5rem;"><div style="width:10px; height:10px; border-radius:50%; background:var(--primary-purple);"></div> Tuition</span>
-                            <span style="display: flex; align-items: center; gap: 0.5rem;"><div style="width:10px; height:10px; border-radius:50%; background:var(--primary-cyan);"></div> Accommodation</span>
-                            <span style="display: flex; align-items: center; gap: 0.5rem;"><div style="width:10px; height:10px; border-radius:50%; background:var(--primary-green);"></div> Food</span>
-                            <span style="display: flex; align-items: center; gap: 0.5rem;"><div style="width:10px; height:10px; border-radius:50%; background:var(--warning);"></div> Misc</span>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="form-group">
+              <label class="form-label">Accommodation (Monthly)</label>
+              <div style="display: flex; align-items: center">
+                <span style="position: absolute; margin-left: 1rem; color: var(--text-secondary)"
+                  >$</span
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  style="padding-left: 2.5rem"
+                  value="800"
+                  id="accom"
+                />
+              </div>
             </div>
-        </main>
+
+            <div class="form-group">
+              <label class="form-label">Food & Groceries (Monthly)</label>
+              <div style="display: flex; align-items: center">
+                <span style="position: absolute; margin-left: 1rem; color: var(--text-secondary)"
+                  >$</span
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  style="padding-left: 2.5rem"
+                  value="400"
+                  id="food"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Transportation & Misc (Monthly)</label>
+              <div style="display: flex; align-items: center">
+                <span style="position: absolute; margin-left: 1rem; color: var(--text-secondary)"
+                  >$</span
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  style="padding-left: 2.5rem"
+                  value="200"
+                  id="misc"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Result -->
+          <div>
+            <div
+              class="card"
+              style="
+                background: linear-gradient(
+                  135deg,
+                  rgba(56, 189, 248, 0.1),
+                  rgba(167, 139, 250, 0.1)
+                );
+                border-color: var(--primary-cyan);
+              "
+            >
+              <h3 class="card-title text-center mb-1">Estimated Annual Cost</h3>
+              <div
+                class="text-center"
+                style="
+                  font-size: 3.5rem;
+                  font-weight: 800;
+                  color: var(--primary-cyan);
+                  margin-bottom: 1rem;
+                "
+                id="total-cost"
+              >
+                $46,800
+              </div>
+              <p class="text-center text-secondary mb-3">
+                Includes 1 year of tuition and 12 months of living expenses.
+              </p>
+
+              <!-- Visual Bar -->
+              <div
+                style="
+                  width: 100%;
+                  height: 20px;
+                  border-radius: 10px;
+                  display: flex;
+                  overflow: hidden;
+                  margin-bottom: 1rem;
+                "
+              >
+                <div style="background: var(--primary-purple); width: 64%" title="Tuition"></div>
+                <div
+                  style="background: var(--primary-cyan); width: 20%"
+                  title="Accommodation"
+                ></div>
+                <div style="background: var(--primary-green); width: 10%" title="Food"></div>
+                <div style="background: var(--warning); width: 6%" title="Misc"></div>
+              </div>
+
+              <div
+                style="
+                  display: flex;
+                  flex-wrap: wrap;
+                  gap: 1rem;
+                  justify-content: center;
+                  font-size: 0.85rem;
+                "
+              >
+                <span style="display: flex; align-items: center; gap: 0.5rem"
+                  ><div
+                    style="
+                      width: 10px;
+                      height: 10px;
+                      border-radius: 50%;
+                      background: var(--primary-purple);
+                    "
+                  ></div>
+                  Tuition</span
+                >
+                <span style="display: flex; align-items: center; gap: 0.5rem"
+                  ><div
+                    style="
+                      width: 10px;
+                      height: 10px;
+                      border-radius: 50%;
+                      background: var(--primary-cyan);
+                    "
+                  ></div>
+                  Accommodation</span
+                >
+                <span style="display: flex; align-items: center; gap: 0.5rem"
+                  ><div
+                    style="
+                      width: 10px;
+                      height: 10px;
+                      border-radius: 50%;
+                      background: var(--primary-green);
+                    "
+                  ></div>
+                  Food</span
+                >
+                <span style="display: flex; align-items: center; gap: 0.5rem"
+                  ><div
+                    style="
+                      width: 10px;
+                      height: 10px;
+                      border-radius: 50%;
+                      background: var(--warning);
+                    "
+                  ></div>
+                  Misc</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <script src="js/main.js"></script>
     <script>
-        const inputs = ['tuition', 'accom', 'food', 'misc'].map(id => document.getElementById(id));
-        const totalEl = document.getElementById('total-cost');
-        
-        function calculate() {
-            const tuition = parseInt(inputs[0].value) || 0;
-            const accom = (parseInt(inputs[1].value) || 0) * 12;
-            const food = (parseInt(inputs[2].value) || 0) * 12;
-            const misc = (parseInt(inputs[3].value) || 0) * 12;
-            
-            const total = tuition + accom + food + misc;
-            totalEl.innerText = '$' + total.toLocaleString();
-        }
+      const inputs = ['tuition', 'accom', 'food', 'misc'].map((id) => document.getElementById(id));
+      const totalEl = document.getElementById('total-cost');
 
-        inputs.forEach(input => input.addEventListener('input', calculate));
+      function calculate() {
+        const tuition = parseInt(inputs[0].value) || 0;
+        const accom = (parseInt(inputs[1].value) || 0) * 12;
+        const food = (parseInt(inputs[2].value) || 0) * 12;
+        const misc = (parseInt(inputs[3].value) || 0) * 12;
+
+        const total = tuition + accom + food + misc;
+        totalEl.innerText = '$' + total.toLocaleString();
+      }
+
+      inputs.forEach((input) => input.addEventListener('input', calculate));
     </script>
-</body>
+  </body>
 </html>

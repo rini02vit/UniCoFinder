@@ -1,136 +1,162 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Compare - UniCoFinder</title>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
     <style>
-        .compare-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--card-bg);
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-        }
-        .compare-table th, .compare-table td {
-            padding: 1.5rem;
-            text-align: center;
-            border-bottom: 1px solid var(--border-color);
-            border-right: 1px solid var(--border-color);
-        }
-        .compare-table th:last-child, .compare-table td:last-child {
-            border-right: none;
-        }
-        .compare-table tr:last-child td {
-            border-bottom: none;
-        }
-        .compare-table th {
-            background: rgba(255, 255, 255, 0.02);
-            font-weight: 600;
-        }
-        .compare-table th:first-child, .compare-table td:first-child {
-            text-align: left;
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.02);
-            width: 25%;
-        }
-        .uni-header-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-purple));
-            margin: 0 auto 1rem;
-        }
+      .compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--card-bg);
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+      }
+      .compare-table th,
+      .compare-table td {
+        padding: 1.5rem;
+        text-align: center;
+        border-bottom: 1px solid var(--border-color);
+        border-right: 1px solid var(--border-color);
+      }
+      .compare-table th:last-child,
+      .compare-table td:last-child {
+        border-right: none;
+      }
+      .compare-table tr:last-child td {
+        border-bottom: none;
+      }
+      .compare-table th {
+        background: rgba(255, 255, 255, 0.02);
+        font-weight: 600;
+      }
+      .compare-table th:first-child,
+      .compare-table td:first-child {
+        text-align: left;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.02);
+        width: 25%;
+      }
+      .uni-header-img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, var(--primary-cyan), var(--primary-purple));
+        margin: 0 auto 1rem;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="bg-glow"></div>
 
     <div class="app-container has-sidebar">
-        <aside class="sidebar">
-            <div class="navbar-brand" style="padding: 1rem 1rem 2rem;">
-                <a href="index.html" class="text-gradient">UniCoFinder</a>
-            </div>
-            <a href="dashboard.html">📊 Dashboard</a>
-            <a href="universities.html">🏫 Universities</a>
-            <a href="scholarships.html">🎓 Scholarships</a>
-            <a href="compare.html" class="active">⚖️ Compare</a>
-            <a href="tracker.html">📋 Applications</a>
-            <a href="budget.html">💰 Budget</a>
-        </aside>
+      <aside class="sidebar">
+        <div class="navbar-brand" style="padding: 1rem 1rem 2rem">
+          <a href="index.html" class="text-gradient">UniCoFinder</a>
+        </div>
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="universities.html">🏫 Universities</a>
+        <a href="scholarships.html">🎓 Scholarships</a>
+        <a href="compare.html" class="active">⚖️ Compare</a>
+        <a href="tracker.html">📋 Applications</a>
+        <a href="budget.html">💰 Budget</a>
+      </aside>
 
-        <main class="main-content">
-            <header style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <h2>University Comparison</h2>
-                    <p class="text-secondary">Side-by-side comparison of your shortlisted universities.</p>
-                </div>
-                <button class="btn btn-outline">+ Add University</button>
-            </header>
+      <main class="main-content">
+        <header
+          style="
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <div>
+            <h2>University Comparison</h2>
+            <p class="text-secondary">Side-by-side comparison of your shortlisted universities.</p>
+          </div>
+          <button class="btn btn-outline">+ Add University</button>
+        </header>
 
-            <div style="overflow-x: auto;">
-                <table class="compare-table">
-                    <thead>
-                        <tr>
-                            <th>Feature</th>
-                            <th>
-                                <div class="uni-header-img" style="background: linear-gradient(45deg, #4f46e5, #ec4899);"></div>
-                                <h3 class="text-gradient">Harvard Univ.</h3>
-                                <button class="btn btn-secondary btn-block mt-1" style="padding: 0.5rem; font-size: 0.8rem;">Remove</button>
-                            </th>
-                            <th>
-                                <div class="uni-header-img" style="background: linear-gradient(45deg, #0ea5e9, #3b82f6);"></div>
-                                <h3 class="text-gradient">Oxford Univ.</h3>
-                                <button class="btn btn-secondary btn-block mt-1" style="padding: 0.5rem; font-size: 0.8rem;">Remove</button>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Country</td>
-                            <td>USA 🇺🇸</td>
-                            <td>UK 🇬🇧</td>
-                        </tr>
-                        <tr>
-                            <td>World Ranking</td>
-                            <td>#1</td>
-                            <td>#2</td>
-                        </tr>
-                        <tr>
-                            <td>Acceptance Rate</td>
-                            <td style="color: var(--danger);">4.0%</td>
-                            <td style="color: var(--warning);">17.5%</td>
-                        </tr>
-                        <tr>
-                            <td>Tuition Fee (Annual)</td>
-                            <td>$54,269</td>
-                            <td>£30,000</td>
-                        </tr>
-                        <tr>
-                            <td>Living Cost (Annual)</td>
-                            <td>$25,000</td>
-                            <td>£15,000</td>
-                        </tr>
-                        <tr>
-                            <td>Scholarships</td>
-                            <td><span class="badge badge-green">Available</span></td>
-                            <td><span class="badge badge-green">Available</span></td>
-                        </tr>
-                        <tr>
-                            <td>Action</td>
-                            <td><button class="btn btn-primary btn-block">Apply</button></td>
-                            <td><button class="btn btn-primary btn-block">Apply</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </main>
+        <div style="overflow-x: auto">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>
+                  <div
+                    class="uni-header-img"
+                    style="background: linear-gradient(45deg, #4f46e5, #ec4899)"
+                  ></div>
+                  <h3 class="text-gradient">Harvard Univ.</h3>
+                  <button
+                    class="btn btn-secondary btn-block mt-1"
+                    style="padding: 0.5rem; font-size: 0.8rem"
+                  >
+                    Remove
+                  </button>
+                </th>
+                <th>
+                  <div
+                    class="uni-header-img"
+                    style="background: linear-gradient(45deg, #0ea5e9, #3b82f6)"
+                  ></div>
+                  <h3 class="text-gradient">Oxford Univ.</h3>
+                  <button
+                    class="btn btn-secondary btn-block mt-1"
+                    style="padding: 0.5rem; font-size: 0.8rem"
+                  >
+                    Remove
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Country</td>
+                <td>USA 🇺🇸</td>
+                <td>UK 🇬🇧</td>
+              </tr>
+              <tr>
+                <td>World Ranking</td>
+                <td>#1</td>
+                <td>#2</td>
+              </tr>
+              <tr>
+                <td>Acceptance Rate</td>
+                <td style="color: var(--danger)">4.0%</td>
+                <td style="color: var(--warning)">17.5%</td>
+              </tr>
+              <tr>
+                <td>Tuition Fee (Annual)</td>
+                <td>$54,269</td>
+                <td>£30,000</td>
+              </tr>
+              <tr>
+                <td>Living Cost (Annual)</td>
+                <td>$25,000</td>
+                <td>£15,000</td>
+              </tr>
+              <tr>
+                <td>Scholarships</td>
+                <td><span class="badge badge-green">Available</span></td>
+                <td><span class="badge badge-green">Available</span></td>
+              </tr>
+              <tr>
+                <td>Action</td>
+                <td><button class="btn btn-primary btn-block">Apply</button></td>
+                <td><button class="btn btn-primary btn-block">Apply</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
     </div>
 
     <script src="js/main.js"></script>
-</body>
+  </body>
 </html>

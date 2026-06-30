@@ -20,12 +20,12 @@ app.get('/api/health', (req, res) => {
     3: 'disconnecting',
     99: 'uninitialized',
   };
-  
+
   res.json({
     status: 'ok',
     database: statusMap[dbState] || 'unknown',
     uptime: process.uptime(),
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 

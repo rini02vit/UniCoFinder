@@ -1,150 +1,169 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Universities - UniCoFinder</title>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
     <style>
-        .filters-bar {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-        .filters-bar .form-control {
-            width: auto;
-            min-width: 200px;
-        }
-        .uni-image {
-            width: 100%;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            background: rgba(255,255,255,0.1);
-        }
+      .filters-bar {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+      .filters-bar .form-control {
+        width: auto;
+        min-width: 200px;
+      }
+      .uni-image {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="bg-glow"></div>
 
     <div class="app-container has-sidebar">
-        <aside class="sidebar">
-            <div class="navbar-brand" style="padding: 1rem 1rem 2rem;">
-                <a href="index.html" class="text-gradient">UniCoFinder</a>
-            </div>
-            <a href="dashboard.html">📊 Dashboard</a>
-            <a href="universities.html" class="active">🏫 Universities</a>
-            <a href="scholarships.html">🎓 Scholarships</a>
-            <a href="compare.html">⚖️ Compare</a>
-            <a href="tracker.html">📋 Applications</a>
-            <a href="budget.html">💰 Budget</a>
-        </aside>
+      <aside class="sidebar">
+        <div class="navbar-brand" style="padding: 1rem 1rem 2rem">
+          <a href="index.html" class="text-gradient">UniCoFinder</a>
+        </div>
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="universities.html" class="active">🏫 Universities</a>
+        <a href="scholarships.html">🎓 Scholarships</a>
+        <a href="compare.html">⚖️ Compare</a>
+        <a href="tracker.html">📋 Applications</a>
+        <a href="budget.html">💰 Budget</a>
+      </aside>
 
-        <main class="main-content">
-            <header style="margin-bottom: 2rem;">
-                <h2>Explore Universities</h2>
-                <p class="text-secondary">Find the best match for your academic profile and budget.</p>
-            </header>
+      <main class="main-content">
+        <header style="margin-bottom: 2rem">
+          <h2>Explore Universities</h2>
+          <p class="text-secondary">Find the best match for your academic profile and budget.</p>
+        </header>
 
-            <div class="filters-bar">
-                <input type="text" class="form-control" style="flex: 1;" placeholder="Search universities...">
-                <select class="form-control">
-                    <option>All Countries</option>
-                    <option>USA</option>
-                    <option>UK</option>
-                    <option>Canada</option>
-                    <option>Australia</option>
-                </select>
-                <select class="form-control">
-                    <option>Budget (Any)</option>
-                    <option>< $20,000</option>
-                    <option>$20k - $40k</option>
-                    <option>> $40k</option>
-                </select>
-                <button class="btn btn-primary" id="demo-load-btn">Search</button>
-            </div>
+        <div class="filters-bar">
+          <input
+            type="text"
+            class="form-control"
+            style="flex: 1"
+            placeholder="Search universities..."
+          />
+          <select class="form-control">
+            <option>All Countries</option>
+            <option>USA</option>
+            <option>UK</option>
+            <option>Canada</option>
+            <option>Australia</option>
+          </select>
+          <select class="form-control">
+            <option>Budget (Any)</option>
+            <option>< $20,000</option>
+            <option>$20k - $40k</option>
+            <option>> $40k</option>
+          </select>
+          <button class="btn btn-primary" id="demo-load-btn">Search</button>
+        </div>
 
-            <!-- University Grid -->
-            <div class="grid-cards" id="uni-grid">
-                <div class="card">
-                    <div class="uni-image" style="background: linear-gradient(45deg, #4f46e5, #ec4899);"></div>
-                    <div class="card-header" style="margin-bottom: 0.5rem;">
-                        <h3 class="card-title">Harvard University</h3>
-                        <span class="text-secondary">Cambridge, USA</span>
-                    </div>
-                    <div class="card-body">
-                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-                            <span class="badge badge-purple">#1 World</span>
-                            <span class="badge badge-green">Safe Match</span>
-                        </div>
-                        <p style="font-size: 0.9rem;">Tuition: $54,000/yr</p>
-                        <p style="font-size: 0.9rem;">Acceptance: 4%</p>
-                    </div>
-                    <div class="card-footer" style="margin-top: 1rem;">
-                        <button class="btn btn-outline" style="padding: 0.5rem 1rem;">Save</button>
-                        <a href="university-details.html" class="btn btn-secondary">View Details</a>
-                    </div>
-                </div>
+        <!-- University Grid -->
+        <div class="grid-cards" id="uni-grid">
+          <div class="card">
+            <div
+              class="uni-image"
+              style="background: linear-gradient(45deg, #4f46e5, #ec4899)"
+            ></div>
+            <div class="card-header" style="margin-bottom: 0.5rem">
+              <h3 class="card-title">Harvard University</h3>
+              <span class="text-secondary">Cambridge, USA</span>
+            </div>
+            <div class="card-body">
+              <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem">
+                <span class="badge badge-purple">#1 World</span>
+                <span class="badge badge-green">Safe Match</span>
+              </div>
+              <p style="font-size: 0.9rem">Tuition: $54,000/yr</p>
+              <p style="font-size: 0.9rem">Acceptance: 4%</p>
+            </div>
+            <div class="card-footer" style="margin-top: 1rem">
+              <button class="btn btn-outline" style="padding: 0.5rem 1rem">Save</button>
+              <a href="university-details.html" class="btn btn-secondary">View Details</a>
+            </div>
+          </div>
 
-                <div class="card">
-                    <div class="uni-image" style="background: linear-gradient(45deg, #0ea5e9, #3b82f6);"></div>
-                    <div class="card-header" style="margin-bottom: 0.5rem;">
-                        <h3 class="card-title">Oxford University</h3>
-                        <span class="text-secondary">Oxford, UK</span>
-                    </div>
-                    <div class="card-body">
-                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-                            <span class="badge badge-purple">#2 World</span>
-                            <span class="badge badge-orange">Target</span>
-                        </div>
-                        <p style="font-size: 0.9rem;">Tuition: £30,000/yr</p>
-                        <p style="font-size: 0.9rem;">Acceptance: 17%</p>
-                    </div>
-                    <div class="card-footer" style="margin-top: 1rem;">
-                        <button class="btn btn-outline" style="padding: 0.5rem 1rem;">Save</button>
-                        <a href="university-details.html" class="btn btn-secondary">View Details</a>
-                    </div>
-                </div>
+          <div class="card">
+            <div
+              class="uni-image"
+              style="background: linear-gradient(45deg, #0ea5e9, #3b82f6)"
+            ></div>
+            <div class="card-header" style="margin-bottom: 0.5rem">
+              <h3 class="card-title">Oxford University</h3>
+              <span class="text-secondary">Oxford, UK</span>
             </div>
+            <div class="card-body">
+              <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem">
+                <span class="badge badge-purple">#2 World</span>
+                <span class="badge badge-orange">Target</span>
+              </div>
+              <p style="font-size: 0.9rem">Tuition: £30,000/yr</p>
+              <p style="font-size: 0.9rem">Acceptance: 17%</p>
+            </div>
+            <div class="card-footer" style="margin-top: 1rem">
+              <button class="btn btn-outline" style="padding: 0.5rem 1rem">Save</button>
+              <a href="university-details.html" class="btn btn-secondary">View Details</a>
+            </div>
+          </div>
+        </div>
 
-            <!-- Error State Example (Hidden by default) -->
-            <div id="error-state" class="state-container hidden" style="margin-top: 2rem;">
-                <div class="state-icon error">⚠️</div>
-                <h3 class="state-title">Failed to load universities</h3>
-                <p class="state-desc">Please check your internet connection and try again.</p>
-                <button class="btn btn-primary" onclick="document.getElementById('error-state').classList.add('hidden'); document.getElementById('uni-grid').classList.remove('hidden');">Retry</button>
-            </div>
-            
-            <div style="margin-top: 2rem; text-align: center;">
-                <button class="btn btn-outline" onclick="showError()">Demo Error State</button>
-            </div>
-        </main>
+        <!-- Error State Example (Hidden by default) -->
+        <div id="error-state" class="state-container hidden" style="margin-top: 2rem">
+          <div class="state-icon error">⚠️</div>
+          <h3 class="state-title">Failed to load universities</h3>
+          <p class="state-desc">Please check your internet connection and try again.</p>
+          <button
+            class="btn btn-primary"
+            onclick="
+              document.getElementById('error-state').classList.add('hidden');
+              document.getElementById('uni-grid').classList.remove('hidden');
+            "
+          >
+            Retry
+          </button>
+        </div>
+
+        <div style="margin-top: 2rem; text-align: center">
+          <button class="btn btn-outline" onclick="showError()">Demo Error State</button>
+        </div>
+      </main>
     </div>
 
     <script src="js/main.js"></script>
     <script>
-        // Demo loading state
-        document.getElementById('demo-load-btn').addEventListener('click', function() {
-            const grid = document.getElementById('uni-grid');
-            grid.style.position = 'relative';
-            const overlay = document.createElement('div');
-            overlay.className = 'loading-overlay';
-            overlay.innerHTML = '<span class="spinner"></span>';
-            grid.appendChild(overlay);
-            
-            setTimeout(() => {
-                overlay.remove();
-            }, 1500);
-        });
+      // Demo loading state
+      document.getElementById('demo-load-btn').addEventListener('click', function () {
+        const grid = document.getElementById('uni-grid');
+        grid.style.position = 'relative';
+        const overlay = document.createElement('div');
+        overlay.className = 'loading-overlay';
+        overlay.innerHTML = '<span class="spinner"></span>';
+        grid.appendChild(overlay);
 
-        function showError() {
-            document.getElementById('uni-grid').classList.add('hidden');
-            document.getElementById('error-state').classList.remove('hidden');
-        }
+        setTimeout(() => {
+          overlay.remove();
+        }, 1500);
+      });
+
+      function showError() {
+        document.getElementById('uni-grid').classList.add('hidden');
+        document.getElementById('error-state').classList.remove('hidden');
+      }
     </script>
-</body>
+  </body>
 </html>
