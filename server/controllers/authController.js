@@ -49,7 +49,7 @@ export const registerUser = async (req, res) => {
         errors: [],
       });
     }
-  } catch (error) {
+  } catch {
     return res.status(500).json({
       success: false,
       message: 'Internal server error. Please try again later.',
@@ -92,7 +92,7 @@ export const loginUser = async (req, res) => {
         errors: [],
       });
     }
-  } catch (error) {
+  } catch {
     return res.status(500).json({
       success: false,
       message: 'Internal server error. Please try again later.',
@@ -120,7 +120,7 @@ export const getMe = async (req, res) => {
         },
       },
     });
-  } catch (error) {
+  } catch {
     return res.status(500).json({
       success: false,
       message: 'Internal server error. Please try again later.',

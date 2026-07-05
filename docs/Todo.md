@@ -237,10 +237,10 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## Applications
 
-- [ ] Add Application
-- [ ] Update Status
-- [ ] Delete Application
-- [ ] View Applications
+- [x] Add Application
+- [x] Update Status
+- [x] Delete Application
+- [x] View Applications
 
 ---
 

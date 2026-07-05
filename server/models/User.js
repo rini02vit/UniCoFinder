@@ -45,6 +45,12 @@ const userSchema = new mongoose.Schema(
         ref: 'University',
       },
     ],
+    applications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Application',
+      },
+    ],
   },
   {
     timestamps: true,
