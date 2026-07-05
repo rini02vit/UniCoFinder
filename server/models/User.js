@@ -39,6 +39,12 @@ const userSchema = new mongoose.Schema(
     examScore: {
       type: Number,
     },
+    wishlist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'University',
+      },
+    ],
   },
   {
     timestamps: true,

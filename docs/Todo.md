@@ -194,44 +194,44 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## Users
 
-- [ ] Register User
-- [ ] Login User
-- [ ] Get Profile
-- [ ] Update Profile
+- [x] Register User
+- [x] Login User
+- [x] Get Profile
+- [x] Update Profile
 
 ---
 
 ## Universities
 
-- [ ] Get All Universities
-- [ ] Search Universities
-- [ ] Filter Universities
-- [ ] Get University Details
-- [ ] Recommend Universities
+- [x] Get All Universities
+- [x] Search Universities
+- [x] Filter Universities
+- [x] Get University Details
+- [x] Recommend Universities
 
 ---
 
 ## Countries
 
-- [ ] Get Countries
-- [ ] Country Details
-- [ ] Country Recommendation
+- [x] Get Countries
+- [x] Country Details
+- [x] Country Recommendation
 
 ---
 
 ## Scholarships
 
-- [ ] Get Scholarships
-- [ ] Scholarship Details
-- [ ] Scholarship Recommendation
+- [x] Get Scholarships
+- [x] Scholarship Details
+- [x] Scholarship Recommendation
 
 ---
 
 ## Wishlist
 
-- [ ] Add University
-- [ ] Remove University
-- [ ] View Wishlist
+- [x] Add University
+- [x] Remove University
+- [x] View Wishlist
 
 ---
 
