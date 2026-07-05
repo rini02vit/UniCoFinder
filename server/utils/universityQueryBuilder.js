@@ -102,5 +102,9 @@ export const buildFilter = (query) => {
     filter.cgpaRequirement = { $lte: Number(query.studentCgpa) };
   }
 
+  if (query.englishExam && typeof query.englishExam === 'string' && query.englishExam.trim() !== '') {
+    filter.englishExamRequirements = query.englishExam.trim();
+  }
+
   return filter;
 };

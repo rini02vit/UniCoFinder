@@ -16,13 +16,13 @@ const universitySchema = new mongoose.Schema(
     city: {
       type: String,
     },
-    degreeLevels: [
-      {
-        type: String,
-      },
-    ],
+    degreeLevels: {
+      type: [String],
+      index: true,
+    },
     tuitionFee: {
       type: Number,
+      index: true,
     },
     currency: {
       type: String,
@@ -34,6 +34,7 @@ const universitySchema = new mongoose.Schema(
     },
     cgpaRequirement: {
       type: Number,
+      index: true,
     },
     englishExamRequirements: [
       {
