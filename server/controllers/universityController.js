@@ -1,4 +1,5 @@
 import University from '../models/University.js';
+import isValidObjectId from '../utils/isValidObjectId.js';
 import {
   buildPagination,
   buildSort,
@@ -41,7 +42,7 @@ export const getUniversities = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Server Error',
-      errors: [{ msg: error.message, param: 'server', location: 'server' }],
+      errors: [{ field: 'server', message: error.message }],
     });
   }
 };
@@ -58,7 +59,7 @@ export const searchUniversities = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'Validation failed',
-        errors: [{ msg: 'Search keyword is required and cannot be empty.', param: 'q', location: 'query' }],
+        errors: [{ field: 'q', message: 'Search keyword is required and cannot be empty.' }],
       });
     }
 
@@ -92,7 +93,7 @@ export const searchUniversities = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Server Error',
-      errors: [{ msg: error.message, param: 'server', location: 'server' }],
+      errors: [{ field: 'server', message: error.message }],
     });
   }
 };
@@ -133,7 +134,53 @@ export const filterUniversities = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Server Error',
-      errors: [{ msg: error.message, param: 'server', location: 'server' }],
+      errors: [{ field: 'server', message: error.message }],
+    });
+  }
+};
+
+// @desc    Get university by ID
+// @route   GET /api/universities/:id
+// @access  Public
+export const getUniversityById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: [
+          {
+            field: 'id',
+            message: 'The provided ID is not a valid MongoDB ObjectId.',
+          },
+        ],
+      });
+    }
+
+    const university = await University.findById(id);
+
+    if (!university) {
+      return res.status(404).json({
+        success: false,
+        message: 'University not found',
+        errors: [],
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'University fetched successfully.',
+      data: {
+        university,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      errors: [{ field: 'server', message: error.message }],
     });
   }
 };
