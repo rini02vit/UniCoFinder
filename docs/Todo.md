@@ -14,7 +14,7 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 - [x] Phase 1 – Project Setup (Varun)
 - [ ] Phase 2 – UI Development (Rakshita)
-- [ ] Phase 3 – Authentication (Varun)
+- [x] Phase 3 – Authentication (Varun)
 - [ ] Phase 4 – Backend APIs (Varun)
 - [ ] Phase 5 – Recommendation Engine (Varun)
 - [ ] Phase 6 – Dashboard Analytics (Rakshita & Varun)
@@ -179,14 +179,14 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 # Phase 3 — Authentication (Varun)
 
-- [ ] User Registration API
-- [ ] Login API
-- [ ] JWT Authentication
-- [ ] Password Encryption
-- [ ] Protected Routes
-- [ ] Logout
-- [ ] Profile Authentication
-- [ ] Token Validation
+- [x] User Registration API
+- [x] Login API
+- [x] JWT Authentication
+- [x] Password Encryption
+- [x] Protected Routes
+- [x] Logout
+- [x] Profile Authentication
+- [x] Token Validation
 
 ---
 

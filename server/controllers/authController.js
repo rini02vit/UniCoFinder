@@ -128,3 +128,14 @@ export const getMe = async (req, res) => {
     });
   }
 };
+
+// @desc    Logout user
+// @route   POST /api/auth/logout
+// @access  Public
+export const logoutUser = async (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: 'Logged out successfully.',
+    data: {},
+  });
+};
