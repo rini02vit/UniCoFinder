@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import universityRoutes from './routes/universityRoutes.js';
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(morgan('dev'));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/universities', universityRoutes);
 
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {
