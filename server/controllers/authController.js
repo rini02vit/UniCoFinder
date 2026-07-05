@@ -100,3 +100,31 @@ export const loginUser = async (req, res) => {
     });
   }
 };
+
+// @desc    Get current authenticated user
+// @route   GET /api/auth/me
+// @access  Private
+export const getMe = async (req, res) => {
+  try {
+    const user = req.user;
+
+    return res.status(200).json({
+      success: true,
+      message: 'User fetched successfully',
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          createdAt: user.createdAt,
+        },
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Internal server error. Please try again later.',
+      errors: [],
+    });
+  }
+};
