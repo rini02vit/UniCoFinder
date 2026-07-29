@@ -11,8 +11,8 @@ import BackToTopButton from './components/ui/BackToTopButton';
 import PublicLayout from './components/layout/PublicLayout';
 import ProtectedLayout from './components/layout/ProtectedLayout';
 
-// Placeholder Pages
-const Home = () => <div style={{ height: '2000px', padding: '2rem' }}><h1>Home Page</h1><p>Scroll down to see the BackToTopButton</p></div>;
+// Pages
+import Home from './pages/Home/Home';
 const Dashboard = () => <div style={{ padding: '2rem' }}><h1>Dashboard Page</h1></div>;
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 

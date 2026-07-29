@@ -60,15 +60,15 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## Home Page
 
-- [ ] Hero Section
-- [ ] Animated Background
-- [ ] Search Bar
-- [ ] Feature Cards
-- [ ] Statistics Section
-- [ ] How It Works Timeline
-- [ ] Testimonials
-- [ ] FAQ Section
-- [ ] Call-to-Action Section
+- [x] Hero Section
+- [x] Animated Background
+- [x] Search Bar
+- [x] Feature Cards
+- [x] Statistics Section
+- [x] How It Works Timeline
+- [x] Testimonials
+- [x] FAQ Section
+- [x] Call-to-Action Section
 
 ---
 
