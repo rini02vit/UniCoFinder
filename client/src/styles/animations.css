@@ -1,0 +1,49 @@
+/* Animations */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Floating Academic Particles (From Template) */
+.float-item {
+  position: absolute;
+  font-weight: 700;
+  font-size: 22px;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  animation: fly linear forwards, colorShift 4s linear infinite;
+  opacity: 0;
+  text-shadow: 0 0 12px currentColor, 0 0 25px currentColor;
+  z-index: -1;
+}
+
+.float-item.big {
+  font-size: 42px;
+}
+
+@keyframes fly {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes colorShift {
+  0% { color: var(--primary-pink); }
+  25% { color: var(--primary-green); }
+  50% { color: var(--primary-cyan); }
+  75% { color: var(--primary-purple); }
+  100% { color: var(--primary-pink); }
+}

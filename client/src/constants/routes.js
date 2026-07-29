@@ -1,0 +1,17 @@
+export const ROUTES = {
+  HOME: '/',
+  LOGIN: '/login',
+  REGISTER: '/register',
+  DASHBOARD: '/dashboard',
+  UNIVERSITIES: '/universities',
+  UNIVERSITY_DETAILS: '/university/:id',
+  COUNTRIES: '/countries',
+  COUNTRY_DETAILS: '/country/:id',
+  SCHOLARSHIPS: '/scholarships',
+  COMPARE: '/compare',
+  WISHLIST: '/wishlist',
+  APPLICATION_TRACKER: '/tracker',
+  BUDGET: '/budget',
+  AI_ADVISOR: '/ai-advisor',
+  PROFILE: '/profile',
+};

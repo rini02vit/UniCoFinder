@@ -15,7 +15,7 @@ Build a modern, responsive MERN Stack web application that helps students discov
 - [x] Phase 1 – Project Setup (Varun)
 - [ ] Phase 2 – UI Development (Rakshita)
 - [x] Phase 3 – Authentication (Varun)
-- [ ] Phase 4 – Backend APIs (Varun)
+- [x] Phase 4 – Backend APIs (Varun)
 - [ ] Phase 5 – Recommendation Engine (Varun)
 - [ ] Phase 6 – Dashboard Analytics (Rakshita & Varun)
 - [ ] Phase 7 – Advanced Features (Varun & Rakshita)
@@ -45,16 +45,16 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## General Layout
 
-- [ ] Responsive Navbar
-- [ ] Mobile Menu
-- [ ] Footer
-- [ ] Sidebar
-- [ ] Scroll-to-top button
-- [ ] Loading Screen
-- [ ] Page Transition Animations
-- [ ] Dark / Light Theme
-- [ ] Theme Persistence
-- [ ] 404 Page
+- [x] Responsive Navbar
+- [x] Mobile Menu
+- [x] Footer
+- [x] Sidebar
+- [x] Scroll-to-top button
+- [x] Loading Screen
+- [x] Page Transition Animations
+- [x] Dark / Light Theme
+- [x] Theme Persistence
+- [x] 404 Page
 
 ---
 
