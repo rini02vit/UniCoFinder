@@ -11,6 +11,13 @@ import BackToTopButton from './components/ui/BackToTopButton';
 import PublicLayout from './components/layout/PublicLayout';
 import ProtectedLayout from './components/layout/ProtectedLayout';
 
+// Auth
+import { AuthProvider } from './features/auth/context/AuthContext';
+import { GuestRoute, ProtectedRoute } from './features/auth/components/AuthRoutes';
+import Login from './features/auth/pages/Login';
+import Register from './features/auth/pages/Register';
+import ForgotPassword from './features/auth/pages/ForgotPassword';
+
 // Pages
 import Home from './pages/Home/Home';
 const Dashboard = () => <div style={{ padding: '2rem' }}><h1>Dashboard Page</h1></div>;
@@ -20,28 +27,33 @@ function App() {
   return (
     <AppErrorBoundary>
       <ThemeProvider>
-        {/* <AuthProvider> */}
-          <BrowserRouter>
-            <RouteScrollManager />
-            <AppShell>
-              <React.Suspense fallback={null}>
-                <Routes>
-                  {/* Public Routes */}
-                  <Route element={<PublicLayout />}>
-                    <Route path={ROUTES.HOME} element={<Home />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Route>
-                  
-                  {/* Protected Routes */}
-                  <Route element={<ProtectedLayout />}>
-                    <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
-                  </Route>
-                </Routes>
-              </React.Suspense>
-              <BackToTopButton />
-            </AppShell>
-          </BrowserRouter>
-        {/* </AuthProvider> */}
+          <AuthProvider>
+            <BrowserRouter>
+              <RouteScrollManager />
+              <AppShell>
+                <React.Suspense fallback={null}>
+                  <Routes>
+                    {/* Public Routes */}
+                    <Route element={<PublicLayout />}>
+                      <Route path={ROUTES.HOME} element={<Home />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Route>
+                    
+                    {/* Auth Routes */}
+                    <Route path={ROUTES.LOGIN} element={<GuestRoute><Login /></GuestRoute>} />
+                    <Route path={ROUTES.REGISTER} element={<GuestRoute><Register /></GuestRoute>} />
+                    <Route path={ROUTES.FORGOT_PASSWORD} element={<GuestRoute><ForgotPassword /></GuestRoute>} />
+
+                    {/* Protected Routes */}
+                    <Route element={<ProtectedRoute><ProtectedLayout /></ProtectedRoute>}>
+                      <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+                    </Route>
+                  </Routes>
+                </React.Suspense>
+                <BackToTopButton />
+              </AppShell>
+            </BrowserRouter>
+          </AuthProvider>
       </ThemeProvider>
     </AppErrorBoundary>
   );

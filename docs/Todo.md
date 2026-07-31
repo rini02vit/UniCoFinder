@@ -74,11 +74,11 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## Authentication Pages
 
-- [ ] Login
-- [ ] Register
-- [ ] Forgot Password UI
-- [ ] Form Validation
-- [ ] Password Visibility Toggle
+- [x] Login
+- [x] Register
+- [x] Forgot Password UI
+- [x] Form Validation
+- [x] Password Visibility Toggle
 
 ---
 
