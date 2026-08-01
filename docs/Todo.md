@@ -121,11 +121,11 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## Scholarship Module
 
-- [ ] Scholarship Cards
-- [ ] Scholarship Details
-- [ ] Deadline Badge
-- [ ] Eligibility Display
-- [ ] Official Website Button
+- [x] Scholarship Cards
+- [x] Scholarship Details
+- [x] Deadline Badge
+- [x] Eligibility Display
+- [x] Official Website Button
 
 ---
 
