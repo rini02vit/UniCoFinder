@@ -21,6 +21,8 @@ import ForgotPassword from './features/auth/pages/ForgotPassword';
 // Pages
 import Home from './pages/Home/Home';
 import Dashboard from './features/dashboard/pages/Dashboard';
+import UniversitiesPage from './features/universities/pages/UniversitiesPage';
+import UniversityDetailsPage from './features/universities/pages/UniversityDetailsPage';
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 function App() {
@@ -46,7 +48,9 @@ function App() {
 
                     {/* Protected Routes */}
                     <Route element={<ProtectedRoute><ProtectedLayout /></ProtectedRoute>}>
-                      <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+                      <Route path={ROUTES.DASHBOARD || '/dashboard'} element={<Dashboard />} />
+                      <Route path={ROUTES.UNIVERSITIES || '/universities'} element={<UniversitiesPage />} />
+                      <Route path={`${ROUTES.UNIVERSITIES || '/universities'}/:id`} element={<UniversityDetailsPage />} />
                     </Route>
                   </Routes>
                 </React.Suspense>

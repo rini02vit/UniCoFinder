@@ -98,13 +98,13 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## University Module
 
-- [ ] University Cards
-- [ ] Search
-- [ ] Filters
-- [ ] Sorting
-- [ ] University Details Page
-- [ ] Save to Wishlist
-- [ ] Apply Button
+- [x] University Cards
+- [x] Search
+- [x] Filters
+- [x] Sorting
+- [x] University Details Page
+- [x] Save to Wishlist
+- [x] Apply Button
 
 ---
 
