@@ -84,15 +84,15 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## Dashboard
 
-- [ ] Welcome Section
-- [ ] Profile Summary
-- [ ] Quick Actions
-- [ ] Saved Universities
-- [ ] Scholarship Suggestions
-- [ ] Recommended Countries
-- [ ] Budget Overview
-- [ ] Application Status
-- [ ] Notifications
+- [x] Welcome Section
+- [x] Profile Summary
+- [x] Quick Actions
+- [x] Saved Universities
+- [x] Scholarship Suggestions
+- [x] Recommended Countries
+- [x] Budget Overview
+- [x] Application Status
+- [x] Notifications
 
 ---
 

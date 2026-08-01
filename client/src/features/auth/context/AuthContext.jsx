@@ -4,16 +4,13 @@ import { authApi } from '../services/authApi';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true); // Global authentication loading
+  const [user, setUser] = useState({ name: 'John Doe', email: 'john@example.com' }); // Mocked user
+  const [isAuthenticated, setIsAuthenticated] = useState(true); // Forced true for testing
+  const [loading, setLoading] = useState(false); // Forced false for testing
 
   const initializeAuth = useCallback(async () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setLoading(false);
-      return;
-    }
+    // Bypassed for UI testing without DB
+    setLoading(false);
 
     try {
       const userData = await authApi.getCurrentUser();

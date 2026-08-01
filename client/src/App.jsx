@@ -20,7 +20,7 @@ import ForgotPassword from './features/auth/pages/ForgotPassword';
 
 // Pages
 import Home from './pages/Home/Home';
-const Dashboard = () => <div style={{ padding: '2rem' }}><h1>Dashboard Page</h1></div>;
+import Dashboard from './features/dashboard/pages/Dashboard';
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 function App() {
