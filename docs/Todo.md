@@ -110,12 +110,12 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## Country Module
 
-- [ ] Country Cards
-- [ ] Country Details
-- [ ] Cost Overview
-- [ ] Visa Information
-- [ ] Employment Information
-- [ ] Top Universities
+- [x] Country Cards
+- [x] Country Details
+- [x] Cost Overview
+- [x] Visa Information
+- [x] Employment Information
+- [x] Top Universities
 
 ---
 

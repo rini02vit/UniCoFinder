@@ -23,6 +23,8 @@ import Home from './pages/Home/Home';
 import Dashboard from './features/dashboard/pages/Dashboard';
 import UniversitiesPage from './features/universities/pages/UniversitiesPage';
 import UniversityDetailsPage from './features/universities/pages/UniversityDetailsPage';
+import CountriesPage from './features/countries/pages/CountriesPage';
+import CountryDetailsPage from './features/countries/pages/CountryDetailsPage';
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 function App() {
@@ -51,6 +53,8 @@ function App() {
                       <Route path={ROUTES.DASHBOARD || '/dashboard'} element={<Dashboard />} />
                       <Route path={ROUTES.UNIVERSITIES || '/universities'} element={<UniversitiesPage />} />
                       <Route path={`${ROUTES.UNIVERSITIES || '/universities'}/:id`} element={<UniversityDetailsPage />} />
+                      <Route path={ROUTES.COUNTRIES} element={<CountriesPage />} />
+                      <Route path={ROUTES.COUNTRY_DETAILS} element={<CountryDetailsPage />} />
                     </Route>
                   </Routes>
                 </React.Suspense>
