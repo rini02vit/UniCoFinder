@@ -131,13 +131,13 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## Comparison Page
 
-- [ ] Compare up to 4 Universities
-- [ ] Tuition Comparison
-- [ ] Rankings
-- [ ] Acceptance Rate
-- [ ] Living Cost
-- [ ] Scholarships
-- [ ] Employment Rate
+- [x] Compare up to 4 Universities
+- [x] Tuition Comparison
+- [x] Rankings
+- [x] Acceptance Rate
+- [x] Living Cost
+- [x] Scholarships
+- [x] Employment Rate
 
 ---
 
