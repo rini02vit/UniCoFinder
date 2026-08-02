@@ -143,15 +143,15 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## Budget Calculator
 
-- [ ] Tuition Input
-- [ ] Living Cost Input
-- [ ] Transportation
-- [ ] Food
-- [ ] Insurance
-- [ ] Miscellaneous
-- [ ] Monthly Cost
-- [ ] Annual Cost
-- [ ] Charts
+- [x] Tuition Input
+- [x] Living Cost Input
+- [x] Transportation
+- [x] Food
+- [x] Insurance
+- [x] Miscellaneous
+- [x] Monthly Cost
+- [x] Annual Cost
+- [x] Charts
 
 ---
 

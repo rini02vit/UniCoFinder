@@ -108,6 +108,11 @@
   font-size: 1rem;
 }
 
+select.form-control option {
+  background: var(--bg-color);
+  color: var(--text-primary);
+}
+
 .form-control:focus {
   border-color: var(--primary-purple);
   box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2);

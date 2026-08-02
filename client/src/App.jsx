@@ -28,6 +28,7 @@ import CountryDetailsPage from './features/countries/pages/CountryDetailsPage';
 import ScholarshipsPage from './features/scholarships/pages/ScholarshipsPage';
 import ScholarshipDetailsPage from './features/scholarships/pages/ScholarshipDetailsPage';
 import ComparePage from './features/compare/pages/ComparePage';
+import BudgetPage from './features/budget/pages/BudgetPage';
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
                       <Route path={ROUTES.SCHOLARSHIPS || '/scholarships'} element={<ScholarshipsPage />} />
                       <Route path={`${ROUTES.SCHOLARSHIPS || '/scholarships'}/:id`} element={<ScholarshipDetailsPage />} />
                       <Route path={ROUTES.COMPARE || '/compare'} element={<ComparePage />} />
+                      <Route path={ROUTES.BUDGET || '/budget'} element={<BudgetPage />} />
                     </Route>
                   </Routes>
                 </React.Suspense>
