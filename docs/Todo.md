@@ -157,13 +157,13 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## Profile Page
 
-- [ ] Personal Details
-- [ ] Academic Details
-- [ ] Budget
-- [ ] Preferred Countries
-- [ ] Preferred Course
-- [ ] English Exam Scores
-- [ ] Edit Profile
+- [x] Personal Details
+- [x] Academic Details
+- [x] Budget
+- [x] Preferred Countries
+- [x] Preferred Course
+- [x] English Exam Scores
+- [x] Edit Profile
 
 ---
 

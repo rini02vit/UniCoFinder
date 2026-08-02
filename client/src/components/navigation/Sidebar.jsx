@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LogOut } from 'lucide-react';
+import { LogOut, User } from 'lucide-react';
 import NavigationLinks, { PROTECTED_LINKS } from './NavigationLinks';
 import { ROUTES } from '../../constants/routes';
 
@@ -15,11 +15,17 @@ const Sidebar = () => {
       
       <div style={{ flexGrow: 1 }}></div>
       
-      {/* Logout Link */}
-      <Link to={ROUTES.LOGIN} style={{ color: 'var(--danger)' }}>
-        <LogOut size={20} />
-        Logout
-      </Link>
+      {/* Bottom Actions */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <Link to={ROUTES.PROFILE} style={{ color: 'var(--text-secondary)' }}>
+          <User size={20} />
+          Profile
+        </Link>
+        <Link to={ROUTES.LOGIN} style={{ color: 'var(--danger)' }}>
+          <LogOut size={20} />
+          Logout
+        </Link>
+      </div>
     </aside>
   );
 };
