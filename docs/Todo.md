@@ -169,11 +169,11 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## Application Tracker
 
-- [ ] Timeline
-- [ ] Status Updates
-- [ ] Progress Bar
-- [ ] Checklist
-- [ ] Deadlines
+- [x] Timeline
+- [x] Status Updates
+- [x] Progress Bar
+- [x] Checklist
+- [x] Deadlines
 
 ---
 
