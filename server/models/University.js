@@ -36,6 +36,12 @@ const universitySchema = new mongoose.Schema(
       type: Number,
       index: true,
     },
+    acceptanceRate: {
+      type: Number,
+    },
+    livingCost: {
+      type: Number,
+    },
     englishExamRequirements: [
       {
         type: String,

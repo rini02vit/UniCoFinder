@@ -8,13 +8,29 @@ import isValidObjectId from '../utils/isValidObjectId.js';
 // @access  Private
 export const createApplication = async (req, res) => {
   try {
-    const { universityId, status, notes, applicationDate } = req.body;
+    const { universityId, course, term, status, notes, applicationDate } = req.body;
 
     if (!universityId || !isValidObjectId(universityId)) {
       return res.status(400).json({
         success: false,
         message: 'Validation failed',
         errors: [{ field: 'universityId', message: 'Invalid or missing university ID.' }],
+      });
+    }
+
+    if (!course) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: [{ field: 'course', message: 'Course is required.' }],
+      });
+    }
+
+    if (!term) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: [{ field: 'term', message: 'Term is required.' }],
       });
     }
 
@@ -30,12 +46,14 @@ export const createApplication = async (req, res) => {
     const existingApplication = await Application.findOne({
       user: req.user._id,
       university: universityId,
+      course,
+      term,
     });
 
     if (existingApplication) {
       return res.status(409).json({
         success: false,
-        message: 'Application for this university already exists.',
+        message: 'Application for this course and term at this university already exists.',
         errors: [],
       });
     }
@@ -59,6 +77,8 @@ export const createApplication = async (req, res) => {
     const application = await Application.create({
       user: req.user._id,
       university: universityId,
+      course,
+      term,
       status: status || 'Planning',
       notes,
       applicationDate,
@@ -90,7 +110,7 @@ export const createApplication = async (req, res) => {
 export const updateApplication = async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, notes, applicationDate } = req.body;
+    const { course, term, status, notes, applicationDate } = req.body;
 
     if (!isValidObjectId(id)) {
       return res.status(400).json({
@@ -118,6 +138,8 @@ export const updateApplication = async (req, res) => {
 
     // Whitelist updates only
     const updateFields = {};
+    if (course !== undefined) updateFields.course = course;
+    if (term !== undefined) updateFields.term = term;
     if (status !== undefined) updateFields.status = status;
     if (notes !== undefined) updateFields.notes = notes;
     if (applicationDate !== undefined) updateFields.applicationDate = applicationDate;

@@ -12,6 +12,14 @@ const applicationSchema = new mongoose.Schema(
       ref: 'University',
       required: true,
     },
+    course: {
+      type: String,
+      required: true,
+    },
+    term: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       enum: [
