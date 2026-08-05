@@ -5,6 +5,7 @@ import {
   buildSort,
   buildSearchFilter,
   buildFilter,
+  buildRecommendationPipeline,
 } from '../utils/universityQueryBuilder.js';
 
 // @desc    Get all universities with pagination
@@ -193,99 +194,39 @@ export const recommendUniversities = async (req, res) => {
     const user = req.user;
 
     // 1. Mandatory Fields Validation
-    if (user.cgpa === undefined || user.cgpa === null) {
+    if (
+      (user.cgpa === undefined || user.cgpa === null) &&
+      (!user.budget) &&
+      (!user.course) &&
+      (!user.countryPreference)
+    ) {
       return res.status(400).json({
         success: false,
         message: 'Validation failed',
         errors: [
           {
             field: 'profile',
-            message: 'Incomplete profile: CGPA is required to generate recommendations.',
+            message: 'Incomplete profile: At least one preference (CGPA, budget, course, or country) is required.',
           },
         ],
       });
     }
 
-    // 2. Build Hard Filters (Eligibility)
-    const syntheticQuery = {
-      studentCgpa: user.cgpa,
-    };
+    // 2. Build Recommendation Pipeline
+    const pipeline = buildRecommendationPipeline(user);
 
-    if (user.degree) {
-      syntheticQuery.degree = user.degree;
-    }
-
-    if (user.englishExam) {
-      syntheticQuery.englishExam = user.englishExam;
-    }
-
-    const matchFilter = buildFilter(syntheticQuery);
-
-    // 3. Configure Recommendation Weights (Soft Ranking)
-    const RECOMMENDATION_WEIGHTS = {
-      countryMatch: 40,
-      budgetFit: 30,
-      ranking: 20,
-    };
-
-    const scoreAdditions = [];
-
-    if (user.countryPreference) {
-      scoreAdditions.push({
-        $cond: [{ $eq: [{ $toLower: '$country' }, { $toLower: user.countryPreference }] }, RECOMMENDATION_WEIGHTS.countryMatch, 0]
-      });
-    }
-
-    if (user.budget && user.budget > 0) {
-      scoreAdditions.push({
-        $cond: [
-          { $and: [{ $lte: ['$tuitionFee', user.budget] }, { $gte: ['$tuitionFee', 0] }, { $ne: ['$tuitionFee', null] }] },
-          { $multiply: [RECOMMENDATION_WEIGHTS.budgetFit, { $subtract: [1, { $divide: ['$tuitionFee', user.budget] }] }] },
-          0
-        ]
-      });
-    }
-
-    scoreAdditions.push({
-      $cond: [
-        { $and: [{ $gt: ['$ranking', 0] }, { $ne: ['$ranking', null] }] },
-        {
-          $max: [
-            0,
-            { $multiply: [RECOMMENDATION_WEIGHTS.ranking, { $divide: [{ $subtract: [5000, '$ranking'] }, 5000] }] }
-          ]
-        },
-        0
-      ]
-    });
-
-    const pipeline = [];
-
-    // Stage 1: Hard filters
-    pipeline.push({ $match: matchFilter });
-
-    // Stage 2: Calculate recommendation score
-    pipeline.push({
-      $addFields: {
-        recommendationScore: { $add: scoreAdditions.length > 0 ? scoreAdditions : [0] }
-      }
-    });
-
-    // Stage 3: Deterministic Sort
-    pipeline.push({
-      $sort: { recommendationScore: -1, ranking: 1, name: 1 }
-    });
-
-    // 4. Calculate total for pagination metadata
-    const total = await University.countDocuments(matchFilter);
-
-    // 5. Apply pagination offsets natively
+    // 3. Apply pagination offsets natively
     const { page, limit, skip } = buildPagination(req.query);
+
+    // Calculate total for pagination metadata
+    // Since we score all universities, the total is the full count
+    const total = await University.countDocuments();
+    const pages = Math.ceil(total / limit);
+
     pipeline.push({ $skip: skip });
     pipeline.push({ $limit: limit });
 
     const universities = await University.aggregate(pipeline);
-    const pages = Math.ceil(total / limit);
 
     res.status(200).json({
       success: true,
@@ -293,11 +234,10 @@ export const recommendUniversities = async (req, res) => {
       data: {
         universities,
         criteriaUsed: {
-          cgpa: true,
+          cgpa: user.cgpa !== undefined && user.cgpa !== null,
           budget: !!user.budget,
+          course: !!user.course,
           country: !!user.countryPreference,
-          degree: !!user.degree,
-          englishExam: !!user.englishExam,
         },
         pagination: {
           total,

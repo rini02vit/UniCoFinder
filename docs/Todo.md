@@ -248,11 +248,11 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 ## University Recommendation
 
-- [ ] Match CGPA
-- [ ] Match Budget
-- [ ] Match Course
-- [ ] Match Country
-- [ ] Generate Match Percentage
+- [x] Match CGPA
+- [x] Match Budget
+- [x] Match Course
+- [x] Match Country
+- [x] Generate Match Percentage
 
 ---
 

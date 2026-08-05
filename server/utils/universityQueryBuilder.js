@@ -108,3 +108,161 @@ export const buildFilter = (query) => {
 
   return filter;
 };
+
+export const buildRecommendationPipeline = (user) => {
+  const pipeline = [];
+
+  const RECOMMENDATION_WEIGHTS = {
+    course: 40,
+    cgpa: 30,
+    budget: 20,
+    country: 10,
+  };
+
+  let totalApplicableWeight = 0;
+  const scoreAdditions = [];
+
+  // 1. CGPA Match (Binary Threshold)
+  if (user.cgpa !== undefined && user.cgpa !== null) {
+    totalApplicableWeight += RECOMMENDATION_WEIGHTS.cgpa;
+    scoreAdditions.push({
+      $cond: [
+        {
+          $and: [
+            { $ne: ['$cgpaRequirement', null] },
+            { $lte: ['$cgpaRequirement', user.cgpa] },
+          ],
+        },
+        RECOMMENDATION_WEIGHTS.cgpa,
+        0,
+      ],
+    });
+  }
+
+  // 2. Budget Match
+  if (user.budget && user.budget > 0) {
+    totalApplicableWeight += RECOMMENDATION_WEIGHTS.budget;
+    scoreAdditions.push({
+      $cond: [
+        {
+          $and: [
+            { $ne: ['$tuitionFee', null] },
+            { $gte: ['$tuitionFee', 0] },
+            { $lte: ['$tuitionFee', user.budget] },
+          ],
+        },
+        RECOMMENDATION_WEIGHTS.budget,
+        {
+          $cond: [
+            {
+              $and: [
+                { $ne: ['$tuitionFee', null] },
+                { $gt: ['$tuitionFee', user.budget] },
+                { $lte: ['$tuitionFee', user.budget * 1.5] },
+              ],
+            },
+            {
+              $max: [
+                0,
+                {
+                  $multiply: [
+                    RECOMMENDATION_WEIGHTS.budget,
+                    {
+                      $subtract: [
+                        1,
+                        {
+                          $divide: [
+                            { $subtract: ['$tuitionFee', user.budget] },
+                            user.budget,
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            0,
+          ],
+        },
+      ],
+    });
+  }
+
+  // 3. Course Match
+  if (user.course && user.course.trim() !== '') {
+    totalApplicableWeight += RECOMMENDATION_WEIGHTS.course;
+    const escapedCourse = user.course.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    scoreAdditions.push({
+      $cond: [
+        {
+          $gt: [
+            {
+              $size: {
+                $filter: {
+                  input: { $ifNull: ['$courses', []] },
+                  as: 'courseName',
+                  cond: {
+                    $regexMatch: {
+                      input: '$$courseName',
+                      regex: `^${escapedCourse}$`,
+                      options: 'i',
+                    },
+                  },
+                },
+              },
+            },
+            0,
+          ],
+        },
+        RECOMMENDATION_WEIGHTS.course,
+        0,
+      ],
+    });
+  }
+
+  // 4. Country Match
+  if (user.countryPreference && user.countryPreference.trim() !== '') {
+    totalApplicableWeight += RECOMMENDATION_WEIGHTS.country;
+    scoreAdditions.push({
+      $cond: [
+        {
+          $eq: [
+            { $toLower: '$country' },
+            { $toLower: user.countryPreference.trim() },
+          ],
+        },
+        RECOMMENDATION_WEIGHTS.country,
+        0,
+      ],
+    });
+  }
+
+  if (totalApplicableWeight === 0) {
+    totalApplicableWeight = 1; // Prevent division by zero
+  }
+
+  pipeline.push({
+    $addFields: {
+      rawScore: { $add: scoreAdditions.length > 0 ? scoreAdditions : [0] },
+      totalWeight: totalApplicableWeight,
+    },
+  });
+
+  pipeline.push({
+    $addFields: {
+      matchPercentage: {
+        $round: [
+          { $multiply: [{ $divide: ['$rawScore', '$totalWeight'] }, 100] },
+          0,
+        ],
+      },
+    },
+  });
+
+  pipeline.push({
+    $sort: { matchPercentage: -1, ranking: 1, name: 1 },
+  });
+
+  return pipeline;
+};

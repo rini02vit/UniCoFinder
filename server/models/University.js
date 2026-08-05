@@ -20,6 +20,12 @@ const universitySchema = new mongoose.Schema(
       type: [String],
       index: true,
     },
+    courses: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
     tuitionFee: {
       type: Number,
       index: true,
