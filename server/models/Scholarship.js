@@ -30,6 +30,11 @@ const scholarshipSchema = new mongoose.Schema(
         type: String,
       },
     ],
+    courses: [
+      {
+        type: String,
+      },
+    ],
     eligibleCountries: [
       {
         type: String,

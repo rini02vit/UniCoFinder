@@ -271,10 +271,10 @@ Calculate score using
 
 ## Scholarship Recommendation
 
-- [ ] Match CGPA
-- [ ] Match Degree
-- [ ] Match Country
-- [ ] Match Course
+- [x] Match CGPA
+- [x] Match Degree
+- [x] Match Country
+- [x] Match Course
 
 ---
 
