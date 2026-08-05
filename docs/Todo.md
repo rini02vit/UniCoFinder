@@ -260,12 +260,12 @@ Build a modern, responsive MERN Stack web application that helps students discov
 
 Calculate score using
 
-- [ ] Tuition Cost
-- [ ] Living Cost
-- [ ] Scholarships
-- [ ] Job Opportunities
-- [ ] Visa Friendliness
-- [ ] Safety Index
+- [x] Tuition Cost
+- [x] Living Cost
+- [x] Scholarships
+- [x] Job Opportunities
+- [x] Visa Friendliness
+- [x] Safety Index
 
 ---
 

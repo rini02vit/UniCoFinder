@@ -41,6 +41,16 @@ const countrySchema = new mongoose.Schema(
     postStudyWorkVisa: {
       type: Boolean,
     },
+    visaFriendlinessScore: {
+      type: Number,
+      min: 1,
+      max: 10,
+    },
+    safetyIndex: {
+      type: Number,
+      min: 1,
+      max: 100,
+    },
     popularUniversities: [
       {
         type: mongoose.Schema.Types.ObjectId,
