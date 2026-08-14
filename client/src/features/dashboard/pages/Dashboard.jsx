@@ -13,7 +13,10 @@ import ScholarshipsRecommendation from '../widgets/recommendations/ScholarshipsR
 import CountriesRecommendation from '../widgets/recommendations/CountriesRecommendation';
 import QuickActionsGrid from '../widgets/actions/QuickActionsGrid';
 import BudgetPlaceholder from '../widgets/placeholders/BudgetPlaceholder';
-import NotificationsPlaceholder from '../widgets/placeholders/NotificationsPlaceholder';
+
+// Batch 2 Features
+import ActivityFeedWidget from '../widgets/activity/ActivityFeedWidget';
+import NotificationsWidget from '../widgets/notifications/NotificationsWidget';
 
 // Stat Cards
 import StatCardsConfigurator from '../widgets/stats/StatCardsConfigurator';
@@ -29,6 +32,7 @@ const DashboardContent = () => {
           <SavedUniversitiesWidget />
           <ScholarshipsRecommendation />
           <CountriesRecommendation />
+          <ActivityFeedWidget />
         </>
       }
       sidebar={
@@ -36,7 +40,7 @@ const DashboardContent = () => {
           <ProfileSummary />
           <QuickActionsGrid />
           <BudgetPlaceholder />
-          <NotificationsPlaceholder />
+          <NotificationsWidget />
         </>
       }
     />

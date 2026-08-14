@@ -285,8 +285,8 @@ Calculate score using
 - [x] Budget Progress
 - [x] Country Match Graph
 - [x] Application Timeline
-- [ ] Notifications
-- [ ] Activity Feed
+- [x] Notifications
+- [x] Activity Feed
 
 ---
 
