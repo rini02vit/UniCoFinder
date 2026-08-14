@@ -6,52 +6,48 @@ import { ROUTES } from '../../../../constants/routes';
 const CountriesRecommendation = () => {
   const { data, status, error, refetch } = useDashboardCountries();
 
-  const renderItem = (item) => (
-    <div key={item.id} style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '1rem',
-      padding: '1rem',
-      backgroundColor: 'rgba(255, 255, 255, 0.02)',
-      borderRadius: '8px',
-      border: '1px solid var(--border-color)',
-      cursor: 'pointer',
-      transition: 'all 0.2s ease-in-out'
-    }}
-    onMouseOver={(e) => {
-      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-      e.currentTarget.style.borderColor = 'var(--primary-cyan)';
-    }}
-    onMouseOut={(e) => {
-      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.02)';
-      e.currentTarget.style.borderColor = 'var(--border-color)';
-    }}
-    >
-      <div style={{
-        width: '40px',
-        height: '40px',
-        borderRadius: '8px',
-        backgroundColor: 'rgba(34, 211, 238, 0.1)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '1.2rem'
-      }}>
-        🌍
+  const renderItem = (item) => {
+    // Assuming score is between 0-100. If missing, fallback to 0.
+    const scoreVal = item.score || 0; 
+    const percentage = scoreVal <= 10 && scoreVal > 0 ? scoreVal * 10 : scoreVal;
+    
+    return (
+      <div key={item.id} style={{ marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+          <span style={{ fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            🌍 {item.title}
+          </span>
+          <span className="text-gradient" style={{ fontWeight: 'bold' }}>
+            {percentage > 0 ? `${Math.round(percentage)}% Match` : 'Analyzing...'}
+          </span>
+        </div>
+        <div style={{
+          width: '100%',
+          height: '8px',
+          background: 'rgba(255, 255, 255, 0.1)',
+          borderRadius: '4px',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            width: `${percentage}%`,
+            height: '100%',
+            background: 'var(--gradient-btn)',
+            borderRadius: '4px',
+            transition: 'width 1s ease-in-out'
+          }}></div>
+        </div>
+        {item.description && (
+          <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', marginTop: '0.5rem' }}>
+            {item.description}
+          </span>
+        )}
       </div>
-      <div style={{ flex: 1 }}>
-        <h4 style={{ margin: '0 0 0.25rem 0' }}>{item.title}</h4>
-        <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-          {item.description}
-        </span>
-      </div>
-      <span style={{ color: 'var(--primary-cyan)' }}>→</span>
-    </div>
-  );
+    );
+  };
 
   return (
     <RecommendationWidget
-      title="Recommended Countries"
+      title="Country Match Graph"
       actionText="Explore All"
       actionRoute={ROUTES.COUNTRIES || '/countries'}
       status={status}

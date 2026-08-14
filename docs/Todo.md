@@ -280,11 +280,11 @@ Calculate score using
 
 # Phase 6 — Dashboard Analytics (Rakshita & Varun)
 
-- [ ] Saved Universities Count
-- [ ] Scholarship Count
-- [ ] Budget Progress
-- [ ] Country Match Graph
-- [ ] Application Timeline
+- [x] Saved Universities Count
+- [x] Scholarship Count
+- [x] Budget Progress
+- [x] Country Match Graph
+- [x] Application Timeline
 - [ ] Notifications
 - [ ] Activity Feed
 

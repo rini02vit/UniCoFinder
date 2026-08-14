@@ -4,7 +4,8 @@ import {
   mapProfileData, 
   mapWishlistData, 
   mapApplicationData, 
-  mapRecommendationData 
+  mapRecommendationData,
+  mapScholarshipData 
 } from '../utils/dataMappers';
 import { useResource } from '../hooks/useResource';
 
@@ -20,7 +21,7 @@ export const DashboardProvider = ({ children }) => {
   const profileState = useResource(dashboardApi.getProfile, mapProfileData);
   const wishlistState = useResource(dashboardApi.getWishlist, mapWishlistData);
   const applicationsState = useResource(dashboardApi.getApplications, mapApplicationData);
-  const scholarshipsState = useResource(dashboardApi.getScholarships, mapRecommendationData);
+  const scholarshipsState = useResource(dashboardApi.getScholarships, mapScholarshipData);
   const countriesState = useResource(dashboardApi.getRecommendedCountries, mapRecommendationData);
 
   return (

@@ -21,7 +21,7 @@ export const DashboardMetricsConfig = [
     icon: '🎓',
     iconBgColor: 'rgba(16, 185, 129, 0.1)',
     iconColor: 'var(--primary-green)',
-    getValue: (data) => data.scholarships?.length || 0,
+    getValue: (data) => data.scholarships?.total || 0,
   },
   {
     id: 'budget_progress',
@@ -29,7 +29,22 @@ export const DashboardMetricsConfig = [
     icon: '💰',
     iconBgColor: 'rgba(245, 158, 11, 0.1)',
     iconColor: 'var(--warning)',
-    getValue: () => '60%', // Placeholder logic as per architecture review
+    getValue: (data) => {
+      const budget = data.profile?.budget;
+      const wishlist = data.wishlist;
+      if (!budget) return 'Not set';
+      if (!wishlist || wishlist.length === 0) return '0%';
+      
+      const totalCost = wishlist.reduce((acc, item) => {
+        const tuition = item.university?.tuitionFee || 0;
+        const living = item.university?.livingCost || 0;
+        return acc + tuition + living;
+      }, 0);
+      
+      const avgCost = totalCost / wishlist.length;
+      const progress = (avgCost / budget) * 100;
+      return `${Math.round(progress)}%`;
+    },
   }
 ];
 

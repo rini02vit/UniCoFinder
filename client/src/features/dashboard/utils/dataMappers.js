@@ -22,11 +22,10 @@ export const mapProfileData = (rawProfile) => {
 
 export const mapWishlistData = (rawWishlist) => {
   if (!Array.isArray(rawWishlist)) return [];
-  // Backend returns array of { _id, userId, universityId }
-  // Assume universityId is populated with basic university details
+  // Backend returns array of populated university objects
   return rawWishlist.map(item => ({
     id: item._id,
-    university: item.universityId || {}
+    university: item
   }));
 };
 
@@ -35,19 +34,27 @@ export const mapApplicationData = (rawApplications) => {
   return rawApplications.map(app => ({
     id: app._id,
     status: app.status || 'Pending',
-    university: app.universityId || {},
+    university: app.university || {},
     updatedAt: app.updatedAt
   }));
 };
 
 export const mapRecommendationData = (rawItems) => {
   if (!Array.isArray(rawItems)) return [];
-  // Generic mapping for both scholarships and countries if they share common fields
   return rawItems.map(item => ({
     id: item._id,
     title: item.title || item.name,
     description: item.description || item.currency || 'Learn more',
     amount: item.amount || null,
-    image: item.image || null
+    image: item.image || null,
+    score: item.score || item.matchPercentage || null
   }));
+};
+
+export const mapScholarshipData = (rawResult) => {
+  if (!rawResult || !Array.isArray(rawResult.items)) return { items: [], total: 0 };
+  return {
+    total: rawResult.total,
+    items: mapRecommendationData(rawResult.items)
+  };
 };
