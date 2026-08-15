@@ -294,9 +294,9 @@ Calculate score using
 
 ## AI Career Advisor
 
-- [ ] Recommend Career Paths
-- [ ] Recommend Courses
-- [ ] Skill Suggestions
+- [x] Recommend Career Paths
+- [x] Recommend Courses
+- [x] Skill Suggestions
 
 ---
 

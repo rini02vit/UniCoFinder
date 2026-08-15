@@ -31,6 +31,7 @@ import ComparePage from './features/compare/pages/ComparePage';
 import BudgetPage from './features/budget/pages/BudgetPage';
 import ProfilePage from './features/profile/pages/ProfilePage';
 import TrackerPage from './features/tracker/pages/TrackerPage';
+import AIAdvisor from './pages/AIAdvisor/AIAdvisor';
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
                       <Route path={`${ROUTES.SCHOLARSHIPS || '/scholarships'}/:id`} element={<ScholarshipDetailsPage />} />
                       <Route path={ROUTES.COMPARE || '/compare'} element={<ComparePage />} />
                       <Route path={ROUTES.BUDGET || '/budget'} element={<BudgetPage />} />
+                      <Route path={ROUTES.AI_ADVISOR || '/ai-advisor'} element={<AIAdvisor />} />
                       <Route path={ROUTES.PROFILE || '/profile'} element={<ProfilePage />} />
                       <Route path={ROUTES.APPLICATION_TRACKER || '/tracker'} element={<TrackerPage />} />
                     </Route>

@@ -1,7 +1,7 @@
 import React from 'react';
 import NavigationItem from './NavigationItem';
 import { ROUTES } from '../../constants/routes';
-import { Building2, GraduationCap, LayoutDashboard, Search, Scale, FileText, PieChart } from 'lucide-react';
+import { Building2, GraduationCap, LayoutDashboard, Search, Scale, FileText, PieChart, Sparkles } from 'lucide-react';
 
 export const PUBLIC_LINKS = [
   { to: ROUTES.UNIVERSITIES, label: 'Universities', icon: Building2 },
@@ -15,6 +15,7 @@ export const PROTECTED_LINKS = [
   { to: ROUTES.COMPARE, label: 'Compare', icon: Scale },
   { to: ROUTES.APPLICATION_TRACKER, label: 'Applications', icon: FileText },
   { to: ROUTES.BUDGET, label: 'Budget', icon: PieChart },
+  { to: ROUTES.AI_ADVISOR, label: 'AI Advisor', icon: Sparkles },
 ];
 
 const NavigationLinks = ({ links, onItemClick, className = '' }) => {

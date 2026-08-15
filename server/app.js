@@ -9,6 +9,7 @@ import countryRoutes from './routes/countryRoutes.js';
 import scholarshipRoutes from './routes/scholarshipRoutes.js';
 import wishlistRoutes from './routes/wishlistRoutes.js';
 import applicationRoutes from './routes/applicationRoutes.js';
+import aiRoutes from './routes/aiRoutes.js';
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/api/countries', countryRoutes);
 app.use('/api/scholarships', scholarshipRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/applications', applicationRoutes);
+app.use('/api/ai-advisor', aiRoutes);
 
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {
