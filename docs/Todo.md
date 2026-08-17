@@ -318,9 +318,9 @@ Calculate score using
 
 ## Notifications
 
-- [ ] Scholarship Deadline Alerts
-- [ ] Application Reminders
-- [ ] Profile Completion Reminder
+- [x] Scholarship Deadline Alerts
+- [x] Application Reminders
+- [x] Profile Completion Reminder
 
 ---
 

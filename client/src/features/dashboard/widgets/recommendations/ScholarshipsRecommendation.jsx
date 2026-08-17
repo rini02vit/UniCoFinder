@@ -50,7 +50,7 @@ const ScholarshipsRecommendation = () => {
       actionRoute={ROUTES.SCHOLARSHIPS || '/scholarships'}
       status={status}
       error={error}
-      data={data}
+      data={data?.items?.slice(0, 3)}
       refetch={refetch}
       emptyIcon="🎓"
       emptyTitle="No scholarships found"

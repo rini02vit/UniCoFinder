@@ -44,10 +44,12 @@ export const mapRecommendationData = (rawItems) => {
   return rawItems.map(item => ({
     id: item._id,
     title: item.title || item.name,
+    name: item.name,
     description: item.description || item.currency || 'Learn more',
     amount: item.amount || null,
     image: item.image || null,
-    score: item.score || item.matchPercentage || null
+    score: item.score || item.matchPercentage || null,
+    applicationDeadline: item.applicationDeadline || null
   }));
 };
 

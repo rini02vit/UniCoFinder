@@ -34,8 +34,8 @@ export const dashboardApi = {
   },
   
   getScholarships: async (signal) => {
-    // Only fetch 1 item to get total count efficiently
-    const res = await apiClient.get('/scholarships/recommend?limit=1', { signal });
+    // Fetch top 5 items for recommendations and upcoming deadline alerts
+    const res = await apiClient.get('/scholarships/recommend?limit=5', { signal });
     return { 
       items: res.data.data.scholarships, 
       total: res.data.data.pagination.total 
