@@ -310,9 +310,9 @@ Calculate score using
 
 ## Wishlist
 
-- [ ] Favorites
-- [ ] Notes
-- [ ] Priority Labels
+- [x] Favorites
+- [x] Notes
+- [x] Priority Labels
 
 ---
 

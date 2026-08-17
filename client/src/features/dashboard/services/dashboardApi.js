@@ -45,5 +45,11 @@ export const dashboardApi = {
   getRecommendedCountries: async (signal) => {
     const res = await apiClient.get('/countries/recommend', { signal });
     return res.data.data.countries;
+  },
+
+  updateWishlistMetadata: async (universityId, metadata) => {
+    // Using explicit URL for local dev without proxy, will work perfectly in prod
+    const res = await apiClient.patch(`http://localhost:5005/api/wishlist/${universityId}`, metadata);
+    return res.data;
   }
 };

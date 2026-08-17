@@ -41,8 +41,21 @@ const userSchema = new mongoose.Schema(
     },
     wishlist: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'University',
+        university: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'University',
+          required: true,
+        },
+        note: {
+          type: String,
+          maxlength: 1000,
+          default: '',
+        },
+        priority: {
+          type: String,
+          enum: ['Low', 'Medium', 'High'],
+          default: 'Medium',
+        },
       },
     ],
     applications: [

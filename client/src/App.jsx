@@ -32,6 +32,7 @@ import ComparePage from './features/compare/pages/ComparePage';
 import BudgetPage from './features/budget/pages/BudgetPage';
 import ProfilePage from './features/profile/pages/ProfilePage';
 import TrackerPage from './features/tracker/pages/TrackerPage';
+import WishlistPage from './features/dashboard/pages/WishlistPage';
 import AIAdvisor from './pages/AIAdvisor/AIAdvisor';
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
@@ -71,6 +72,7 @@ function App() {
                       <Route path="/predictor" element={<AdmissionPredictorPage />} />
                       <Route path={ROUTES.PROFILE || '/profile'} element={<ProfilePage />} />
                       <Route path={ROUTES.APPLICATION_TRACKER || '/tracker'} element={<TrackerPage />} />
+                      <Route path={ROUTES.WISHLIST || '/wishlist'} element={<WishlistPage />} />
                     </Route>
                   </Routes>
                 </React.Suspense>
