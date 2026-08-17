@@ -14,7 +14,8 @@ const UniversityCard = React.memo(({
     ranking,
     matchStatus,
     tuition,
-    acceptanceRate
+    acceptanceRate,
+    explanation
   } = university;
 
   return (
@@ -45,6 +46,11 @@ const UniversityCard = React.memo(({
             </span>
           )}
         </div>
+        {explanation && (
+          <p style={{ fontSize: '0.85rem', marginBottom: '1rem', fontStyle: 'italic', color: 'var(--text-secondary)' }}>
+            {explanation}
+          </p>
+        )}
         <p style={{ fontSize: '0.9rem', marginBottom: '0.25rem' }}>
           Tuition: {tuition ? `$${tuition.toLocaleString()}/yr` : 'N/A'}
         </p>

@@ -302,11 +302,9 @@ Calculate score using
 
 ## Admission Predictor
 
-Categories
-
-- [ ] Safe
-- [ ] Target
-- [ ] Dream
+- [x] Safe
+- [x] Target
+- [x] Dream
 
 ---
 

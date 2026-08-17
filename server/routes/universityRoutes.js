@@ -5,6 +5,7 @@ import {
   filterUniversities,
   recommendUniversities,
   getUniversityById,
+  getAdmissionPredictions,
 } from '../controllers/universityController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -14,6 +15,7 @@ router.get('/', getUniversities);
 router.get('/search', searchUniversities);
 router.get('/filter', filterUniversities);
 router.get('/recommend', protect, recommendUniversities);
+router.get('/predict', protect, getAdmissionPredictions);
 router.get('/:id', getUniversityById);
 
 export default router;

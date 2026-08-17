@@ -23,6 +23,7 @@ import Home from './pages/Home/Home';
 import Dashboard from './features/dashboard/pages/Dashboard';
 import UniversitiesPage from './features/universities/pages/UniversitiesPage';
 import UniversityDetailsPage from './features/universities/pages/UniversityDetailsPage';
+import AdmissionPredictorPage from './features/universities/pages/AdmissionPredictorPage';
 import CountriesPage from './features/countries/pages/CountriesPage';
 import CountryDetailsPage from './features/countries/pages/CountryDetailsPage';
 import ScholarshipsPage from './features/scholarships/pages/ScholarshipsPage';
@@ -67,6 +68,7 @@ function App() {
                       <Route path={ROUTES.COMPARE || '/compare'} element={<ComparePage />} />
                       <Route path={ROUTES.BUDGET || '/budget'} element={<BudgetPage />} />
                       <Route path={ROUTES.AI_ADVISOR || '/ai-advisor'} element={<AIAdvisor />} />
+                      <Route path="/predictor" element={<AdmissionPredictorPage />} />
                       <Route path={ROUTES.PROFILE || '/profile'} element={<ProfilePage />} />
                       <Route path={ROUTES.APPLICATION_TRACKER || '/tracker'} element={<TrackerPage />} />
                     </Route>

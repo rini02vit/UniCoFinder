@@ -150,5 +150,14 @@ export const universitiesApi = {
 
     // MOCK IMPLEMENTATION:
     return new Promise((resolve, reject) => setTimeout(() => resolve({ success: true }), 800));
+  },
+
+  /**
+   * Fetch admission predictions for the current user
+   */
+  getPredictions: async (params, signal) => {
+    // Using explicit URL for local dev without proxy, will work perfectly in prod
+    const response = await apiClient.get('http://localhost:5005/api/universities/predict', { params, signal });
+    return response.data;
   }
 };
