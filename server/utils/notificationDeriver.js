@@ -23,16 +23,16 @@ const getDaysDiff = (targetDate, now) => {
  * Does not mutate inputs.
  * 
  * @param {Object} params
- * @param {Object} params.profile - User profile data from useDashboardProfile
- * @param {Array} params.applications - Applications data from useDashboardApplications
- * @param {Object} params.scholarships - Scholarships data from useDashboardScholarships { items: [] }
+ * @param {Object} params.profile - User profile data
+ * @param {Array} params.applications - Applications data
+ * @param {Object|Array} params.scholarships - Scholarships data (Array or { items: [] })
  * @param {Date} params.now - Dependency injected current date (default new Date())
  * @returns {Array} Array of notification objects
  */
 export const deriveNotifications = ({
   profile,
   applications = [],
-  scholarships = { items: [] },
+  scholarships = [],
   now = new Date()
 }) => {
   const notifications = [];
@@ -58,9 +58,12 @@ export const deriveNotifications = ({
     }
   }
 
+  // Handle both array and { items: [] } formats for backend compatibility
+  const scholarshipsArray = Array.isArray(scholarships) ? scholarships : (scholarships.items || []);
+
   // 2. Scholarship Deadline Alerts (Aggregate to max 1)
-  if (scholarships && Array.isArray(scholarships.items)) {
-    const upcomingScholarships = scholarships.items
+  if (scholarshipsArray.length > 0) {
+    const upcomingScholarships = scholarshipsArray
       .map(sch => {
         const daysLeft = getDaysDiff(sch.applicationDeadline, now);
         return { ...sch, daysLeft };

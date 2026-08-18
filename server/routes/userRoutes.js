@@ -1,6 +1,6 @@
 import express from 'express';
 import { body } from 'express-validator';
-import { getUserProfile, updateUserProfile } from '../controllers/userController.js';
+import { getUserProfile, updateUserProfile, getNotifications } from '../controllers/userController.js';
 import { validateRequest } from '../middleware/validateRequest.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -59,5 +59,10 @@ router.put(
   validateRequest,
   updateUserProfile
 );
+
+// @route   GET /api/users/notifications
+// @desc    Get user notifications
+// @access  Private
+router.get('/notifications', protect, getNotifications);
 
 export default router;

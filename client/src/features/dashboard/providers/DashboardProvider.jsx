@@ -15,6 +15,7 @@ const WishlistContext = createContext();
 const ApplicationsContext = createContext();
 const ScholarshipsContext = createContext();
 const CountriesContext = createContext();
+const NotificationsContext = createContext();
 
 export const DashboardProvider = ({ children }) => {
   // Each resource is fetched independently with its own cancellation and state
@@ -23,6 +24,7 @@ export const DashboardProvider = ({ children }) => {
   const applicationsState = useResource(dashboardApi.getApplications, mapApplicationData);
   const scholarshipsState = useResource(dashboardApi.getScholarships, mapScholarshipData);
   const countriesState = useResource(dashboardApi.getRecommendedCountries, mapRecommendationData);
+  const notificationsState = useResource(dashboardApi.getNotifications, (data) => data);
 
   return (
     <ProfileContext.Provider value={profileState}>
@@ -30,7 +32,9 @@ export const DashboardProvider = ({ children }) => {
         <ApplicationsContext.Provider value={applicationsState}>
           <ScholarshipsContext.Provider value={scholarshipsState}>
             <CountriesContext.Provider value={countriesState}>
-              {children}
+              <NotificationsContext.Provider value={notificationsState}>
+                {children}
+              </NotificationsContext.Provider>
             </CountriesContext.Provider>
           </ScholarshipsContext.Provider>
         </ApplicationsContext.Provider>
@@ -45,3 +49,4 @@ export const useDashboardWishlist = () => useContext(WishlistContext);
 export const useDashboardApplications = () => useContext(ApplicationsContext);
 export const useDashboardScholarships = () => useContext(ScholarshipsContext);
 export const useDashboardCountries = () => useContext(CountriesContext);
+export const useDashboardNotifications = () => useContext(NotificationsContext);

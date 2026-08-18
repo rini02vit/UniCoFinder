@@ -41,6 +41,14 @@ const applicationSchema = new mongoose.Schema(
     documentsCompleted: {
       type: [String],
       default: []
+    },
+    deadlineReminderSent: {
+      type: Boolean,
+      default: false
+    },
+    staleReminderSent: {
+      type: Boolean,
+      default: false
     }
   },
   {

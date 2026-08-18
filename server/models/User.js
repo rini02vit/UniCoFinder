@@ -64,6 +64,13 @@ const userSchema = new mongoose.Schema(
         ref: 'Application',
       },
     ],
+    profileReminderSent: {
+      type: Boolean,
+      default: false
+    },
+    lastScholarshipDigestSentAt: {
+      type: Date
+    }
   },
   {
     timestamps: true,

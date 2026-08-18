@@ -1,4 +1,7 @@
 import User from '../models/User.js';
+import Application from '../models/Application.js';
+import Scholarship from '../models/Scholarship.js';
+import { deriveNotifications } from '../utils/notificationDeriver.js';
 
 // @desc    Get user profile
 // @route   GET /api/users/profile
@@ -113,6 +116,59 @@ export const updateUserProfile = async (req, res) => {
       data: {
         user: userResponse,
       },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      errors: [
+        {
+          msg: error.message,
+          param: 'server',
+          location: 'server',
+        },
+      ],
+    });
+  }
+};
+
+// @desc    Get user notifications
+// @route   GET /api/users/notifications
+// @access  Private
+export const getNotifications = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found', errors: [] });
+    }
+
+    // Fetch applications
+    const applications = await Application.find({ user: user._id }).populate('university', 'name applicationDeadline');
+
+    // Fetch recommended scholarships (mimicking the dashboard's scholarship recommendation logic: based on cgpa, countryPreference, course)
+    // We only need a rough approximation or we can use the scholarshipQueryBuilder if it exists.
+    // For simplicity, we just fetch scholarships that match the user's profile.
+    let scholarshipQuery = {};
+    if (user.countryPreference) {
+      scholarshipQuery.country = user.countryPreference;
+    }
+    if (user.cgpa) {
+      scholarshipQuery.minimumCgpa = { $lte: user.cgpa };
+    }
+    
+    const recommendedScholarships = await Scholarship.find(scholarshipQuery).limit(20);
+
+    const notifications = deriveNotifications({
+      profile: user,
+      applications: applications,
+      scholarships: recommendedScholarships,
+      now: new Date()
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Notifications fetched successfully.',
+      data: notifications,
     });
   } catch (error) {
     res.status(500).json({

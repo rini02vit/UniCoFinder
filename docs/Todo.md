@@ -349,8 +349,8 @@ Calculate score using
 - [x] AI Chat Assistant
 
 # Phase 10 — Reports & Notification 
-- [ ] PDF Report Generator
-- [ ] Email Notifications
+- [x] PDF Report Generator
+- [x] Email Notifications
 
 
 ---

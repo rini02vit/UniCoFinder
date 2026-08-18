@@ -1,32 +1,11 @@
-import React, { useMemo } from 'react';
-import { 
-  useDashboardApplications, 
-  useDashboardProfile, 
-  useDashboardScholarships 
-} from '../../providers/DashboardProvider';
+import React from 'react';
+import { useDashboardNotifications } from '../../providers/DashboardProvider';
 import DashboardWidget, { WidgetHeader } from '../../components/primitives/DashboardWidget';
 import { EmptyState } from '../../components/primitives/DataDisplays';
 import { ListSkeleton } from '../../components/primitives/Skeletons';
-import { deriveNotifications } from '../../utils/notificationDeriver';
 
 const NotificationsWidget = () => {
-  const { data: applications, status: appStatus, error: appError, refetch: appRefetch } = useDashboardApplications();
-  const { data: profile, status: profileStatus } = useDashboardProfile();
-  const { data: scholarships, status: schStatus } = useDashboardScholarships();
-
-  const status = appStatus === 'error' ? 'error' : (appStatus === 'loading' ? 'loading' : 'success');
-
-  // Dynamically derive actionable notifications based on current application, profile, and scholarship state
-  const notifications = useMemo(() => {
-    if (status !== 'success') return [];
-    
-    return deriveNotifications({
-      profile: profileStatus === 'success' ? profile : null,
-      applications: appStatus === 'success' ? applications : [],
-      scholarships: schStatus === 'success' ? scholarships : { items: [] },
-      now: new Date()
-    });
-  }, [applications, profile, scholarships, appStatus, profileStatus, schStatus, status]);
+  const { data: notifications, status, error, refetch } = useDashboardNotifications();
 
   return (
     <DashboardWidget>
@@ -39,13 +18,13 @@ const NotificationsWidget = () => {
           <EmptyState 
             icon="⚠️" 
             title="Unable to load notifications" 
-            description={appError?.message || "There was a problem checking for notifications."}
+            description={error?.message || "There was a problem checking for notifications."}
             actionText="Retry"
-            onAction={appRefetch}
+            onAction={refetch}
           />
         )}
         
-        {(status === 'success' && notifications.length === 0) && (
+        {(status === 'empty' || (status === 'success' && (!notifications || notifications.length === 0))) && (
           <EmptyState
             icon="🔔"
             title="No new notifications"
@@ -53,7 +32,7 @@ const NotificationsWidget = () => {
           />
         )}
 
-        {status === 'success' && notifications.length > 0 && (
+        {status === 'success' && notifications?.length > 0 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {notifications.map(notification => {
               // Styling lookup based on semantic type
