@@ -10,10 +10,21 @@ import {
   AdmissionsSection,
   DetailsSkeleton
 } from '../components/details/DetailsSections';
+import ReviewList from '../components/ReviewList';
+import GallerySection from '../components/GallerySection';
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 
 const UniversityDetailsPage = () => {
   const { id } = useParams();
   const { data, status, error } = useUniversityDetails(id);
+  const { addRecentlyViewed } = useRecentlyViewed();
+  
+  // Trigger recently viewed when data is loaded
+  React.useEffect(() => {
+    if (data) {
+      addRecentlyViewed(data);
+    }
+  }, [data]);
   
   // Use mutations (conditionally utilizing the fetched data's initial state if available)
   const { isWishlisted, isSaving, toggleWishlist } = useWishlistMutation(data?.isWishlisted);
@@ -97,6 +108,12 @@ const UniversityDetailsPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Gallery Section */}
+      <GallerySection gallery={data.gallery} />
+
+      {/* Reviews Section */}
+      <ReviewList universityId={data.id} />
     </div>
   );
 };

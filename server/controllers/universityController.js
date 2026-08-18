@@ -8,6 +8,10 @@ import {
   buildRecommendationPipeline,
 } from '../utils/universityQueryBuilder.js';
 import { buildPredictorPipeline } from '../utils/predictorQueryBuilder.js';
+import Review from '../models/Review.js';
+import Application from '../models/Application.js';
+import User from '../models/User.js';
+import mongoose from 'mongoose';
 
 // @desc    Get all universities with pagination
 // @route   GET /api/universities
@@ -339,6 +343,315 @@ export const getAdmissionPredictions = async (req, res) => {
           hasPreviousPage: page > 1,
         },
       },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      errors: [{ field: 'server', message: error.message }],
+    });
+  }
+};
+
+// @desc    Get reviews for a university
+// @route   GET /api/universities/:id/reviews
+// @access  Public
+export const getReviews = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: [{ field: 'id', message: 'Invalid university ID.' }],
+      });
+    }
+
+    const { page, limit, skip } = buildPagination(req.query);
+    
+    // Validate university exists
+    const university = await University.findById(id);
+    if (!university) {
+      return res.status(404).json({
+        success: false,
+        message: 'University not found',
+        errors: [],
+      });
+    }
+
+    const results = await Review.aggregate([
+      { $match: { university: new mongoose.Types.ObjectId(id) } },
+      {
+        $facet: {
+          stats: [
+            { $group: { _id: null, averageRating: { $avg: '$rating' }, totalReviews: { $sum: 1 } } }
+          ],
+          reviews: [
+            { $sort: { createdAt: -1 } },
+            { $skip: skip },
+            { $limit: limit },
+            {
+              $lookup: {
+                from: 'users',
+                localField: 'user',
+                foreignField: '_id',
+                as: 'user'
+              }
+            },
+            { $unwind: { path: '$user', preserveNullAndEmptyArrays: true } },
+            {
+              $project: {
+                rating: 1,
+                comment: 1,
+                createdAt: 1,
+                'user._id': 1,
+                'user.name': 1
+              }
+            }
+          ]
+        }
+      }
+    ]);
+
+    const stats = results[0].stats[0] || { averageRating: 0, totalReviews: 0 };
+    const reviews = results[0].reviews;
+    const total = stats.totalReviews;
+    const pages = Math.ceil(total / limit);
+
+    res.status(200).json({
+      success: true,
+      message: 'Reviews fetched successfully.',
+      data: {
+        stats: {
+          averageRating: Number(stats.averageRating.toFixed(1)),
+          totalReviews: stats.totalReviews
+        },
+        reviews,
+        pagination: {
+          total,
+          page,
+          limit,
+          pages,
+          hasNextPage: page < pages,
+          hasPreviousPage: page > 1,
+        }
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      errors: [{ field: 'server', message: error.message }],
+    });
+  }
+};
+
+// @desc    Create a review for a university
+// @route   POST /api/universities/:id/reviews
+// @access  Private
+export const createReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rating, comment } = req.body;
+
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: [{ field: 'id', message: 'Invalid university ID.' }],
+      });
+    }
+
+    if (rating === undefined || rating < 1 || rating > 5) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: [{ field: 'rating', message: 'Rating must be between 1 and 5.' }],
+      });
+    }
+
+    if (!comment || comment.trim().length === 0 || comment.length > 1000) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: [{ field: 'comment', message: 'Comment must be between 1 and 1000 characters.' }],
+      });
+    }
+
+    const university = await University.findById(id);
+    if (!university) {
+      return res.status(404).json({
+        success: false,
+        message: 'University not found',
+        errors: [],
+      });
+    }
+
+    const existingReview = await Review.findOne({
+      user: req.user._id,
+      university: id
+    });
+
+    if (existingReview) {
+      return res.status(400).json({
+        success: false,
+        message: 'You have already reviewed this university.',
+        errors: [],
+      });
+    }
+
+    const review = await Review.create({
+      user: req.user._id,
+      university: id,
+      rating: Number(rating),
+      comment: comment.trim()
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Review created successfully.',
+      data: { review }
+    });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: 'You have already reviewed this university.',
+        errors: [],
+      });
+    }
+    res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      errors: [{ field: 'server', message: error.message }],
+    });
+  }
+};
+
+// @desc    Delete a review
+// @route   DELETE /api/universities/:id/reviews/:reviewId
+// @access  Private
+export const deleteReview = async (req, res) => {
+  try {
+    const { id, reviewId } = req.params;
+
+    if (!isValidObjectId(id) || !isValidObjectId(reviewId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: [{ field: 'id', message: 'Invalid ID parameters.' }],
+      });
+    }
+
+    const review = await Review.findOne({ _id: reviewId, university: id });
+
+    if (!review) {
+      return res.status(404).json({
+        success: false,
+        message: 'Review not found.',
+        errors: [],
+      });
+    }
+
+    // Authorization check
+    if (review.user.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to delete this review.',
+        errors: [],
+      });
+    }
+
+    await review.deleteOne();
+
+    res.status(200).json({
+      success: true,
+      message: 'Review deleted successfully.',
+      data: {}
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Server Error',
+      errors: [{ field: 'server', message: error.message }],
+    });
+  }
+};
+
+// @desc    Get trending universities
+// @route   GET /api/universities/trending
+// @access  Public
+export const getTrendingUniversities = async (req, res) => {
+  try {
+    // 1. Applications Count
+    const appCounts = await Application.aggregate([
+      { $group: { _id: '$university', count: { $sum: 1 } } }
+    ]);
+    
+    // 2. Wishlist Count
+    const wishlistCounts = await User.aggregate([
+      { $unwind: '$wishlist' },
+      { $group: { _id: '$wishlist.university', count: { $sum: 1 } } }
+    ]);
+
+    // 3. Merge in memory
+    const scores = {};
+    
+    appCounts.forEach(app => {
+      if(app._id) {
+        scores[app._id.toString()] = app.count;
+      }
+    });
+
+    wishlistCounts.forEach(wl => {
+      if(wl._id) {
+        const id = wl._id.toString();
+        scores[id] = (scores[id] || 0) + wl.count;
+      }
+    });
+
+    // If no activity, return empty array
+    if (Object.keys(scores).length === 0) {
+      return res.status(200).json({
+        success: true,
+        message: 'No trending universities found.',
+        data: { universities: [] }
+      });
+    }
+
+    // Sort descending by score
+    let sortedItems = Object.keys(scores)
+      .map(id => ({ id, score: scores[id] }))
+      .sort((a, b) => b.score - a.score);
+    
+    // Take top 20 to allow for tie-breaking with ranking
+    const top20Ids = sortedItems.slice(0, 20).map(item => item.id);
+    const topUniversities = await University.find({ _id: { $in: top20Ids } });
+
+    // Re-map with actual university objects to access ranking
+    const enrichedItems = sortedItems.slice(0, 20).map(item => {
+      const uni = topUniversities.find(u => u._id.toString() === item.id);
+      return {
+        uni,
+        score: item.score
+      };
+    }).filter(item => item.uni); // remove any where uni wasn't found (deleted)
+
+    // Final Sort: score descending, then ranking ascending (lower is better)
+    enrichedItems.sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      const rankA = a.uni.ranking || 999999;
+      const rankB = b.uni.ranking || 999999;
+      return rankA - rankB;
+    });
+
+    const finalUniversities = enrichedItems.slice(0, 10).map(item => item.uni);
+
+    res.status(200).json({
+      success: true,
+      message: 'Trending universities fetched successfully.',
+      data: { universities: finalUniversities }
     });
   } catch (error) {
     res.status(500).json({

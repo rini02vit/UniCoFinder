@@ -337,18 +337,21 @@ Calculate score using
 
 ---
 
-# Bonus Features
+# Phase 8 — Discovery & Engagement Features
 
-- [ ] Student Reviews
-- [ ] University Gallery
-- [ ] Interactive World Map
+- [x] Student Reviews
+- [x] University Gallery
+- [x] Recently Viewed Universities
+- [x] Trending Universities
+
+# Phase 9 — Intelligent & Utility Features
 - [ ] Currency Converter
-- [ ] Student Community
 - [ ] AI Chat Assistant
+
+# Phase 10 — Reports & Notification 
 - [ ] PDF Report Generator
 - [ ] Email Notifications
-- [ ] Recently Viewed Universities
-- [ ] Trending Universities
+
 
 ---
 

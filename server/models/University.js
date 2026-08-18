@@ -71,6 +71,18 @@ const universitySchema = new mongoose.Schema(
         message: (props) => `${props.value} is not a valid URL!`,
       },
     },
+    gallery: [
+      {
+        type: String,
+        validate: {
+          validator: function (v) {
+            const urlRegex = new RegExp('^(https?:\\\\/\\\\/)?([\\\\da-z.-]+)\\\\.([a-z.]{2,6})([/\\\\w .-]*)*\\\\/?$');
+            return urlRegex.test(v);
+          },
+          message: (props) => `${props.value} is not a valid URL!`,
+        }
+      }
+    ],
     description: {
       type: String,
     },

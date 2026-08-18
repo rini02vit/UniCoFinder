@@ -7,6 +7,8 @@ import WelcomeSection from '../widgets/profile/WelcomeSection';
 import ProfileSummary from '../widgets/profile/ProfileSummary';
 import SavedUniversitiesWidget from '../widgets/universities/SavedUniversitiesWidget';
 import ApplicationStatusWidget from '../widgets/applications/ApplicationStatusWidget';
+import TrendingUniversitiesWidget from '../widgets/universities/TrendingUniversitiesWidget';
+import RecentlyViewedWidget from '../widgets/universities/RecentlyViewedWidget';
 
 // Scalable Recommendations & Placeholders
 import ScholarshipsRecommendation from '../widgets/recommendations/ScholarshipsRecommendation';
@@ -28,6 +30,8 @@ const DashboardContent = () => {
       stats={<StatCardsConfigurator />}
       main={
         <>
+          <RecentlyViewedWidget />
+          <TrendingUniversitiesWidget />
           <ApplicationStatusWidget />
           <SavedUniversitiesWidget />
           <ScholarshipsRecommendation />
