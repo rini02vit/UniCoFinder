@@ -56,6 +56,8 @@ const applicationSchema = new mongoose.Schema(
   }
 );
 
+applicationSchema.index({ createdAt: -1 });
+
 const Application = mongoose.model('Application', applicationSchema);
 
 export default Application;

@@ -11,6 +11,7 @@ import wishlistRoutes from './routes/wishlistRoutes.js';
 import applicationRoutes from './routes/applicationRoutes.js';
 import aiRoutes from './routes/aiRoutes.js';
 import currencyRoutes from './routes/currencyRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/ai-advisor', aiRoutes);
 app.use('/api/currency', currencyRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {

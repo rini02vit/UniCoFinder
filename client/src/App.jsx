@@ -10,10 +10,11 @@ import BackToTopButton from './components/ui/BackToTopButton';
 // Layouts
 import PublicLayout from './components/layout/PublicLayout';
 import ProtectedLayout from './components/layout/ProtectedLayout';
+import AdminLayout from './components/layout/AdminLayout';
 
 // Auth
 import { AuthProvider } from './features/auth/context/AuthContext';
-import { GuestRoute, ProtectedRoute } from './features/auth/components/AuthRoutes';
+import { GuestRoute, ProtectedRoute, AdminRoute } from './features/auth/components/AuthRoutes';
 import Login from './features/auth/pages/Login';
 import Register from './features/auth/pages/Register';
 import ForgotPassword from './features/auth/pages/ForgotPassword';
@@ -34,6 +35,8 @@ import ProfilePage from './features/profile/pages/ProfilePage';
 import TrackerPage from './features/tracker/pages/TrackerPage';
 import WishlistPage from './features/dashboard/pages/WishlistPage';
 import AIAdvisor from './pages/AIAdvisor/AIAdvisor';
+import AdminDashboard from './features/admin/pages/AdminDashboard';
+import AdminAnalytics from './features/admin/pages/AdminAnalytics';
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 function App() {
@@ -73,6 +76,13 @@ function App() {
                       <Route path={ROUTES.PROFILE || '/profile'} element={<ProfilePage />} />
                       <Route path={ROUTES.APPLICATION_TRACKER || '/tracker'} element={<TrackerPage />} />
                       <Route path={ROUTES.WISHLIST || '/wishlist'} element={<WishlistPage />} />
+                    </Route>
+
+                    {/* Admin Routes */}
+                    <Route element={<AdminRoute><AdminLayout /></AdminRoute>}>
+                      <Route path="/admin" element={<AdminDashboard />} />
+                      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                      <Route path="/admin/analytics" element={<AdminAnalytics />} />
                     </Route>
                   </Routes>
                 </React.Suspense>

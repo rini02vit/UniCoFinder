@@ -36,6 +36,9 @@ reviewSchema.index({ user: 1, university: 1 }, { unique: true });
 // Support fast retrieval and sorting of reviews for a university
 reviewSchema.index({ university: 1, createdAt: -1 });
 
+// Support time-series analytics
+reviewSchema.index({ createdAt: -1 });
+
 const Review = mongoose.model('Review', reviewSchema);
 
 export default Review;

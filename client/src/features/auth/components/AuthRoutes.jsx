@@ -38,3 +38,23 @@ export const ProtectedRoute = ({ children }) => {
 
   return children;
 };
+
+export const AdminRoute = ({ children }) => {
+  const { isAuthenticated, loading, user } = useAuth();
+  const location = useLocation();
+
+  if (loading) {
+    return <div className="full-screen-loader"><div className="spinner"></div></div>;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to={`${ROUTES.LOGIN}?redirect=${encodeURIComponent(location.pathname)}`} replace />;
+  }
+
+  if (user?.role !== 'admin') {
+    return <Navigate to={ROUTES.DASHBOARD || '/dashboard'} replace />;
+  }
+
+  return children;
+};
+
