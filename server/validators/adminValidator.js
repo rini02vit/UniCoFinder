@@ -88,3 +88,10 @@ export const validateCreateScholarship = [
   body('name').exists().withMessage('Name is required.'),
   ...validateScholarship
 ];
+
+// ------------------------------------------------------------------
+// USER VALIDATION
+// ------------------------------------------------------------------
+export const validateUserStatusUpdate = [
+  body('isActive').exists().withMessage('isActive is required.').isBoolean().withMessage('isActive must be a boolean.')
+];

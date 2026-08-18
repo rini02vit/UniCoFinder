@@ -9,10 +9,7 @@ const ADMIN_LINKS = [
 ];
 
 const DISABLED_LINKS = [
-  { label: 'Universities', icon: Building2 },
-  { label: 'Scholarships', icon: GraduationCap },
-  { label: 'Users', icon: Users },
-  { label: 'Reports', icon: FileText },
+  // Links will be added here for future phases if needed
 ];
 
 const AdminSidebar = () => {
@@ -45,8 +42,22 @@ const AdminSidebar = () => {
             <span>Scholarships</span>
           </NavLink>
           <NavLink to="/admin/countries" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
-            <Globe2 size={20} />
+            <Globe size={20} />
             <span>Countries</span>
+          </NavLink>
+        </nav>
+      </div>
+
+      <div className="sidebar-section" style={{ marginTop: '1.5rem' }}>
+        <h3 className="section-label">ADMINISTRATION</h3>
+        <nav className="nav-menu">
+          <NavLink to="/admin/users" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+            <Users size={20} />
+            <span>Users</span>
+          </NavLink>
+          <NavLink to="/admin/reports" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+            <FileText size={20} />
+            <span>Reports</span>
           </NavLink>
         </nav>
       </div>

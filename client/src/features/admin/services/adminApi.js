@@ -89,6 +89,20 @@ export const adminApi = {
   deleteScholarship: async (id) => {
     const response = await apiClient.delete(`/scholarships/${id}`);
     return response.data;
+  },
+
+  // Users
+  getUsers: async (params = {}) => {
+    const response = await apiClient.get('/users', { params });
+    return response.data;
+  },
+  getUserById: async (id) => {
+    const response = await apiClient.get(`/users/${id}`);
+    return response.data;
+  },
+  updateUserStatus: async (id, isActive) => {
+    const response = await apiClient.patch(`/users/${id}/status`, { isActive });
+    return response.data;
   }
 };
 

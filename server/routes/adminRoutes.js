@@ -24,6 +24,11 @@ import {
   updateScholarship,
   deleteScholarship
 } from '../controllers/adminScholarshipController.js';
+import {
+  getUsers,
+  getUserById,
+  updateUserStatus
+} from '../controllers/adminUserController.js';
 import { validateRequest } from '../middleware/validateRequest.js';
 import {
   validateCreateCountry,
@@ -31,7 +36,8 @@ import {
   validateCreateUniversity,
   validateUniversity,
   validateCreateScholarship,
-  validateScholarship
+  validateScholarship,
+  validateUserStatusUpdate
 } from '../validators/adminValidator.js';
 
 const router = express.Router();
@@ -69,5 +75,15 @@ router.route('/scholarships/:id')
   .get(protect, admin, getScholarshipById)
   .put(protect, admin, validateScholarship, validateRequest, updateScholarship)
   .delete(protect, admin, deleteScholarship);
+
+// User Management
+router.route('/users')
+  .get(protect, admin, getUsers);
+
+router.route('/users/:id')
+  .get(protect, admin, getUserById);
+
+router.route('/users/:id/status')
+  .patch(protect, admin, validateUserStatusUpdate, validateRequest, updateUserStatus);
 
 export default router;

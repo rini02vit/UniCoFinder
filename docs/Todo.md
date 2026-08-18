@@ -357,14 +357,14 @@ Calculate score using
 
 # Admin Panel
 
-- [ ] Admin Login
-- [ ] Dashboard
-- [ ] Manage Universities
-- [ ] Manage Scholarships
-- [ ] Manage Countries
-- [ ] Manage Users
-- [ ] Analytics
-- [ ] Reports
+- [x] Admin Login
+- [x] Dashboard
+- [x] Manage Universities
+- [x] Manage Scholarships
+- [x] Manage Countries
+- [x] Manage Users
+- [x] Analytics
+- [x] Reports
 
 ---
 

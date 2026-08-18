@@ -40,6 +40,9 @@ import AdminAnalytics from './features/admin/pages/AdminAnalytics';
 import ManageCountries from './features/admin/pages/ManageCountries';
 import ManageUniversities from './features/admin/pages/ManageUniversities';
 import ManageScholarships from './features/admin/pages/ManageScholarships';
+import ManageUsers from './features/admin/pages/ManageUsers';
+import UserDetails from './features/admin/pages/UserDetails';
+import AdminReports from './features/admin/pages/AdminReports';
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 function App() {
@@ -89,6 +92,9 @@ function App() {
                       <Route path="/admin/countries" element={<ManageCountries />} />
                       <Route path="/admin/universities" element={<ManageUniversities />} />
                       <Route path="/admin/scholarships" element={<ManageScholarships />} />
+                      <Route path="/admin/users" element={<ManageUsers />} />
+                      <Route path="/admin/users/:id" element={<UserDetails />} />
+                      <Route path="/admin/reports" element={<AdminReports />} />
                     </Route>
                   </Routes>
                 </React.Suspense>
