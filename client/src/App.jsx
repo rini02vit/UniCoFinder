@@ -37,6 +37,9 @@ import WishlistPage from './features/dashboard/pages/WishlistPage';
 import AIAdvisor from './pages/AIAdvisor/AIAdvisor';
 import AdminDashboard from './features/admin/pages/AdminDashboard';
 import AdminAnalytics from './features/admin/pages/AdminAnalytics';
+import ManageCountries from './features/admin/pages/ManageCountries';
+import ManageUniversities from './features/admin/pages/ManageUniversities';
+import ManageScholarships from './features/admin/pages/ManageScholarships';
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 function App() {
@@ -83,6 +86,9 @@ function App() {
                       <Route path="/admin" element={<AdminDashboard />} />
                       <Route path="/admin/dashboard" element={<AdminDashboard />} />
                       <Route path="/admin/analytics" element={<AdminAnalytics />} />
+                      <Route path="/admin/countries" element={<ManageCountries />} />
+                      <Route path="/admin/universities" element={<ManageUniversities />} />
+                      <Route path="/admin/scholarships" element={<ManageScholarships />} />
                     </Route>
                   </Routes>
                 </React.Suspense>

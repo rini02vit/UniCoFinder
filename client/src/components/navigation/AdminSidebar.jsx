@@ -11,7 +11,6 @@ const ADMIN_LINKS = [
 const DISABLED_LINKS = [
   { label: 'Universities', icon: Building2 },
   { label: 'Scholarships', icon: GraduationCap },
-  { label: 'Countries', icon: Globe },
   { label: 'Users', icon: Users },
   { label: 'Reports', icon: FileText },
 ];
@@ -33,6 +32,24 @@ const AdminSidebar = () => {
           {link.label}
         </NavLink>
       ))}
+
+      <div className="sidebar-section">
+        <h3 className="section-label">CONTENT</h3>
+        <nav className="nav-menu">
+          <NavLink to="/admin/universities" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+            <Building2 size={20} />
+            <span>Universities</span>
+          </NavLink>
+          <NavLink to="/admin/scholarships" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+            <GraduationCap size={20} />
+            <span>Scholarships</span>
+          </NavLink>
+          <NavLink to="/admin/countries" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+            <Globe2 size={20} />
+            <span>Countries</span>
+          </NavLink>
+        </nav>
+      </div>
 
       <div style={{ marginTop: '2rem', marginBottom: '0.5rem', paddingLeft: '1rem', fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>
         Coming Soon

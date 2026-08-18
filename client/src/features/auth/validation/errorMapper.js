@@ -22,14 +22,27 @@ export const mapBackendErrorsToForm = (error, setError) => {
 
   const { status, data } = error.response;
 
-  // Handle specific field validation errors (e.g. 422 Unprocessable Entity)
-  if (status === 422 && data.errors) {
-    Object.keys(data.errors).forEach((field) => {
-      setError(field, {
-        type: 'server',
-        message: Array.isArray(data.errors[field]) ? data.errors[field][0] : data.errors[field]
+  // Handle specific field validation errors (e.g. 400 Bad Request or 422 Unprocessable Entity)
+  if ((status === 400 || status === 422) && data.errors) {
+    if (Array.isArray(data.errors)) {
+      // Handle [{ field: 'email', message: '...' }] format
+      data.errors.forEach((err) => {
+        if (err.field && err.message) {
+          setError(err.field, { type: 'server', message: err.message });
+        } else if (err.message) {
+          // If no field is specified, it might be a general error
+          setError('root', { type: 'server', message: err.message });
+        }
       });
-    });
+    } else {
+      // Handle { email: ["..."] } format
+      Object.keys(data.errors).forEach((field) => {
+        setError(field, {
+          type: 'server',
+          message: Array.isArray(data.errors[field]) ? data.errors[field][0] : data.errors[field]
+        });
+      });
+    }
     return null; // Errors handled at field level
   }
 
