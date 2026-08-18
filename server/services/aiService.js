@@ -162,3 +162,102 @@ JSON SCHEMA:
     throw error;
   }
 };
+
+/**
+ * Validates chat messages array from frontend.
+ * @param {Array} messages 
+ */
+export const validateChatMessages = (messages) => {
+  const errors = [];
+  
+  if (!Array.isArray(messages)) {
+    return { isValid: false, errors: ['Messages must be an array.'] };
+  }
+  
+  if (messages.length === 0) {
+    return { isValid: false, errors: ['Messages array cannot be empty.'] };
+  }
+  
+  if (messages.length > 15) {
+    return { isValid: false, errors: ['Maximum of 15 messages allowed per request.'] };
+  }
+
+  messages.forEach((msg, i) => {
+    if (!msg.role || !['user', 'assistant'].includes(msg.role)) {
+      errors.push(`messages[${i}].role must be 'user' or 'assistant'. 'system' is not allowed.`);
+    }
+    if (typeof msg.content !== 'string' || msg.content.trim() === '') {
+      errors.push(`messages[${i}].content must be a non-empty string.`);
+    }
+    if (msg.content && msg.content.length > 500) {
+      errors.push(`messages[${i}].content exceeds 500 characters limit.`);
+    }
+  });
+
+  return { isValid: errors.length === 0, errors };
+};
+
+/**
+ * Handles conversational chat with the AI assistant.
+ * @param {Array} messages - Array of prior conversation messages { role, content }
+ * @param {Object} userContext - Validated user profile context from database
+ */
+export const chatWithAssistant = async (messages, userContext) => {
+  const validation = validateChatMessages(messages);
+  if (!validation.isValid) {
+    const error = new Error('Invalid chat messages');
+    error.statusCode = 400;
+    error.validationErrors = validation.errors;
+    throw error;
+  }
+
+  const systemPrompt = `You are a helpful and expert AI Study Abroad Assistant for UniCoFinder.
+Answer the user's questions concisely and accurately. Do not use markdown formatting like **bold** excessively. Be friendly.
+You have the following context about the current user. Use it to provide personalized advice, but do not mention these fields unless relevant.
+USER CONTEXT:
+- CGPA: ${userContext.cgpa || 'Not specified'}
+- Preferred Country: ${userContext.countryPreference || 'Not specified'}
+- Course/Major: ${userContext.course || 'Not specified'}
+- Budget (Max Annual): ${userContext.budget ? `$${userContext.budget}` : 'Not specified'}
+`;
+
+  // Prepend system prompt to the user's messages
+  const groqMessages = [
+    { role: 'system', content: systemPrompt },
+    ...messages
+  ];
+
+  try {
+    const chatCompletion = await groq.chat.completions.create({
+      messages: groqMessages,
+      model: GROQ_MODEL,
+      temperature: 0.6,
+      max_tokens: 500
+    });
+
+    const aiContent = chatCompletion.choices[0]?.message?.content;
+    
+    if (!aiContent) {
+      const error = new Error('No content returned from Groq');
+      error.statusCode = 502;
+      throw error;
+    }
+
+    return { message: aiContent };
+  } catch (error) {
+    if (!error.statusCode) {
+      if (error.status === 429) {
+        error.statusCode = 429;
+        error.message = 'AI provider rate limit exceeded. Please try again later.';
+      } else if (error.status === 401 || error.status === 403) {
+        error.statusCode = 500;
+        error.message = 'AI provider authentication failed. Check server configuration.';
+      } else {
+        error.statusCode = 503;
+        error.message = 'AI assistant is currently unavailable. Please try again later.';
+      }
+    }
+    throw error;
+  }
+};
+

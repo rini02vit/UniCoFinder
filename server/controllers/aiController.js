@@ -1,4 +1,4 @@
-import { getAIRecommendations } from '../services/aiService.js';
+import { getAIRecommendations, chatWithAssistant } from '../services/aiService.js';
 import { validationResult } from 'express-validator';
 
 /**
@@ -43,6 +43,41 @@ export const getRecommendations = async (req, res) => {
       success: false,
       message: error.message || 'Server Error',
       errors: [{ field: 'ai_service', message: error.message, details: error.validationErrors || undefined }]
+    });
+  }
+};
+
+/**
+ * @desc    Chat with AI Assistant
+ * @route   POST /api/ai-advisor/chat
+ * @access  Private
+ */
+export const chatAssistant = async (req, res) => {
+  try {
+    const { messages } = req.body;
+    
+    // The user context is extracted purely from the authenticated req.user
+    // ensuring the client cannot spoof its cgpa, budget, etc.
+    const userContext = {
+      cgpa: req.user.cgpa,
+      countryPreference: req.user.countryPreference,
+      course: req.user.course,
+      budget: req.user.budget
+    };
+
+    const response = await chatWithAssistant(messages, userContext);
+
+    res.status(200).json({
+      success: true,
+      message: 'Chat successful',
+      data: response
+    });
+  } catch (error) {
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({
+      success: false,
+      message: error.message || 'Server Error',
+      errors: [{ field: 'ai_chat', message: error.message, details: error.validationErrors || undefined }]
     });
   }
 };

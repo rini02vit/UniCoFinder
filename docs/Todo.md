@@ -345,8 +345,8 @@ Calculate score using
 - [x] Trending Universities
 
 # Phase 9 — Intelligent & Utility Features
-- [ ] Currency Converter
-- [ ] AI Chat Assistant
+- [x] Currency Converter
+- [x] AI Chat Assistant
 
 # Phase 10 — Reports & Notification 
 - [ ] PDF Report Generator

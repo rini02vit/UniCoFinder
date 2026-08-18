@@ -10,23 +10,27 @@ import scholarshipRoutes from './routes/scholarshipRoutes.js';
 import wishlistRoutes from './routes/wishlistRoutes.js';
 import applicationRoutes from './routes/applicationRoutes.js';
 import aiRoutes from './routes/aiRoutes.js';
+import currencyRoutes from './routes/currencyRoutes.js';
 
 const app = express();
 
 // Middleware
-app.use(cors());
 app.use(express.json());
-app.use(morgan('dev'));
+app.use(cors());
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/universities', universityRoutes);
-app.use('/api/countries', countryRoutes);
 app.use('/api/scholarships', scholarshipRoutes);
+app.use('/api/countries', countryRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/ai-advisor', aiRoutes);
+app.use('/api/currency', currencyRoutes);
 
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {

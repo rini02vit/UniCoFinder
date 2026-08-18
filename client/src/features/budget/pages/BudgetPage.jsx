@@ -4,13 +4,18 @@ import BudgetForm from '../components/BudgetForm';
 import BudgetSummary from '../components/BudgetSummary';
 
 const BudgetPage = () => {
-  const { expenses, updateExpense, reset, currency, isConverting, handleCurrencyChange, derived } = useBudgetCalculator();
+  const { expenses, updateExpense, reset, currency, isConverting, error, handleCurrencyChange, derived } = useBudgetCalculator();
 
   return (
     <div>
       <header style={{ marginBottom: '2rem' }}>
         <h2>Budget Calculator</h2>
         <p className="text-secondary">Estimate your total expenses for studying abroad.</p>
+        {error && (
+          <div style={{ marginTop: '1rem', padding: '0.75rem', backgroundColor: '#fee2e2', color: '#b91c1c', borderRadius: '4px' }}>
+            <strong>Error:</strong> {error}
+          </div>
+        )}
       </header>
 
       {/* 

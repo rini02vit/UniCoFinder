@@ -1,7 +1,7 @@
 import express from 'express';
 import { body } from 'express-validator';
 import rateLimit from 'express-rate-limit';
-import { getRecommendations } from '../controllers/aiController.js';
+import { getRecommendations, chatAssistant } from '../controllers/aiController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -31,6 +31,20 @@ const validateInterests = [
     .escape()
 ];
 
+const chatRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, // Limit each IP to 20 chat requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      message: 'Too many requests',
+      errors: [{ field: 'rate_limit', message: 'Too many chat requests from this IP, please try again after 15 minutes.' }]
+    });
+  }
+});
+
 // @route   POST /api/ai-advisor/recommend
 // @desc    Get AI recommendations based on user interests
 // @access  Private
@@ -40,6 +54,16 @@ router.post(
   aiRateLimiter,
   validateInterests,
   getRecommendations
+);
+
+// @route   POST /api/ai-advisor/chat
+// @desc    Chat with AI Assistant
+// @access  Private
+router.post(
+  '/chat',
+  protect,
+  chatRateLimiter,
+  chatAssistant
 );
 
 export default router;

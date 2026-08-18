@@ -14,6 +14,7 @@ export const useBudgetCalculator = () => {
   const [expenses, setExpenses] = useState(initialExpenses);
   const [currency, setCurrency] = useState('USD');
   const [isConverting, setIsConverting] = useState(false);
+  const [error, setError] = useState(null);
 
   const updateExpense = useCallback((id, value) => {
     setExpenses(prev => {
@@ -25,16 +26,16 @@ export const useBudgetCalculator = () => {
   }, []);
 
   const reset = useCallback(() => {
-    // If the currency is not USD, we should ideally convert the default values,
-    // but for simplicity, we'll reset to USD and default values.
     setCurrency('USD');
     setExpenses(initialExpenses);
+    setError(null);
   }, [initialExpenses]);
 
   const handleCurrencyChange = useCallback(async (newCurrency) => {
     if (newCurrency === currency) return;
     
     setIsConverting(true);
+    setError(null);
     try {
       const rates = await fetchExchangeRates(currency);
       const conversionRate = rates[newCurrency];
@@ -42,9 +43,12 @@ export const useBudgetCalculator = () => {
       if (conversionRate) {
         setExpenses(prev => convertExpenses(prev, conversionRate));
         setCurrency(newCurrency);
+      } else {
+        throw new Error('Target currency not supported by provider.');
       }
-    } catch (error) {
-      console.error('Failed to convert currency', error);
+    } catch (err) {
+      console.error('Failed to convert currency', err);
+      setError(err.message || 'Exchange rates currently unavailable.');
     } finally {
       setIsConverting(false);
     }
@@ -72,6 +76,7 @@ export const useBudgetCalculator = () => {
     reset,
     currency,
     isConverting,
+    error,
     handleCurrencyChange,
     derived: {
       totalAnnualCost,
