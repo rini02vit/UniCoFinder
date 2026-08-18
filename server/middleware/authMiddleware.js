@@ -26,6 +26,14 @@ export const protect = async (req, res, next) => {
         });
       }
 
+      if (req.user.isActive === false) {
+        return res.status(403).json({
+          success: false,
+          message: 'Account is disabled.',
+          errors: [],
+        });
+      }
+
       next();
     } catch {
       return res.status(401).json({

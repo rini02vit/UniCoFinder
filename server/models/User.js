@@ -64,6 +64,15 @@ const userSchema = new mongoose.Schema(
         ref: 'Application',
       },
     ],
+    role: {
+      type: String,
+      enum: ['student', 'admin'],
+      default: 'student'
+    },
+    isActive: {
+      type: Boolean,
+      default: true
+    },
     profileReminderSent: {
       type: Boolean,
       default: false
