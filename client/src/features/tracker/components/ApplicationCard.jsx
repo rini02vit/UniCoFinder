@@ -9,7 +9,7 @@ import { calculateOverallProgress, calculateWorkflowProgress } from '../utils/pr
 import { TIMELINE_STAGES, CHECKLIST_TEMPLATE } from '../constants/trackerConfig';
 
 const ApplicationCard = ({ application, expanded, onToggle }) => {
-  const { checkedItems, toggleItem } = useChecklistState(application.id);
+  const { checkedItems, toggleItem, isUpdating } = useChecklistState(application);
   
   // Calculate derived values memoized to prevent recalculation on parent rerender
   const { overallProgress, workflowProgress } = useMemo(() => ({
@@ -65,7 +65,7 @@ const ApplicationCard = ({ application, expanded, onToggle }) => {
                 template={CHECKLIST_TEMPLATE}
                 checkedItems={checkedItems}
                 onToggle={toggleItem}
-                disabled={application.isTerminalStatus}
+                disabled={application.isTerminalStatus || isUpdating}
               />
             </div>
             

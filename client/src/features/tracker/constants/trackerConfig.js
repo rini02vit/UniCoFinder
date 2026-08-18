@@ -15,11 +15,14 @@ export const STATUS_CONFIG = {
 };
 
 export const CHECKLIST_TEMPLATE = [
-  { id: 'c1', label: 'Complete Application Form' },
-  { id: 'c2', label: 'Submit Statement of Purpose' },
-  { id: 'c3', label: 'Upload Transcripts' },
-  { id: 'c4', label: 'Pay Application Fee' },
-  { id: 'c5', label: 'Submit Letters of Recommendation' }
+  { id: 'passport', label: 'Passport' },
+  { id: 'sop', label: 'SOP' },
+  { id: 'lor', label: 'LOR' },
+  { id: 'resume', label: 'Resume' },
+  { id: 'ielts', label: 'IELTS' },
+  { id: 'gre', label: 'GRE' },
+  { id: 'financialDocuments', label: 'Financial Documents' },
+  { id: 'visaDocuments', label: 'Visa Documents' }
 ];
 
 export const STATUS_BADGE_MAP = {

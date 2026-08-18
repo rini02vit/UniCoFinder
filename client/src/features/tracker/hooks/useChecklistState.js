@@ -1,59 +1,71 @@
 import { useState, useCallback, useEffect } from 'react';
+import { trackerApi } from '../services/trackerApi';
 
 /**
- * Manages isolated checklist state in localStorage for a specific application.
- * Key format: tracker-checklist-<applicationId>
+ * Manages isolated checklist state for a specific application.
+ * Persists changes through the backend API.
  */
-export const useChecklistState = (applicationId) => {
+export const useChecklistState = (application) => {
   const [checkedItems, setCheckedItems] = useState({});
+  const [isUpdating, setIsUpdating] = useState(false);
 
+  // Initialize state from application.documentsCompleted
   useEffect(() => {
-    if (!applicationId) return;
-    
+    if (!application) return;
+    const initialChecked = {};
+    const docs = application.documentsCompleted || [];
+    docs.forEach(doc => { initialChecked[doc] = true; });
+    setCheckedItems(initialChecked);
+  }, [application]);
+
+  const toggleItem = useCallback(async (itemId) => {
+    if (!application || isUpdating) return;
+
+    // Optimistic UI update
+    setCheckedItems(prev => ({
+      ...prev,
+      [itemId]: !prev[itemId]
+    }));
+    setIsUpdating(true);
+
     try {
-      const key = `tracker-checklist-${applicationId}`;
-      const saved = localStorage.getItem(key);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        // Ensure graceful handling of corrupted or old data formats
-        if (typeof parsed === 'object' && parsed !== null) {
-          setCheckedItems(parsed.items || parsed); // support future versioning wrapper `{ version: 1, items: {} }`
-        } else {
-          setCheckedItems({});
-        }
+      const currentDocs = application.documentsCompleted || [];
+      const isCurrentlyChecked = currentDocs.includes(itemId);
+      
+      let nextDocs;
+      if (isCurrentlyChecked) {
+        nextDocs = currentDocs.filter(doc => doc !== itemId);
       } else {
-        setCheckedItems({});
+        nextDocs = [...currentDocs, itemId];
       }
+
+      // Persist to backend
+      const updatedApp = await trackerApi.updateApplication(application.id, { 
+        documentsCompleted: nextDocs 
+      });
+      
+      // Update local state to match server response exactly
+      const updatedChecked = {};
+      (updatedApp.documentsCompleted || []).forEach(doc => { updatedChecked[doc] = true; });
+      setCheckedItems(updatedChecked);
+      
+      // Mutate the original application reference to keep it in sync for subsequent toggles
+      application.documentsCompleted = updatedApp.documentsCompleted;
+
     } catch (e) {
-      console.error('Failed to parse checklist state. Resetting to empty.', e);
-      setCheckedItems({});
+      console.error('Failed to update checklist state', e);
+      // Revert optimistic update
+      const revertedChecked = {};
+      (application.documentsCompleted || []).forEach(doc => { revertedChecked[doc] = true; });
+      setCheckedItems(revertedChecked);
+    } finally {
+      setIsUpdating(false);
     }
-  }, [applicationId]);
-
-  const toggleItem = useCallback((itemId) => {
-    if (!applicationId) return;
-
-    setCheckedItems(prev => {
-      const newState = {
-        ...prev,
-        [itemId]: !prev[itemId]
-      };
-      
-      try {
-        const key = `tracker-checklist-${applicationId}`;
-        // Wrapped with a version for future structural migrations
-        const payload = { version: 1, items: newState };
-        localStorage.setItem(key, JSON.stringify(payload));
-      } catch (e) {
-        console.error('Failed to save checklist state', e);
-      }
-      
-      return newState;
-    });
-  }, [applicationId]);
+  }, [application, isUpdating]);
 
   return {
     checkedItems,
-    toggleItem
+    toggleItem,
+    isUpdating
   };
 };

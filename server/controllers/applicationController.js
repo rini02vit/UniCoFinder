@@ -110,7 +110,7 @@ export const createApplication = async (req, res) => {
 export const updateApplication = async (req, res) => {
   try {
     const { id } = req.params;
-    const { course, term, status, notes, applicationDate } = req.body;
+    const { course, term, status, notes, applicationDate, documentsCompleted } = req.body;
 
     if (!isValidObjectId(id)) {
       return res.status(400).json({
@@ -143,6 +143,32 @@ export const updateApplication = async (req, res) => {
     if (status !== undefined) updateFields.status = status;
     if (notes !== undefined) updateFields.notes = notes;
     if (applicationDate !== undefined) updateFields.applicationDate = applicationDate;
+    
+    if (documentsCompleted !== undefined) {
+      if (!Array.isArray(documentsCompleted)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Validation failed',
+          errors: [{ field: 'documentsCompleted', message: 'Must be an array.' }],
+        });
+      }
+      
+      const validDocumentIds = [
+        'passport', 'sop', 'lor', 'resume', 'ielts', 'gre', 'financialDocuments', 'visaDocuments'
+      ];
+      
+      const invalidDocs = documentsCompleted.filter(doc => !validDocumentIds.includes(doc));
+      if (invalidDocs.length > 0) {
+        return res.status(400).json({
+          success: false,
+          message: 'Validation failed',
+          errors: [{ field: 'documentsCompleted', message: `Invalid document IDs: ${invalidDocs.join(', ')}` }],
+        });
+      }
+      
+      // Deduplicate array before saving
+      updateFields.documentsCompleted = [...new Set(documentsCompleted)];
+    }
 
     const application = await Application.findOneAndUpdate(
       { _id: id, user: req.user._id },

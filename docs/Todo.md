@@ -326,14 +326,14 @@ Calculate score using
 
 ## Document Checklist
 
-- [ ] Passport
-- [ ] SOP
-- [ ] LOR
-- [ ] Resume
-- [ ] IELTS
-- [ ] GRE
-- [ ] Financial Documents
-- [ ] Visa Documents
+- [x] Passport
+- [x] SOP
+- [x] LOR
+- [x] Resume
+- [x] IELTS
+- [x] GRE
+- [x] Financial Documents
+- [x] Visa Documents
 
 ---
 

@@ -38,6 +38,10 @@ const applicationSchema = new mongoose.Schema(
     notes: {
       type: String,
     },
+    documentsCompleted: {
+      type: [String],
+      default: []
+    }
   },
   {
     timestamps: true,

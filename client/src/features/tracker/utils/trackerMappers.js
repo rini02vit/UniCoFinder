@@ -25,7 +25,8 @@ export const normalizeApplicationData = (rawApps) => {
       currentStage: currentStage,
       completedStages: completedStages,
       statusVariant: STATUS_BADGE_MAP[app.status] || 'default',
-      isTerminalStatus: app.status === 'Accepted' || app.status === 'Rejected'
+      isTerminalStatus: app.status === 'Accepted' || app.status === 'Rejected',
+      documentsCompleted: app.documentsCompleted || []
     };
   });
 };
