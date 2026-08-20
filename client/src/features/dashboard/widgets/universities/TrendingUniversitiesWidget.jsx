@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { universitiesApi } from '../../../universities/services/universitiesApi';
-import UniversityCard from '../../../dashboard/components/cards/UniversityCard'; // Assuming a reusable card exists here or we can just render a simple list
+import UniversityCard from '../../../universities/components/listing/UniversityCard';
 
 const TrendingUniversitiesWidget = () => {
   const [trending, setTrending] = useState([]);

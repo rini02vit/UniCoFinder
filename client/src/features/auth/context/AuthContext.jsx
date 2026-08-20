@@ -4,21 +4,26 @@ import { authApi } from '../services/authApi';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState({ name: 'John Doe', email: 'john@example.com' }); // Mocked user
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // Forced true for testing
-  const [loading, setLoading] = useState(false); // Forced false for testing
+  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const initializeAuth = useCallback(async () => {
-    // Bypassed for UI testing without DB
-    setLoading(false);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
     try {
-      const userData = await authApi.getCurrentUser();
-      setUser(userData);
+      const res = await authApi.getCurrentUser();
+      setUser(res.data.user);
       setIsAuthenticated(true);
     } catch (error) {
       console.error('Failed to restore session:', error);
       localStorage.removeItem('token');
+      setIsAuthenticated(false);
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -29,16 +34,18 @@ export const AuthProvider = ({ children }) => {
   }, [initializeAuth]);
 
   const login = async (credentials) => {
-    const data = await authApi.login(credentials);
-    localStorage.setItem('token', data.token);
-    setUser(data.user);
+    const res = await authApi.login(credentials);
+    const { token, user: userData } = res.data;
+    localStorage.setItem('token', token);
+    setUser(userData);
     setIsAuthenticated(true);
   };
 
   const register = async (userData) => {
-    const data = await authApi.register(userData);
-    localStorage.setItem('token', data.token);
-    setUser(data.user);
+    const res = await authApi.register(userData);
+    const { token, user: responseUser } = res.data;
+    localStorage.setItem('token', token);
+    setUser(responseUser);
     setIsAuthenticated(true);
   };
 

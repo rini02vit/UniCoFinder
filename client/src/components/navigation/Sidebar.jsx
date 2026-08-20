@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { LogOut, User } from 'lucide-react';
 import NavigationLinks, { PROTECTED_LINKS } from './NavigationLinks';
 import { ROUTES } from '../../constants/routes';
+import { useAuth } from '../../features/auth/context/AuthContext';
 
 const Sidebar = () => {
+  const { logout } = useAuth();
   return (
     <aside className="sidebar">
       <div className="navbar-brand" style={{ padding: '1rem 1rem 2rem' }}>
@@ -21,7 +23,7 @@ const Sidebar = () => {
           <User size={20} />
           Profile
         </Link>
-        <Link to={ROUTES.LOGIN} style={{ color: 'var(--danger)' }}>
+        <Link to={ROUTES.LOGIN} onClick={logout} style={{ color: 'var(--danger)' }}>
           <LogOut size={20} />
           Logout
         </Link>

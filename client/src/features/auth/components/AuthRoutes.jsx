@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { ROUTES } from '../../../constants/routes';
 
 export const GuestRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, user } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -13,7 +13,10 @@ export const GuestRoute = ({ children }) => {
 
   // If authenticated, redirect to dashboard or the redirect param if exists
   if (isAuthenticated) {
-    const redirectPath = new URLSearchParams(location.search).get('redirect') || ROUTES.DASHBOARD;
+    let redirectPath = new URLSearchParams(location.search).get('redirect');
+    if (!redirectPath) {
+      redirectPath = user?.role === 'admin' ? '/admin/dashboard' : ROUTES.DASHBOARD;
+    }
     return <Navigate to={redirectPath} replace />;
   }
 

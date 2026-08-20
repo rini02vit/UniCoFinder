@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { universitiesApi } from '../../services/universitiesApi';
+import { universitiesApi } from '../services/universitiesApi';
 
 const ReviewForm = ({ universityId, onSuccess, onCancel }) => {
   const [rating, setRating] = useState(5);

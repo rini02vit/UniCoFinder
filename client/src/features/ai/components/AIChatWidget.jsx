@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import apiClient from '../../../services/apiClient';
+import { aiApi } from '../services/aiApi';
 
 const AIChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +34,7 @@ const AIChatWidget = () => {
     setError(null);
 
     try {
-      const response = await apiClient.post('/ai-advisor/chat', { messages: constrainedMessages });
+      const response = await aiApi.chat(constrainedMessages);
       if (response.data && response.data.success) {
         setMessages((prev) => [...prev, { role: 'assistant', content: response.data.data.message }]);
       }

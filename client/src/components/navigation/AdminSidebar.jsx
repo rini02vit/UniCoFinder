@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { LogOut, LayoutDashboard, BarChart3, Building2, GraduationCap, Globe, Users, FileText } from 'lucide-react';
 import { ROUTES } from '../../constants/routes';
+import { useAuth } from '../../features/auth/context/AuthContext';
 
 const ADMIN_LINKS = [
   { to: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -13,6 +14,7 @@ const DISABLED_LINKS = [
 ];
 
 const AdminSidebar = () => {
+  const { logout } = useAuth();
   return (
     <aside className="sidebar">
       <div className="navbar-brand" style={{ padding: '1rem 1rem 2rem' }}>
@@ -89,7 +91,7 @@ const AdminSidebar = () => {
       
       {/* Bottom Actions */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        <Link to={ROUTES.LOGIN} style={{ color: 'var(--danger)' }}>
+        <Link to={ROUTES.LOGIN} onClick={logout} style={{ color: 'var(--danger)' }}>
           <LogOut size={20} />
           Logout
         </Link>

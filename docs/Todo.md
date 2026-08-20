@@ -370,13 +370,13 @@ Calculate score using
 
 # Database
 
-- [ ] User Collection
-- [ ] University Collection
-- [ ] Country Collection
-- [ ] Scholarship Collection
-- [ ] Wishlist Collection
-- [ ] Applications Collection
-- [ ] Notifications Collection
+- [x] User Collection
+- [x] University Collection
+- [x] Country Collection
+- [x] Scholarship Collection
+- [x] Wishlist Collection
+- [x] Applications Collection
+- [x] Notifications Collection
 
 ---
 

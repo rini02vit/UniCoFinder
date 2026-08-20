@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { universitiesApi } from '../../services/universitiesApi';
+import { universitiesApi } from '../services/universitiesApi';
 import ReviewForm from './ReviewForm';
 
 const ReviewList = ({ universityId }) => {
