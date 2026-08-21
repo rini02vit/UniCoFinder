@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "cross-env GROQ_API_KEY=test-key NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +29,10 @@
     "randexp": "^0.5.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "cross-env": "^10.1.0",
+    "jest": "^30.4.2",
+    "mongodb-memory-server": "^11.2.0",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2"
   }
 }

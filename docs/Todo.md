@@ -382,16 +382,16 @@ Calculate score using
 
 # Testing (Varun & Rakshita)
 
-- [ ] Test Authentication
-- [ ] Test APIs
-- [ ] Test Recommendation Engine
-- [ ] Test Responsive Design
-- [ ] Test Navigation
-- [ ] Test Search
-- [ ] Test Filters
-- [ ] Test Forms
-- [ ] Test Dashboard
-- [ ] Test Mobile View
+- [ ] Test Authentication (Blocked by frontend redirect loop)
+- [x] Test APIs
+- [ ] Test Recommendation Engine (Country/Scholarship pipelines fail)
+- [x] Test Responsive Design
+- [ ] Test Navigation (Mobile drawer and Compare buttons broken)
+- [x] Test Search
+- [x] Test Filters
+- [x] Test Forms
+- [ ] Test Dashboard (Saved universities widget mapping defect)
+- [ ] Test Mobile View (Navigation drawer toggle broken)
 
 ---
 
