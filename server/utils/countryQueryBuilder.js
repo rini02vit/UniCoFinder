@@ -36,20 +36,16 @@ export const buildCountryRecommendationPipeline = (user) => {
     },
   });
 
-  const addFieldsStage = {
-    $addFields: {
-      scoreBreakdown: {},
-      totalApplicableWeightDoc: 0,
-      evaluatedCategoriesCount: 0,
-    }
-  };
+  const scoreBreakdown = {};
+  const totalApplicableWeightExprs = [];
+  const evaluatedCategoriesCountExprs = [];
 
   // --- Category 1: Affordability ---
   if (user && user.budget && user.budget > 0) {
     const totalCostExpr = { $add: [{ $ifNull: ['$averageTuitionFee', 0] }, { $ifNull: ['$averageLivingCost', 0] }] };
     const hasAffordabilityData = { $gt: [totalCostExpr, 0] };
     
-    addFieldsStage.$addFields.scoreBreakdown.affordability = {
+    scoreBreakdown.affordability = {
       $cond: [
         hasAffordabilityData,
         {
@@ -73,19 +69,8 @@ export const buildCountryRecommendationPipeline = (user) => {
       ]
     };
     
-    addFieldsStage.$addFields.totalApplicableWeightDoc = {
-      $add: [
-        '$totalApplicableWeightDoc',
-        { $cond: [hasAffordabilityData, RECOMMENDATION_WEIGHTS.affordability, 0] }
-      ]
-    };
-
-    addFieldsStage.$addFields.evaluatedCategoriesCount = {
-      $add: [
-        '$evaluatedCategoriesCount',
-        { $cond: [hasAffordabilityData, 1, 0] }
-      ]
-    };
+    totalApplicableWeightExprs.push({ $cond: [hasAffordabilityData, RECOMMENDATION_WEIGHTS.affordability, 0] });
+    evaluatedCategoriesCountExprs.push({ $cond: [hasAffordabilityData, 1, 0] });
   }
 
   // --- Category 2: Job Opportunities ---
@@ -96,7 +81,7 @@ export const buildCountryRecommendationPipeline = (user) => {
     ]
   };
 
-  addFieldsStage.$addFields.scoreBreakdown.jobOpportunities = {
+  scoreBreakdown.jobOpportunities = {
     $cond: [
       hasJobData,
       {
@@ -109,28 +94,17 @@ export const buildCountryRecommendationPipeline = (user) => {
     ]
   };
 
-  addFieldsStage.$addFields.totalApplicableWeightDoc = {
-    $add: [
-      '$totalApplicableWeightDoc',
-      { 
-        $cond: [
-          hasJobData, 
-          RECOMMENDATION_WEIGHTS.jobOpportunitiesWorkPermit + RECOMMENDATION_WEIGHTS.jobOpportunitiesPostStudy, 
-          0
-        ] 
-      }
-    ]
-  };
-
-  addFieldsStage.$addFields.evaluatedCategoriesCount = {
-    $add: [
-      '$evaluatedCategoriesCount',
-      { $cond: [hasJobData, 1, 0] }
-    ]
-  };
+  totalApplicableWeightExprs.push({ 
+    $cond: [
+      hasJobData, 
+      RECOMMENDATION_WEIGHTS.jobOpportunitiesWorkPermit + RECOMMENDATION_WEIGHTS.jobOpportunitiesPostStudy, 
+      0
+    ] 
+  });
+  evaluatedCategoriesCountExprs.push({ $cond: [hasJobData, 1, 0] });
 
   // --- Category 3: Scholarships ---
-  addFieldsStage.$addFields.scoreBreakdown.scholarships = {
+  scoreBreakdown.scholarships = {
     $switch: {
       branches: [
         { case: { $gte: ['$scholarshipCount', 15] }, then: 20 },
@@ -141,24 +115,13 @@ export const buildCountryRecommendationPipeline = (user) => {
     }
   };
 
-  addFieldsStage.$addFields.totalApplicableWeightDoc = {
-    $add: [
-      '$totalApplicableWeightDoc',
-      RECOMMENDATION_WEIGHTS.scholarships
-    ]
-  };
-
-  addFieldsStage.$addFields.evaluatedCategoriesCount = {
-    $add: [
-      '$evaluatedCategoriesCount',
-      1
-    ]
-  };
+  totalApplicableWeightExprs.push(RECOMMENDATION_WEIGHTS.scholarships);
+  evaluatedCategoriesCountExprs.push(1);
 
   // --- Category 4: Visa Friendliness ---
   const hasVisaData = { $ne: [{ $type: '$visaFriendlinessScore' }, 'missing'] };
   
-  addFieldsStage.$addFields.scoreBreakdown.visaFriendliness = {
+  scoreBreakdown.visaFriendliness = {
     $cond: [
       hasVisaData,
       { $multiply: [{ $divide: ['$visaFriendlinessScore', 10] }, RECOMMENDATION_WEIGHTS.visaFriendliness] },
@@ -166,24 +129,13 @@ export const buildCountryRecommendationPipeline = (user) => {
     ]
   };
 
-  addFieldsStage.$addFields.totalApplicableWeightDoc = {
-    $add: [
-      '$totalApplicableWeightDoc',
-      { $cond: [hasVisaData, RECOMMENDATION_WEIGHTS.visaFriendliness, 0] }
-    ]
-  };
-
-  addFieldsStage.$addFields.evaluatedCategoriesCount = {
-    $add: [
-      '$evaluatedCategoriesCount',
-      { $cond: [hasVisaData, 1, 0] }
-    ]
-  };
+  totalApplicableWeightExprs.push({ $cond: [hasVisaData, RECOMMENDATION_WEIGHTS.visaFriendliness, 0] });
+  evaluatedCategoriesCountExprs.push({ $cond: [hasVisaData, 1, 0] });
 
   // --- Category 5: Safety Index ---
   const hasSafetyData = { $ne: [{ $type: '$safetyIndex' }, 'missing'] };
 
-  addFieldsStage.$addFields.scoreBreakdown.safetyIndex = {
+  scoreBreakdown.safetyIndex = {
     $cond: [
       hasSafetyData,
       { $multiply: [{ $divide: ['$safetyIndex', 100] }, RECOMMENDATION_WEIGHTS.safetyIndex] },
@@ -191,21 +143,18 @@ export const buildCountryRecommendationPipeline = (user) => {
     ]
   };
 
-  addFieldsStage.$addFields.totalApplicableWeightDoc = {
-    $add: [
-      '$totalApplicableWeightDoc',
-      { $cond: [hasSafetyData, RECOMMENDATION_WEIGHTS.safetyIndex, 0] }
-    ]
-  };
+  totalApplicableWeightExprs.push({ $cond: [hasSafetyData, RECOMMENDATION_WEIGHTS.safetyIndex, 0] });
+  evaluatedCategoriesCountExprs.push({ $cond: [hasSafetyData, 1, 0] });
 
-  addFieldsStage.$addFields.evaluatedCategoriesCount = {
-    $add: [
-      '$evaluatedCategoriesCount',
-      { $cond: [hasSafetyData, 1, 0] }
-    ]
-  };
-
-  pipeline.push(addFieldsStage);
+  // Add the collected expressions as a single stage
+  pipeline.push({
+    $addFields: {
+      scoreBreakdown: scoreBreakdown,
+      // If array is empty (impossible here since 4 are unconditional, but for safety), fallback to 0
+      totalApplicableWeightDoc: { $add: totalApplicableWeightExprs.length > 0 ? totalApplicableWeightExprs : [0] },
+      evaluatedCategoriesCount: { $add: evaluatedCategoriesCountExprs.length > 0 ? evaluatedCategoriesCountExprs : [0] }
+    }
+  });
 
   // Minimum data quality rule (at least 3 evaluated categories)
   pipeline.push({

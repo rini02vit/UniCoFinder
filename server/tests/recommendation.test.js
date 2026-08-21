@@ -86,10 +86,11 @@ describe('Recommendation Engines API', () => {
   });
 
   describe('Country Recommendations', () => {
-    // SKIPPED: KNOWN DEFECT - PRE-EXISTING in countryQueryBuilder.js
-    // The aggregation pipeline overwrites the evaluatedCategoriesCount key 
-    // due to JS object property assignment in a loop, resulting in a count of 1.
-    it('should recommend countries based on profile', async () => {
+    beforeEach(async () => {
+      await Country.deleteMany({});
+    });
+
+    it('should recommend countries based on profile (Test 1 & 5: Normal success & normalization)', async () => {
       await Country.create({
         name: 'Test Country',
         currency: 'USD',
@@ -109,16 +110,68 @@ describe('Recommendation Engines API', () => {
       expect(res.body.success).toBe(true);
       expect(res.body.data.countries.length).toBeGreaterThan(0);
       expect(res.body.data.countries[0].name).toBe('Test Country');
+      expect(res.body.data.countries[0].matchPercentage).toBeDefined();
+      expect(res.body.data.countries[0].matchPercentage).toBeGreaterThan(0);
     });
 
-    it('should return empty results if database is empty', async () => {
-      await Country.deleteMany({});
+    it('should include country with exactly 3 applicable categories (Test 2)', async () => {
+      await Country.create({
+        name: 'Three Categories Country',
+        // Missing tuition/living (Category 1)
+        // Missing work permit (Category 2)
+        // Scholarships always counts as Category 3
+        visaFriendlinessScore: 7, // Category 4
+        safetyIndex: 80 // Category 5
+      });
+
+      const res = await request(app)
+        .get('/api/countries/recommend')
+        .set('Authorization', `Bearer ${token}`);
+      
+      expect(res.status).toBe(200);
+      expect(res.body.data.countries.length).toBe(1);
+      expect(res.body.data.countries[0].name).toBe('Three Categories Country');
+    });
+
+    it('should exclude country with only 2 applicable categories (Test 3)', async () => {
+      await Country.create({
+        name: 'Two Categories Country',
+        // Scholarships always counts as Category 1
+        visaFriendlinessScore: 7, // Category 2
+        // Missing safety, job, affordability
+      });
+
       const res = await request(app)
         .get('/api/countries/recommend')
         .set('Authorization', `Bearer ${token}`);
       
       expect(res.status).toBe(200);
       expect(res.body.data.countries.length).toBe(0);
+    });
+
+    it('should handle missing user profile values gracefully (Test 4)', async () => {
+      // User has no budget
+      await User.findByIdAndUpdate(testUser.id, {
+        $unset: { budget: "" }
+      });
+
+      await Country.create({
+        name: 'No Budget Country',
+        averageTuitionFee: 10000,
+        averageLivingCost: 5000, 
+        visaFriendlinessScore: 8,
+        workPermit: true,
+        postStudyWorkVisa: true,
+        safetyIndex: 85
+      });
+
+      const res = await request(app)
+        .get('/api/countries/recommend')
+        .set('Authorization', `Bearer ${token}`);
+      
+      expect(res.status).toBe(200);
+      expect(res.body.data.countries.length).toBeGreaterThan(0);
+      expect(res.body.data.countries[0].name).toBe('No Budget Country');
     });
   });
 
