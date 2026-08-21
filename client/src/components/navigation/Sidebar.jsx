@@ -23,10 +23,10 @@ const Sidebar = () => {
           <User size={20} />
           Profile
         </Link>
-        <Link to={ROUTES.LOGIN} onClick={logout} style={{ color: 'var(--danger)' }}>
+        <button type="button" className="sidebar-logout-btn" onClick={logout} style={{ color: 'var(--danger)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit', textAlign: 'left', width: '100%' }}>
           <LogOut size={20} />
           Logout
-        </Link>
+        </button>
       </div>
     </aside>
   );

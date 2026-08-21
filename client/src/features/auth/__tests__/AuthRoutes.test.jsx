@@ -73,4 +73,34 @@ describe('AuthRoutes', () => {
       expect(screen.queryByText('Admin Content')).not.toBeInTheDocument();
     });
   });
+
+  describe('GuestRoute', () => {
+    it('should redirect to dashboard if authenticated', () => {
+      AuthContextModule.useAuth.mockReturnValue({ isAuthenticated: true, user: { role: 'student' }, loading: false });
+      render(
+        <MemoryRouter initialEntries={['/login']}>
+          <Routes>
+            <Route path="/login" element={<GuestRoute><LoginComponent /></GuestRoute>} />
+            <Route path="/dashboard" element={<div>Student Dashboard</div>} />
+          </Routes>
+        </MemoryRouter>
+      );
+      
+      expect(screen.getByText('Student Dashboard')).toBeInTheDocument();
+      expect(screen.queryByText('Login Page')).not.toBeInTheDocument();
+    });
+    
+    it('should render children if not authenticated', () => {
+      AuthContextModule.useAuth.mockReturnValue({ isAuthenticated: false, loading: false });
+      render(
+        <MemoryRouter initialEntries={['/login']}>
+          <Routes>
+            <Route path="/login" element={<GuestRoute><LoginComponent /></GuestRoute>} />
+          </Routes>
+        </MemoryRouter>
+      );
+      
+      expect(screen.getByText('Login Page')).toBeInTheDocument();
+    });
+  });
 });

@@ -78,7 +78,8 @@
   background: rgba(0, 0, 0, 0.02);
 }
 
-.sidebar a {
+.sidebar a,
+.sidebar .sidebar-logout-btn {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -91,13 +92,15 @@
 }
 
 .sidebar a:hover,
-.sidebar a.active {
+.sidebar a.active,
+.sidebar .sidebar-logout-btn:hover {
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
 }
 
 :root[data-theme="light"] .sidebar a:hover,
-:root[data-theme="light"] .sidebar a.active {
+:root[data-theme="light"] .sidebar a.active,
+:root[data-theme="light"] .sidebar .sidebar-logout-btn:hover {
   background: rgba(0, 0, 0, 0.05);
 }
 

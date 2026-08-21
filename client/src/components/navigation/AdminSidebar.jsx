@@ -91,10 +91,10 @@ const AdminSidebar = () => {
       
       {/* Bottom Actions */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        <Link to={ROUTES.LOGIN} onClick={logout} style={{ color: 'var(--danger)' }}>
+        <button type="button" className="sidebar-logout-btn" onClick={logout} style={{ color: 'var(--danger)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit', textAlign: 'left', width: '100%' }}>
           <LogOut size={20} />
           Logout
-        </Link>
+        </button>
       </div>
     </aside>
   );
