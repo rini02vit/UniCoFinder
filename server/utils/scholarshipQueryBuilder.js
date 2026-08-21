@@ -13,13 +13,9 @@ export const buildScholarshipRecommendationPipeline = (user) => {
     country: 20,
   };
 
-  const addFieldsStage = {
-    $addFields: {
-      scoreBreakdown: {},
-      totalApplicableWeightDoc: 0,
-      evaluatedCategoriesCount: 0,
-    }
-  };
+  const scoreBreakdown = {};
+  const totalApplicableWeightExprs = [];
+  const evaluatedCategoriesCountExprs = [];
 
   // --- Category 1: CGPA ---
   // Evaluated if user has cgpa AND scholarship has minimumCgpa
@@ -27,7 +23,7 @@ export const buildScholarshipRecommendationPipeline = (user) => {
   const hasScholarshipCgpa = { $ne: [{ $type: '$minimumCgpa' }, 'missing'] };
   const hasCgpaData = hasUserCgpa ? hasScholarshipCgpa : false;
 
-  addFieldsStage.$addFields.scoreBreakdown.cgpa = {
+  scoreBreakdown.cgpa = {
     $cond: [
       hasCgpaData,
       {
@@ -41,26 +37,15 @@ export const buildScholarshipRecommendationPipeline = (user) => {
     ]
   };
 
-  addFieldsStage.$addFields.totalApplicableWeightDoc = {
-    $add: [
-      '$totalApplicableWeightDoc',
-      { $cond: [hasCgpaData, RECOMMENDATION_WEIGHTS.cgpa, 0] }
-    ]
-  };
-
-  addFieldsStage.$addFields.evaluatedCategoriesCount = {
-    $add: [
-      '$evaluatedCategoriesCount',
-      { $cond: [{ $ne: [{ $type: '$minimumCgpa' }, 'missing'] }, 1, 0] }
-    ]
-  };
+  totalApplicableWeightExprs.push({ $cond: [hasCgpaData, RECOMMENDATION_WEIGHTS.cgpa, 0] });
+  evaluatedCategoriesCountExprs.push({ $cond: [{ $ne: [{ $type: '$minimumCgpa' }, 'missing'] }, 1, 0] });
 
   // --- Category 2: Degree ---
   const hasUserDegree = user && user.degree;
   const hasScholarshipDegree = { $gt: [{ $size: { $ifNull: ['$degreeLevels', []] } }, 0] };
   const hasDegreeData = hasUserDegree ? hasScholarshipDegree : false;
 
-  addFieldsStage.$addFields.scoreBreakdown.degree = {
+  scoreBreakdown.degree = {
     $cond: [
       hasDegreeData,
       {
@@ -85,26 +70,15 @@ export const buildScholarshipRecommendationPipeline = (user) => {
     ]
   };
 
-  addFieldsStage.$addFields.totalApplicableWeightDoc = {
-    $add: [
-      '$totalApplicableWeightDoc',
-      { $cond: [hasDegreeData, RECOMMENDATION_WEIGHTS.degree, 0] }
-    ]
-  };
-
-  addFieldsStage.$addFields.evaluatedCategoriesCount = {
-    $add: [
-      '$evaluatedCategoriesCount',
-      { $cond: [hasScholarshipDegree, 1, 0] }
-    ]
-  };
+  totalApplicableWeightExprs.push({ $cond: [hasDegreeData, RECOMMENDATION_WEIGHTS.degree, 0] });
+  evaluatedCategoriesCountExprs.push({ $cond: [hasScholarshipDegree, 1, 0] });
 
   // --- Category 3: Course ---
   const hasUserCourse = user && user.course;
   const hasScholarshipCourse = { $gt: [{ $size: { $ifNull: ['$courses', []] } }, 0] };
   const hasCourseData = hasUserCourse ? hasScholarshipCourse : false;
 
-  addFieldsStage.$addFields.scoreBreakdown.course = {
+  scoreBreakdown.course = {
     $cond: [
       hasCourseData,
       {
@@ -129,26 +103,15 @@ export const buildScholarshipRecommendationPipeline = (user) => {
     ]
   };
 
-  addFieldsStage.$addFields.totalApplicableWeightDoc = {
-    $add: [
-      '$totalApplicableWeightDoc',
-      { $cond: [hasCourseData, RECOMMENDATION_WEIGHTS.course, 0] }
-    ]
-  };
-
-  addFieldsStage.$addFields.evaluatedCategoriesCount = {
-    $add: [
-      '$evaluatedCategoriesCount',
-      { $cond: [hasScholarshipCourse, 1, 0] }
-    ]
-  };
+  totalApplicableWeightExprs.push({ $cond: [hasCourseData, RECOMMENDATION_WEIGHTS.course, 0] });
+  evaluatedCategoriesCountExprs.push({ $cond: [hasScholarshipCourse, 1, 0] });
 
   // --- Category 4: Country ---
   const hasUserCountry = user && user.countryPreference;
   const hasScholarshipCountry = { $ne: [{ $type: '$country' }, 'missing'] };
   const hasCountryData = hasUserCountry ? hasScholarshipCountry : false;
 
-  addFieldsStage.$addFields.scoreBreakdown.country = {
+  scoreBreakdown.country = {
     $cond: [
       hasCountryData,
       {
@@ -162,21 +125,16 @@ export const buildScholarshipRecommendationPipeline = (user) => {
     ]
   };
 
-  addFieldsStage.$addFields.totalApplicableWeightDoc = {
-    $add: [
-      '$totalApplicableWeightDoc',
-      { $cond: [hasCountryData, RECOMMENDATION_WEIGHTS.country, 0] }
-    ]
-  };
+  totalApplicableWeightExprs.push({ $cond: [hasCountryData, RECOMMENDATION_WEIGHTS.country, 0] });
+  evaluatedCategoriesCountExprs.push({ $cond: [hasScholarshipCountry, 1, 0] });
 
-  addFieldsStage.$addFields.evaluatedCategoriesCount = {
-    $add: [
-      '$evaluatedCategoriesCount',
-      { $cond: [hasScholarshipCountry, 1, 0] }
-    ]
-  };
-
-  pipeline.push(addFieldsStage);
+  pipeline.push({
+    $addFields: {
+      scoreBreakdown: scoreBreakdown,
+      totalApplicableWeightDoc: { $add: totalApplicableWeightExprs.length > 0 ? totalApplicableWeightExprs : [0] },
+      evaluatedCategoriesCount: { $add: evaluatedCategoriesCountExprs.length > 0 ? evaluatedCategoriesCountExprs : [0] }
+    }
+  });
 
   // Minimum data quality rule (at least 2 evaluated categories per scholarship)
   pipeline.push({

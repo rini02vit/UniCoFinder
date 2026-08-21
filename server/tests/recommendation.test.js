@@ -176,18 +176,22 @@ describe('Recommendation Engines API', () => {
   });
 
   describe('Scholarship Recommendations', () => {
-    // SKIPPED: KNOWN DEFECT - PRE-EXISTING in scholarshipQueryBuilder.js
-    // The aggregation pipeline overwrites the evaluatedCategoriesCount key 
-    // due to JS object property assignment in a loop, resulting in a max count of 1.
-    it('should recommend scholarships based on profile', async () => {
+    beforeEach(async () => {
+      await Scholarship.deleteMany({});
+    });
+
+    it('should recommend scholarships based on profile (Test 1 & 5: Normal success & normalization)', async () => {
       await Scholarship.create({
         name: 'Tech Scholarship',
-        country: 'Test Country',
+        country: 'Test Country', // Match (20%)
         provider: 'Tech Org',
         amount: 5000,
-        deadline: new Date(Date.now() + 86400000), // Tomorrow
-        minimumCGPA: 3.0, // < User's 3.5
-        eligibleCourses: ['Computer Science'],
+        deadline: new Date(Date.now() + 86400000), 
+        minimumCgpa: 3.0, // <= User 3.5 (30%)
+        degreeLevels: ['Bachelors'], // (Assume matches degree? User has no degree by default? Wait, testUser doesn't have degree? Let's check.)
+        // wait, let's update User in the test if needed. User has: cgpa: 3.5, budget: 20000, course: 'Computer Science', countryPreference: 'Test Country'
+        // No degree. But that's fine.
+        eligibleCourses: ['Computer Science'], // Match (20%)
       });
 
       const res = await request(app)
@@ -198,16 +202,63 @@ describe('Recommendation Engines API', () => {
       expect(res.body.success).toBe(true);
       expect(res.body.data.scholarships.length).toBeGreaterThan(0);
       expect(res.body.data.scholarships[0].name).toBe('Tech Scholarship');
+      expect(res.body.data.scholarships[0].matchPercentage).toBeDefined();
+      expect(res.body.data.scholarships[0].matchPercentage).toBeGreaterThan(0);
     });
 
-    it('should return empty results if no scholarships exist', async () => {
-      await Scholarship.deleteMany({});
+    it('should include scholarship with exactly 2 applicable categories (Test 2)', async () => {
+      // User has cgpa and countryPreference.
+      await Scholarship.create({
+        name: 'Two Categories Scholarship',
+        minimumCgpa: 3.0, // Category 1
+        country: 'Test Country', // Category 2
+        // no degreeLevels, no courses
+      });
+
+      const res = await request(app)
+        .get('/api/scholarships/recommend')
+        .set('Authorization', `Bearer ${token}`);
+      
+      expect(res.status).toBe(200);
+      expect(res.body.data.scholarships.length).toBe(1);
+      expect(res.body.data.scholarships[0].name).toBe('Two Categories Scholarship');
+    });
+
+    it('should exclude scholarship with only 1 applicable category (Test 3)', async () => {
+      await Scholarship.create({
+        name: 'One Category Scholarship',
+        country: 'Test Country', // Category 1
+        // missing cgpa, degree, course
+      });
+
       const res = await request(app)
         .get('/api/scholarships/recommend')
         .set('Authorization', `Bearer ${token}`);
       
       expect(res.status).toBe(200);
       expect(res.body.data.scholarships.length).toBe(0);
+    });
+
+    it('should handle missing user profile values gracefully (Test 4)', async () => {
+      // Unset user's cgpa and course
+      await User.findByIdAndUpdate(testUser.id, {
+        $unset: { cgpa: "", course: "" }
+      });
+
+      await Scholarship.create({
+        name: 'Graceful Scholarship',
+        minimumCgpa: 3.0, // Still counts as evaluated categories for the scholarship
+        country: 'Test Country',
+        eligibleCourses: ['Computer Science'], // Still counts as evaluated
+      });
+
+      const res = await request(app)
+        .get('/api/scholarships/recommend')
+        .set('Authorization', `Bearer ${token}`);
+      
+      expect(res.status).toBe(200);
+      expect(res.body.data.scholarships.length).toBeGreaterThan(0);
+      expect(res.body.data.scholarships[0].name).toBe('Graceful Scholarship');
     });
   });
 });
