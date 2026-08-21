@@ -64,9 +64,9 @@ const SavedUniversitiesWidget = () => {
                   🏫
                 </div>
                 <div>
-                  <h4 style={{ margin: '0 0 0.25rem 0' }}>{item.name || 'Unknown University'}</h4>
+                  <h4 style={{ margin: '0 0 0.25rem 0' }}>{item.university?.name || 'Unknown University'}</h4>
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                    {item.country || 'Unknown Country'}
+                    {item.university?.country || 'Unknown Country'}
                   </span>
                 </div>
               </div>

@@ -10,7 +10,7 @@ vi.mock('../providers/DashboardProvider', () => ({
 }));
 
 describe('SavedUniversitiesWidget', () => {
-  it('should render the university name (currently fails due to known defect)', () => {
+  it('should render the university name and country', () => {
     // This test asserts the INTENDED behavior:
     // The widget should render the actual university name from item.university.name
     useDashboardWishlist.mockReturnValue({
@@ -30,11 +30,28 @@ describe('SavedUniversitiesWidget', () => {
 
     render(<SavedUniversitiesWidget />);
 
-    // INTENDED: It should find Harvard University
     expect(screen.getByText('Harvard University')).toBeInTheDocument();
-    
-    // It should NOT fallback to 'Unknown University'
+    expect(screen.getByText('USA')).toBeInTheDocument();
     expect(screen.queryByText('Unknown University')).not.toBeInTheDocument();
+  });
+
+  it('should gracefully fallback to Unknown University if university is missing', () => {
+    useDashboardWishlist.mockReturnValue({
+      status: 'success',
+      data: [
+        {
+          id: '1',
+          university: null // Simulating missing data
+        }
+      ],
+      error: null,
+      refetch: vi.fn(),
+    });
+
+    render(<SavedUniversitiesWidget />);
+
+    expect(screen.getByText('Unknown University')).toBeInTheDocument();
+    expect(screen.getByText('Unknown Country')).toBeInTheDocument();
   });
 
   it('should render loading state correctly', () => {
