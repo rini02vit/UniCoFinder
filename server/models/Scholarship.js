@@ -68,6 +68,8 @@ const scholarshipSchema = new mongoose.Schema(
   }
 );
 
+scholarshipSchema.index({ applicationDeadline: 1, name: 1 });
+
 const Scholarship = mongoose.model('Scholarship', scholarshipSchema);
 
 export default Scholarship;

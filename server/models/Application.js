@@ -57,6 +57,7 @@ const applicationSchema = new mongoose.Schema(
 );
 
 applicationSchema.index({ createdAt: -1 });
+applicationSchema.index({ user: 1, updatedAt: -1 });
 
 const Application = mongoose.model('Application', applicationSchema);
 

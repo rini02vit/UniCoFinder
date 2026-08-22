@@ -402,7 +402,7 @@ Calculate score using
 - [x] Debounced Search
 - [x] Optimized Images
 - [x] API Caching
-- [ ] MongoDB Indexing
+- [x] MongoDB Indexing
 - [ ] Code Splitting
 
 ---

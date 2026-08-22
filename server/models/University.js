@@ -92,6 +92,8 @@ const universitySchema = new mongoose.Schema(
   }
 );
 
+universitySchema.index({ country: 1, ranking: 1 });
+
 const University = mongoose.model('University', universitySchema);
 
 export default University;
