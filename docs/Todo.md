@@ -403,7 +403,7 @@ Calculate score using
 - [x] Optimized Images
 - [x] API Caching
 - [x] MongoDB Indexing
-- [ ] Code Splitting
+- [x] Code Splitting
 
 ---
 
