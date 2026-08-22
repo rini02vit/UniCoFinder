@@ -3,16 +3,26 @@ import { adminApi } from '../services/adminApi';
 import AdminScholarshipForm from '../components/AdminScholarshipForm';
 import { Loader2, Plus, Edit2, Trash2, Search } from 'lucide-react';
 import Pagination from '../../../components/ui/Pagination';
+import { useDebounce } from '../../../hooks/useDebounce';
 
 const ManageScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Pagination & Search
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState('');
+  
+  const debouncedSearch = useDebounce(search, 300);
+  const [activeSearch, setActiveSearch] = useState('');
+
+  useEffect(() => {
+    if (debouncedSearch !== activeSearch) {
+      setPage(1);
+      setActiveSearch(debouncedSearch);
+    }
+  }, [debouncedSearch, activeSearch]);
   
   // View State
   const [view, setView] = useState('list'); // 'list', 'create', 'edit'
@@ -22,7 +32,7 @@ const ManageScholarships = () => {
   const fetchScholarships = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await adminApi.getScholarships({ page, limit: 10, search });
+      const response = await adminApi.getScholarships({ page, limit: 10, search: activeSearch });
       setScholarships(response.data);
       setTotalPages(response.pagination.totalPages);
       setError(null);
@@ -31,7 +41,7 @@ const ManageScholarships = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, search]);
+  }, [page, activeSearch]);
 
   useEffect(() => {
     fetchScholarships();
@@ -39,7 +49,6 @@ const ManageScholarships = () => {
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
-    setPage(1); // Reset to page 1 on search
   };
 
   const handleCreate = () => {

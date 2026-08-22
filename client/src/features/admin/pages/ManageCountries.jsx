@@ -3,16 +3,26 @@ import { adminApi } from '../services/adminApi';
 import AdminCountryForm from '../components/AdminCountryForm';
 import { Loader2, Plus, Edit2, Trash2, Search } from 'lucide-react';
 import Pagination from '../../../components/ui/Pagination';
+import { useDebounce } from '../../../hooks/useDebounce';
 
 const ManageCountries = () => {
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Pagination & Search
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState('');
+  
+  const debouncedSearch = useDebounce(search, 300);
+  const [activeSearch, setActiveSearch] = useState('');
+
+  useEffect(() => {
+    if (debouncedSearch !== activeSearch) {
+      setPage(1);
+      setActiveSearch(debouncedSearch);
+    }
+  }, [debouncedSearch, activeSearch]);
   
   // View State
   const [view, setView] = useState('list'); // 'list', 'create', 'edit'
@@ -22,7 +32,7 @@ const ManageCountries = () => {
   const fetchCountries = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await adminApi.getCountries({ page, limit: 10, search });
+      const response = await adminApi.getCountries({ page, limit: 10, search: activeSearch });
       setCountries(response.data);
       setTotalPages(response.pagination.totalPages);
       setError(null);
@@ -31,7 +41,7 @@ const ManageCountries = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, search]);
+  }, [page, activeSearch]);
 
   useEffect(() => {
     fetchCountries();
@@ -39,7 +49,6 @@ const ManageCountries = () => {
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
-    setPage(1); // Reset to page 1 on search
   };
 
   const handleCreate = () => {

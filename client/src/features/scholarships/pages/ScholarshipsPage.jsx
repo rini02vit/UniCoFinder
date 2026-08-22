@@ -1,23 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useScholarships } from '../hooks/useScholarships';
 import ScholarshipCard from '../components/listing/ScholarshipCard';
 import { GridSkeleton } from '../../universities/components/listing/GridSkeleton'; // Reuse GridSkeleton
 import Pagination from '../../../components/ui/Pagination';
+import { useDebounce } from '../../../hooks/useDebounce';
 
 const ScholarshipsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data, pagination, status, error, retry } = useScholarships();
 
-  const handleSearch = (e) => {
-    const query = e.target.value;
+  const [localSearch, setLocalSearch] = useState(searchParams.get('q') || '');
+  const debouncedSearch = useDebounce(localSearch, 300);
+
+  useEffect(() => {
     setSearchParams(prev => {
       const next = new URLSearchParams(prev);
-      if (query) next.set('q', query);
+      const currentQuery = next.get('q') || '';
+      
+      if (debouncedSearch === currentQuery) return prev;
+      
+      if (debouncedSearch) next.set('q', debouncedSearch);
       else next.delete('q');
+      
       next.set('page', 1);
       return next;
     }, { replace: true });
+  }, [debouncedSearch, setSearchParams]);
+
+  const handleSearch = (e) => {
+    setLocalSearch(e.target.value);
   };
 
   const handlePageChange = (page) => {
@@ -43,7 +55,7 @@ const ScholarshipsPage = () => {
           type="text"
           className="form-control"
           placeholder="Search scholarships by name or provider..."
-          value={searchParams.get('q') || ''}
+          value={localSearch}
           onChange={handleSearch}
           aria-label="Search scholarships"
           style={{ maxWidth: '400px', width: '100%' }}
@@ -71,7 +83,10 @@ const ScholarshipsPage = () => {
             <p className="state-desc">Try adjusting your search criteria.</p>
             <button 
               className="btn btn-outline" 
-              onClick={() => setSearchParams({})}
+              onClick={() => {
+                setLocalSearch('');
+                setSearchParams({});
+              }}
               style={{ marginTop: '1rem' }}
             >
               Clear Search

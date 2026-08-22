@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { adminApi } from '../services/adminApi';
 import Pagination from '../../../components/ui/Pagination';
+import { useDebounce } from '../../../hooks/useDebounce';
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -13,14 +14,24 @@ const ManageUsers = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [isExporting, setIsExporting] = useState(false);
 
-  const fetchUsers = async () => {
+  const debouncedSearch = useDebounce(search, 300);
+  const [activeSearch, setActiveSearch] = useState('');
+
+  useEffect(() => {
+    if (debouncedSearch !== activeSearch) {
+      setPage(1);
+      setActiveSearch(debouncedSearch);
+    }
+  }, [debouncedSearch, activeSearch]);
+
+  const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
       setError('');
       const response = await adminApi.getUsers({
         page,
         limit: 10,
-        search,
+        search: activeSearch,
         status: statusFilter
       });
       if (response.success) {
@@ -34,11 +45,11 @@ const ManageUsers = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, activeSearch, statusFilter]);
 
   useEffect(() => {
     fetchUsers();
-  }, [page, search, statusFilter]);
+  }, [fetchUsers]);
 
   const handleExportCSV = async () => {
     setIsExporting(true);
@@ -125,7 +136,7 @@ const ManageUsers = () => {
           type="text"
           placeholder="Search by name or email..."
           value={search}
-          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+          onChange={(e) => setSearch(e.target.value)}
           className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
         />
         <select

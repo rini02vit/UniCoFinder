@@ -399,7 +399,7 @@ Calculate score using
 
 - [x] Lazy Loading
 - [x] Pagination
-- [ ] Debounced Search
+- [x] Debounced Search
 - [ ] Optimized Images
 - [ ] API Caching
 - [ ] MongoDB Indexing

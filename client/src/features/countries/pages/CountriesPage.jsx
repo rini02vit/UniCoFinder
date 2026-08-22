@@ -1,23 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useCountries } from '../hooks/useCountries';
 import CountryCard from '../components/listing/CountryCard';
 import { GridSkeleton } from '../../universities/components/listing/GridSkeleton'; // Reuse GridSkeleton
 import Pagination from '../../../components/ui/Pagination';
+import { useDebounce } from '../../../hooks/useDebounce';
 
 const CountriesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { data, pagination, status, error, retry } = useCountries();
 
-  const handleSearch = (e) => {
-    const query = e.target.value;
+  const [localSearch, setLocalSearch] = useState(searchParams.get('q') || '');
+  const debouncedSearch = useDebounce(localSearch, 300);
+
+  useEffect(() => {
     setSearchParams(prev => {
       const next = new URLSearchParams(prev);
-      if (query) next.set('q', query);
+      const currentQuery = next.get('q') || '';
+      
+      if (debouncedSearch === currentQuery) return prev;
+      
+      if (debouncedSearch) next.set('q', debouncedSearch);
       else next.delete('q');
+      
       next.set('page', 1);
       return next;
     }, { replace: true });
+  }, [debouncedSearch, setSearchParams]);
+
+  const handleSearch = (e) => {
+    setLocalSearch(e.target.value);
   };
 
   const handlePageChange = (page) => {
@@ -41,7 +53,7 @@ const CountriesPage = () => {
           type="text"
           className="form-control"
           placeholder="Search countries by name..."
-          value={searchParams.get('q') || ''}
+          value={localSearch}
           onChange={handleSearch}
           aria-label="Search countries"
           style={{ maxWidth: '400px', width: '100%' }}
@@ -69,7 +81,10 @@ const CountriesPage = () => {
             <p className="state-desc">Try adjusting your search criteria.</p>
             <button 
               className="btn btn-outline" 
-              onClick={() => setSearchParams({})}
+              onClick={() => {
+                setLocalSearch('');
+                setSearchParams({});
+              }}
               style={{ marginTop: '1rem' }}
             >
               Clear Search
