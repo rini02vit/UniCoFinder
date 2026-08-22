@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { generateCacheKey, getCache, setCache, PUBLIC_CACHE_TTL } from '../../../utils/apiCache';
 
 // Create a configured axios instance for universities requests
 const apiClient = axios.create({
@@ -64,12 +65,17 @@ export const universitiesApi = {
    * @param {AbortSignal} signal - For request cancellation
    */
   getUniversities: async (params, signal) => {
+    const cacheKey = generateCacheKey('GET', '/api/universities', params);
+    const cachedData = getCache(cacheKey);
+    if (cachedData) return cachedData;
+
     // REAL IMPLEMENTATION:
     // const response = await apiClient.get('/', { params, signal });
+    // setCache(cacheKey, response.data, PUBLIC_CACHE_TTL);
     // return response.data;
     
     // MOCK IMPLEMENTATION:
-    return new Promise((resolve, reject) => {
+    const response = await new Promise((resolve, reject) => {
       // Simulate network delay
       const timeout = setTimeout(() => {
         let results = [...MOCK_UNIVERSITIES];
@@ -101,18 +107,26 @@ export const universitiesApi = {
         });
       }
     });
+
+    setCache(cacheKey, response, PUBLIC_CACHE_TTL);
+    return response;
   },
 
   /**
    * Fetch a single university by ID
    */
   getUniversityById: async (id, signal) => {
+    const cacheKey = generateCacheKey('GET', `/api/universities/${id}`);
+    const cachedData = getCache(cacheKey);
+    if (cachedData) return cachedData;
+
     // REAL IMPLEMENTATION:
     // const response = await apiClient.get(`/${id}`, { signal });
+    // setCache(cacheKey, response.data, PUBLIC_CACHE_TTL);
     // return response.data;
 
     // MOCK IMPLEMENTATION:
-    return new Promise((resolve, reject) => {
+    const response = await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         const uni = MOCK_UNIVERSITIES.find(u => u._id === id);
         if (uni) resolve({ data: uni });
@@ -126,6 +140,9 @@ export const universitiesApi = {
         });
       }
     });
+
+    setCache(cacheKey, response, PUBLIC_CACHE_TTL);
+    return response;
   },
 
   /**

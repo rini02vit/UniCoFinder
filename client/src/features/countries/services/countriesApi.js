@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { generateCacheKey, getCache, setCache, PUBLIC_CACHE_TTL } from '../../../utils/apiCache';
 
 // Create a configured axios instance for countries requests
 const apiClient = axios.create({
@@ -95,12 +96,17 @@ export const countriesApi = {
    * @param {AbortSignal} signal - For request cancellation
    */
   getCountries: async (params = {}, signal) => {
+    const cacheKey = generateCacheKey('GET', '/api/countries', params);
+    const cachedData = getCache(cacheKey);
+    if (cachedData) return cachedData;
+
     // REAL IMPLEMENTATION:
     // const response = await apiClient.get('/', { params, signal });
+    // setCache(cacheKey, response.data, PUBLIC_CACHE_TTL);
     // return response.data;
     
     // MOCK IMPLEMENTATION:
-    return new Promise((resolve, reject) => {
+    const response = await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         let results = [...MOCK_COUNTRIES];
         
@@ -122,18 +128,26 @@ export const countriesApi = {
         });
       }
     });
+
+    setCache(cacheKey, response, PUBLIC_CACHE_TTL);
+    return response;
   },
 
   /**
    * Fetch a single country by ID
    */
   getCountryById: async (id, signal) => {
+    const cacheKey = generateCacheKey('GET', `/api/countries/${id}`);
+    const cachedData = getCache(cacheKey);
+    if (cachedData) return cachedData;
+
     // REAL IMPLEMENTATION:
     // const response = await apiClient.get(`/${id}`, { signal });
+    // setCache(cacheKey, response.data, PUBLIC_CACHE_TTL);
     // return response.data;
 
     // MOCK IMPLEMENTATION:
-    return new Promise((resolve, reject) => {
+    const response = await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         const country = MOCK_COUNTRIES.find(c => c._id === id);
         if (country) resolve({ data: country });
@@ -147,5 +161,8 @@ export const countriesApi = {
         });
       }
     });
+
+    setCache(cacheKey, response, PUBLIC_CACHE_TTL);
+    return response;
   }
 };

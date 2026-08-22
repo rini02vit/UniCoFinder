@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { generateCacheKey, getCache, setCache, PUBLIC_CACHE_TTL } from '../../../utils/apiCache';
 
 const apiClient = axios.create({
   baseURL: '/api/scholarships',
@@ -72,11 +73,16 @@ const MOCK_SCHOLARSHIPS = [
 
 export const scholarshipsApi = {
   getScholarships: async (params = {}, signal) => {
+    const cacheKey = generateCacheKey('GET', '/api/scholarships', params);
+    const cachedData = getCache(cacheKey);
+    if (cachedData) return cachedData;
+
     // REAL IMPLEMENTATION:
     // const response = await apiClient.get('/', { params, signal });
+    // setCache(cacheKey, response.data, PUBLIC_CACHE_TTL);
     // return response.data;
     
-    return new Promise((resolve, reject) => {
+    const response = await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         let results = [...MOCK_SCHOLARSHIPS];
         
@@ -101,14 +107,22 @@ export const scholarshipsApi = {
         });
       }
     });
+
+    setCache(cacheKey, response, PUBLIC_CACHE_TTL);
+    return response;
   },
 
   getScholarshipById: async (id, signal) => {
+    const cacheKey = generateCacheKey('GET', `/api/scholarships/${id}`);
+    const cachedData = getCache(cacheKey);
+    if (cachedData) return cachedData;
+
     // REAL IMPLEMENTATION:
     // const response = await apiClient.get(`/${id}`, { signal });
+    // setCache(cacheKey, response.data, PUBLIC_CACHE_TTL);
     // return response.data;
 
-    return new Promise((resolve, reject) => {
+    const response = await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         const scholarship = MOCK_SCHOLARSHIPS.find(s => s._id === id);
         if (scholarship) resolve({ data: scholarship });
@@ -122,5 +136,8 @@ export const scholarshipsApi = {
         });
       }
     });
+
+    setCache(cacheKey, response, PUBLIC_CACHE_TTL);
+    return response;
   }
 };

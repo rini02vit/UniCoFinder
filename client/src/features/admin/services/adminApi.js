@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { invalidateCache } from '../../../utils/apiCache';
 
 const apiClient = axios.create({
   baseURL: '/api/admin',
@@ -36,14 +37,17 @@ export const adminApi = {
   },
   createCountry: async (data) => {
     const response = await apiClient.post('/countries', data);
+    invalidateCache('GET:/api/countries');
     return response.data;
   },
   updateCountry: async (id, data) => {
     const response = await apiClient.put(`/countries/${id}`, data);
+    invalidateCache('GET:/api/countries');
     return response.data;
   },
   deleteCountry: async (id) => {
     const response = await apiClient.delete(`/countries/${id}`);
+    invalidateCache('GET:/api/countries');
     return response.data;
   },
 
@@ -58,14 +62,17 @@ export const adminApi = {
   },
   createUniversity: async (data) => {
     const response = await apiClient.post('/universities', data);
+    invalidateCache('GET:/api/universities');
     return response.data;
   },
   updateUniversity: async (id, data) => {
     const response = await apiClient.put(`/universities/${id}`, data);
+    invalidateCache('GET:/api/universities');
     return response.data;
   },
   deleteUniversity: async (id) => {
     const response = await apiClient.delete(`/universities/${id}`);
+    invalidateCache('GET:/api/universities');
     return response.data;
   },
 
@@ -80,14 +87,17 @@ export const adminApi = {
   },
   createScholarship: async (data) => {
     const response = await apiClient.post('/scholarships', data);
+    invalidateCache('GET:/api/scholarships');
     return response.data;
   },
   updateScholarship: async (id, data) => {
     const response = await apiClient.put(`/scholarships/${id}`, data);
+    invalidateCache('GET:/api/scholarships');
     return response.data;
   },
   deleteScholarship: async (id) => {
     const response = await apiClient.delete(`/scholarships/${id}`);
+    invalidateCache('GET:/api/scholarships');
     return response.data;
   },
 
