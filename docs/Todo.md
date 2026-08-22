@@ -400,7 +400,7 @@ Calculate score using
 - [x] Lazy Loading
 - [x] Pagination
 - [x] Debounced Search
-- [ ] Optimized Images
+- [x] Optimized Images
 - [ ] API Caching
 - [ ] MongoDB Indexing
 - [ ] Code Splitting

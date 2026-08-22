@@ -33,6 +33,8 @@ const GallerySection = ({ gallery }) => {
             <img 
               src={imgUrl} 
               alt={`Gallery image ${index + 1}`} 
+              loading="lazy"
+              decoding="async"
               style={{
                 width: '100%',
                 height: '100%',

@@ -44,15 +44,22 @@ const WishlistCard = ({
       <div 
         className="uni-image" 
         style={{ 
-          background: `url(${image}) center/cover`,
           height: '160px',
           width: '100%',
           borderRadius: '12px',
           marginBottom: '1rem',
           backgroundColor: 'rgba(255, 255, 255, 0.1)',
-          position: 'relative'
+          position: 'relative',
+          overflow: 'hidden'
         }}
       >
+        <img 
+          src={image} 
+          alt={name ? `Cover image for ${name}` : ''}
+          loading="lazy"
+          decoding="async"
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
         <button 
           onClick={() => onRemove(_id)}
           className="btn"

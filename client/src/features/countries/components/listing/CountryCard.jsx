@@ -12,6 +12,7 @@ const CountryCard = React.memo(({ country }) => {
         src={imgSrc}
         alt={`Cover image for ${name}`}
         loading="lazy"
+        decoding="async"
         className="uni-image" // Reusing the shared CSS class for consistent aspect ratio
         style={{
           width: '100%',

@@ -20,11 +20,20 @@ const CompareTable = React.memo(({ universities, onRemove }) => {
                     width: '80px',
                     height: '80px',
                     borderRadius: '50%',
-                    background: `url(${uni.images?.cover}) center/cover, linear-gradient(45deg, var(--primary-cyan), var(--primary-purple))`,
-                    margin: '0 auto 1rem'
+                    background: `linear-gradient(45deg, var(--primary-cyan), var(--primary-purple))`,
+                    margin: '0 auto 1rem',
+                    overflow: 'hidden'
                   }}
                   aria-hidden="true"
-                />
+                >
+                  <img
+                    src={uni.images?.cover}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </div>
                 <h3 className="text-gradient" style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>{uni.name}</h3>
                 <button
                   className="btn btn-secondary btn-block mt-1"

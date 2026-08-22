@@ -23,14 +23,22 @@ const UniversityCard = React.memo(({
       <div 
         className="uni-image" 
         style={{ 
-          background: `url(${image}) center/cover`,
           height: '160px',
           width: '100%',
           borderRadius: '12px',
           marginBottom: '1rem',
-          backgroundColor: 'rgba(255, 255, 255, 0.1)'
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          overflow: 'hidden'
         }}
-      ></div>
+      >
+        <img 
+          src={image} 
+          alt={name ? `Cover image for ${name}` : ''}
+          loading="lazy"
+          decoding="async"
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      </div>
       <div className="card-header" style={{ marginBottom: '0.5rem' }}>
         <h3 className="card-title">{name}</h3>
         <span className="text-secondary">{location}</span>
