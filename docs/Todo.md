@@ -397,8 +397,8 @@ Calculate score using
 
 # Performance Optimization
 
-- [ ] Lazy Loading
-- [ ] Pagination
+- [x] Lazy Loading
+- [x] Pagination
 - [ ] Debounced Search
 - [ ] Optimized Images
 - [ ] API Caching

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { adminApi } from '../services/adminApi';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import AdminAnalyticsReportPDF from '../../reports/components/AdminAnalyticsReportPDF';
+const ReportDownloader = React.lazy(() => import('../../reports/components/ReportDownloader'));
 
 const AdminReports = () => {
   const [analyticsData, setAnalyticsData] = useState(null);
@@ -44,15 +43,20 @@ const AdminReports = () => {
         ) : error ? (
           <div className="text-red-600 bg-red-50 p-4 rounded-lg border border-red-100">{error}</div>
         ) : analyticsData ? (
-          <PDFDownloadLink
-            document={<AdminAnalyticsReportPDF analytics={analyticsData} />}
-            fileName={`UniCoFinder_System_Report_${new Date().toISOString().split('T')[0]}.pdf`}
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors shadow-sm"
-          >
-            {({ blob, url, loading, error }) =>
-              loading ? 'Generating PDF...' : 'Download System Report PDF'
-            }
-          </PDFDownloadLink>
+          <React.Suspense fallback={
+            <button className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors shadow-sm opacity-70">
+              Loading PDF Generator...
+            </button>
+          }>
+            <ReportDownloader
+              type="admin-analytics"
+              data={{ analyticsData }}
+              fileName={`UniCoFinder_System_Report_${new Date().toISOString().split('T')[0]}.pdf`}
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors shadow-sm"
+              buttonText="Download System Report PDF"
+              loadingText="Generating PDF..."
+            />
+          </React.Suspense>
         ) : null}
       </div>
 

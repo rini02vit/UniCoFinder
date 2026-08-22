@@ -3,10 +3,11 @@ import { useSearchParams } from 'react-router-dom';
 import { useCountries } from '../hooks/useCountries';
 import CountryCard from '../components/listing/CountryCard';
 import { GridSkeleton } from '../../universities/components/listing/GridSkeleton'; // Reuse GridSkeleton
+import Pagination from '../../../components/ui/Pagination';
 
 const CountriesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { data, status, error, retry } = useCountries();
+  const { data, pagination, status, error, retry } = useCountries();
 
   const handleSearch = (e) => {
     const query = e.target.value;
@@ -14,8 +15,17 @@ const CountriesPage = () => {
       const next = new URLSearchParams(prev);
       if (query) next.set('q', query);
       else next.delete('q');
+      next.set('page', 1);
       return next;
     }, { replace: true });
+  };
+
+  const handlePageChange = (page) => {
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      next.set('page', page);
+      return next;
+    });
   };
 
   return (
@@ -68,11 +78,20 @@ const CountriesPage = () => {
         )}
 
         {status === 'success' && (
-          <div className="grid-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
-            {data.map(country => (
-              <CountryCard key={country.id} country={country} />
-            ))}
-          </div>
+          <>
+            <div className="grid-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+              {data.map(country => (
+                <CountryCard key={country.id} country={country} />
+              ))}
+            </div>
+            {pagination && (
+              <Pagination 
+                currentPage={pagination.page}
+                totalPages={pagination.pages}
+                onPageChange={handlePageChange}
+              />
+            )}
+          </>
         )}
       </div>
     </div>

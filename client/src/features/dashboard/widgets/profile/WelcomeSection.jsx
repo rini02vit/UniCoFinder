@@ -7,8 +7,7 @@ import {
 } from '../../providers/DashboardProvider';
 import { getGreetingRule } from '../../constants/dashboardConfig';
 import { ROUTES } from '../../../../constants/routes';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import StudyAbroadReportPDF from '../../../../features/reports/components/StudyAbroadReportPDF';
+const ReportDownloader = React.lazy(() => import('../../../../features/reports/components/ReportDownloader'));
 
 const WelcomeSection = () => {
   const { data: profileData, status: profileStatus } = useDashboardProfile();
@@ -41,31 +40,29 @@ const WelcomeSection = () => {
         </button>
 
         {isSuccess && (
-          <PDFDownloadLink
-            document={<StudyAbroadReportPDF 
-                        profile={profileData} 
-                        applications={appData} 
-                        wishlist={wishlistData} 
-                        scholarships={schData?.items} 
-                      />}
-            fileName="UniCoFinder-Study-Plan.pdf"
-            className="btn btn-secondary"
-            style={{ 
-              textDecoration: 'none', 
-              color: 'inherit',
-              padding: '0.5rem 1rem',
-              borderRadius: '0.375rem',
-              border: '1px solid var(--border-color)',
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              fontWeight: 500
-            }}
-          >
-            {({ blob, url, loading, error }) =>
-              loading ? 'Generating Report...' : 'Download Report 📄'
-            }
-          </PDFDownloadLink>
+          <React.Suspense fallback={
+            <button className="btn btn-secondary" style={{ padding: '0.5rem 1rem', borderRadius: '0.375rem', opacity: 0.7 }}>
+              Loading Report Generator...
+            </button>
+          }>
+            <ReportDownloader
+              type="study-abroad"
+              data={{ profileData, appData, wishlistData, schData }}
+              fileName="UniCoFinder-Study-Plan.pdf"
+              className="btn btn-secondary"
+              style={{ 
+                textDecoration: 'none', 
+                color: 'inherit',
+                padding: '0.5rem 1rem',
+                borderRadius: '0.375rem',
+                border: '1px solid var(--border-color)',
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                fontWeight: 500
+              }}
+            />
+          </React.Suspense>
         )}
       </div>
     </>

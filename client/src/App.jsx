@@ -6,6 +6,7 @@ import { ROUTES } from './constants/routes';
 import { ThemeProvider } from './contexts/ThemeContext';
 import RouteScrollManager from './components/ui/RouteScrollManager';
 import BackToTopButton from './components/ui/BackToTopButton';
+import FullScreenLoader from './components/ui/FullScreenLoader';
 
 // Layouts
 import PublicLayout from './components/layout/PublicLayout';
@@ -19,30 +20,32 @@ import Login from './features/auth/pages/Login';
 import Register from './features/auth/pages/Register';
 import ForgotPassword from './features/auth/pages/ForgotPassword';
 
-// Pages
+// Pages (Static)
 import Home from './pages/Home/Home';
-import Dashboard from './features/dashboard/pages/Dashboard';
-import UniversitiesPage from './features/universities/pages/UniversitiesPage';
-import UniversityDetailsPage from './features/universities/pages/UniversityDetailsPage';
-import AdmissionPredictorPage from './features/universities/pages/AdmissionPredictorPage';
-import CountriesPage from './features/countries/pages/CountriesPage';
-import CountryDetailsPage from './features/countries/pages/CountryDetailsPage';
-import ScholarshipsPage from './features/scholarships/pages/ScholarshipsPage';
-import ScholarshipDetailsPage from './features/scholarships/pages/ScholarshipDetailsPage';
-import ComparePage from './features/compare/pages/ComparePage';
-import BudgetPage from './features/budget/pages/BudgetPage';
-import ProfilePage from './features/profile/pages/ProfilePage';
-import TrackerPage from './features/tracker/pages/TrackerPage';
-import WishlistPage from './features/dashboard/pages/WishlistPage';
-import AIAdvisor from './pages/AIAdvisor/AIAdvisor';
-import AdminDashboard from './features/admin/pages/AdminDashboard';
-import AdminAnalytics from './features/admin/pages/AdminAnalytics';
-import ManageCountries from './features/admin/pages/ManageCountries';
-import ManageUniversities from './features/admin/pages/ManageUniversities';
-import ManageScholarships from './features/admin/pages/ManageScholarships';
-import ManageUsers from './features/admin/pages/ManageUsers';
-import UserDetails from './features/admin/pages/UserDetails';
-import AdminReports from './features/admin/pages/AdminReports';
+
+// Pages (Lazy)
+const Dashboard = React.lazy(() => import('./features/dashboard/pages/Dashboard'));
+const UniversitiesPage = React.lazy(() => import('./features/universities/pages/UniversitiesPage'));
+const UniversityDetailsPage = React.lazy(() => import('./features/universities/pages/UniversityDetailsPage'));
+const AdmissionPredictorPage = React.lazy(() => import('./features/universities/pages/AdmissionPredictorPage'));
+const CountriesPage = React.lazy(() => import('./features/countries/pages/CountriesPage'));
+const CountryDetailsPage = React.lazy(() => import('./features/countries/pages/CountryDetailsPage'));
+const ScholarshipsPage = React.lazy(() => import('./features/scholarships/pages/ScholarshipsPage'));
+const ScholarshipDetailsPage = React.lazy(() => import('./features/scholarships/pages/ScholarshipDetailsPage'));
+const ComparePage = React.lazy(() => import('./features/compare/pages/ComparePage'));
+const BudgetPage = React.lazy(() => import('./features/budget/pages/BudgetPage'));
+const ProfilePage = React.lazy(() => import('./features/profile/pages/ProfilePage'));
+const TrackerPage = React.lazy(() => import('./features/tracker/pages/TrackerPage'));
+const WishlistPage = React.lazy(() => import('./features/dashboard/pages/WishlistPage'));
+const AIAdvisor = React.lazy(() => import('./pages/AIAdvisor/AIAdvisor'));
+const AdminDashboard = React.lazy(() => import('./features/admin/pages/AdminDashboard'));
+const AdminAnalytics = React.lazy(() => import('./features/admin/pages/AdminAnalytics'));
+const ManageCountries = React.lazy(() => import('./features/admin/pages/ManageCountries'));
+const ManageUniversities = React.lazy(() => import('./features/admin/pages/ManageUniversities'));
+const ManageScholarships = React.lazy(() => import('./features/admin/pages/ManageScholarships'));
+const ManageUsers = React.lazy(() => import('./features/admin/pages/ManageUsers'));
+const UserDetails = React.lazy(() => import('./features/admin/pages/UserDetails'));
+const AdminReports = React.lazy(() => import('./features/admin/pages/AdminReports'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 function App() {
@@ -53,7 +56,7 @@ function App() {
             <BrowserRouter>
               <RouteScrollManager />
               <AppShell>
-                <React.Suspense fallback={null}>
+                <React.Suspense fallback={<FullScreenLoader />}>
                   <Routes>
                     {/* Public Routes */}
                     <Route element={<PublicLayout />}>

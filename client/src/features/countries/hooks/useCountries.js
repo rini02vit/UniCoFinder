@@ -7,6 +7,7 @@ export const useCountries = () => {
   const [searchParams] = useSearchParams();
   
   const [data, setData] = useState([]);
+  const [pagination, setPagination] = useState({ page: 1, pages: 1, total: 0 });
   const [status, setStatus] = useState('loading'); // 'loading', 'success', 'empty', 'error'
   const [error, setError] = useState(null);
   
@@ -36,6 +37,7 @@ export const useCountries = () => {
         const mappedData = response.data.map(mapCountryListItem);
         
         setData(mappedData);
+        setPagination(response.pagination || { page: 1, pages: 1, total: mappedData.length });
         setStatus(mappedData.length > 0 ? 'success' : 'empty');
         
       } catch (err) {
@@ -53,6 +55,7 @@ export const useCountries = () => {
 
   return {
     data,
+    pagination,
     status,
     error,
     retry

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { adminApi } from '../services/adminApi';
 import AdminUniversityForm from '../components/AdminUniversityForm';
 import { Loader2, Plus, Edit2, Trash2, Search } from 'lucide-react';
+import Pagination from '../../../components/ui/Pagination';
 
 const ManageUniversities = () => {
   const [universities, setUniversities] = useState([]);
@@ -172,26 +173,12 @@ const ManageUniversities = () => {
               </table>
             </div>
 
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '2rem', alignItems: 'center' }}>
-                <button 
-                  className="btn btn-secondary" 
-                  disabled={page === 1} 
-                  onClick={() => setPage(p => p - 1)}
-                >
-                  Previous
-                </button>
-                <span>Page {page} of {totalPages}</span>
-                <button 
-                  className="btn btn-secondary" 
-                  disabled={page === totalPages} 
-                  onClick={() => setPage(p => p + 1)}
-                >
-                  Next
-                </button>
-              </div>
-            )}
+            <Pagination 
+              currentPage={page} 
+              totalPages={totalPages} 
+              onPageChange={setPage} 
+              btnClass="btn btn-secondary" 
+            />
           </>
         )}
       </div>

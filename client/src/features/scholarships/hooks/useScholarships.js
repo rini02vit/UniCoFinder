@@ -7,6 +7,7 @@ export const useScholarships = () => {
   const [searchParams] = useSearchParams();
   
   const [data, setData] = useState([]);
+  const [pagination, setPagination] = useState({ page: 1, pages: 1, total: 0 });
   const [status, setStatus] = useState('loading'); // 'loading', 'success', 'empty', 'error'
   const [error, setError] = useState(null);
   
@@ -34,6 +35,7 @@ export const useScholarships = () => {
         const mappedData = response.data.map(mapScholarshipListItem);
         
         setData(mappedData);
+        setPagination(response.pagination || { page: 1, pages: 1, total: mappedData.length });
         setStatus(mappedData.length > 0 ? 'success' : 'empty');
         
       } catch (err) {
@@ -49,5 +51,5 @@ export const useScholarships = () => {
     return () => controller.abort();
   }, [searchParams, refreshKey]);
 
-  return { data, status, error, retry };
+  return { data, pagination, status, error, retry };
 };

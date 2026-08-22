@@ -5,6 +5,7 @@ import { useWishlistMutation } from '../hooks/useWishlistMutation';
 import FiltersBar from '../components/listing/FiltersBar';
 import UniversityCard from '../components/listing/UniversityCard';
 import { GridSkeleton } from '../components/listing/GridSkeleton';
+import Pagination from '../../../components/ui/Pagination';
 
 const UniversitiesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -82,28 +83,11 @@ const UniversitiesPage = () => {
               ))}
             </div>
 
-            {/* Pagination UI - basic placeholder */}
-            {pagination.pages > 1 && (
-              <div style={{ marginTop: '3rem', display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-                <button 
-                  className="btn btn-outline"
-                  disabled={pagination.page <= 1}
-                  onClick={() => handleUpdateParams('page', Number(pagination.page) - 1)}
-                >
-                  Previous
-                </button>
-                <span style={{ display: 'flex', alignItems: 'center' }}>
-                  Page {pagination.page} of {pagination.pages}
-                </span>
-                <button 
-                  className="btn btn-outline"
-                  disabled={pagination.page >= pagination.pages}
-                  onClick={() => handleUpdateParams('page', Number(pagination.page) + 1)}
-                >
-                  Next
-                </button>
-              </div>
-            )}
+            <Pagination 
+              currentPage={pagination.page} 
+              totalPages={pagination.pages} 
+              onPageChange={(page) => handleUpdateParams('page', page)} 
+            />
           </>
         )}
       </div>
