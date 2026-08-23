@@ -204,28 +204,27 @@ export const universitiesApi = {
    * Fetch admission predictions for the current user
    */
   getPredictions: async (params, signal) => {
-    // Using explicit URL for local dev without proxy, will work perfectly in prod
-    const response = await apiClient.get('http://localhost:5005/api/universities/predict', { params, signal });
+    const response = await apiClient.get('/predict', { params, signal });
     return response.data;
   },
 
   getTrending: async (signal) => {
-    const response = await apiClient.get('http://localhost:5005/api/universities/trending', { signal });
+    const response = await apiClient.get('/trending', { signal });
     return response.data;
   },
 
   getReviews: async (universityId, params, signal) => {
-    const response = await apiClient.get(`http://localhost:5005/api/universities/${universityId}/reviews`, { params, signal });
+    const response = await apiClient.get(`/${universityId}/reviews`, { params, signal });
     return response.data;
   },
 
   createReview: async (universityId, reviewData) => {
-    const response = await apiClient.post(`http://localhost:5005/api/universities/${universityId}/reviews`, reviewData);
+    const response = await apiClient.post(`/${universityId}/reviews`, reviewData);
     return response.data;
   },
 
   deleteReview: async (universityId, reviewId) => {
-    const response = await apiClient.delete(`http://localhost:5005/api/universities/${universityId}/reviews/${reviewId}`);
+    const response = await apiClient.delete(`/${universityId}/reviews/${reviewId}`);
     return response.data;
   }
 };

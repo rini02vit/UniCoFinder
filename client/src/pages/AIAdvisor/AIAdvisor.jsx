@@ -19,7 +19,7 @@ const AIAdvisor = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:5005/api/ai-advisor/recommend',
+        '/api/ai-advisor/recommend',
         { interests },
         {
           headers: {
