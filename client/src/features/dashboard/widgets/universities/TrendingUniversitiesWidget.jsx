@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { universitiesApi } from '../../../universities/services/universitiesApi';
 import UniversityCard from '../../../universities/components/listing/UniversityCard';
 
@@ -37,7 +38,7 @@ const TrendingUniversitiesWidget = () => {
               <div style={{ marginTop: '0.5rem' }}>
                 <span className="badge badge-purple" style={{ marginRight: '0.5rem' }}>#{uni.ranking || 'N/A'}</span>
               </div>
-              <a href={`/universities/${uni._id}`} className="btn btn-outline" style={{ display: 'block', textAlign: 'center', marginTop: '1rem', padding: '0.5rem' }}>View</a>
+              <Link to={`/university/${uni._id}`} className="btn btn-outline" style={{ display: 'block', textAlign: 'center', marginTop: '1rem', padding: '0.5rem' }}>View</Link>
             </div>
           ))}
         </div>

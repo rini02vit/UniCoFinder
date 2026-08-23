@@ -18,7 +18,7 @@ export const useRecentlyViewed = () => {
   }, []);
 
   const addRecentlyViewed = (university) => {
-    if (!university || !university._id) return;
+    if (!university || (!university._id && !university.id)) return;
 
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -26,7 +26,7 @@ export const useRecentlyViewed = () => {
 
       // Create lightweight snapshot
       const snapshot = {
-        _id: university._id,
+        _id: university._id || university.id,
         name: university.name,
         country: university.country,
         city: university.city,

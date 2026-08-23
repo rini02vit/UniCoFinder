@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect, vi } from 'vitest';
 import SavedUniversitiesWidget from '../widgets/universities/SavedUniversitiesWidget';
 import { useDashboardWishlist } from '../providers/DashboardProvider';
@@ -28,7 +29,11 @@ describe('SavedUniversitiesWidget', () => {
       refetch: vi.fn(),
     });
 
-    render(<SavedUniversitiesWidget />);
+    render(
+      <MemoryRouter>
+        <SavedUniversitiesWidget />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText('Harvard University')).toBeInTheDocument();
     expect(screen.getByText('USA')).toBeInTheDocument();
@@ -48,7 +53,11 @@ describe('SavedUniversitiesWidget', () => {
       refetch: vi.fn(),
     });
 
-    render(<SavedUniversitiesWidget />);
+    render(
+      <MemoryRouter>
+        <SavedUniversitiesWidget />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText('Unknown University')).toBeInTheDocument();
     expect(screen.getByText('Unknown Country')).toBeInTheDocument();
@@ -62,7 +71,11 @@ describe('SavedUniversitiesWidget', () => {
       refetch: vi.fn(),
     });
 
-    render(<SavedUniversitiesWidget />);
+    render(
+      <MemoryRouter>
+        <SavedUniversitiesWidget />
+      </MemoryRouter>
+    );
     // Our ListSkeleton probably doesn't have text, but we can verify the header
     expect(screen.getByText('Saved Universities')).toBeInTheDocument();
   });
@@ -75,7 +88,11 @@ describe('SavedUniversitiesWidget', () => {
       refetch: vi.fn(),
     });
 
-    render(<SavedUniversitiesWidget />);
+    render(
+      <MemoryRouter>
+        <SavedUniversitiesWidget />
+      </MemoryRouter>
+    );
     expect(screen.getByText('No saved universities yet')).toBeInTheDocument();
   });
 });

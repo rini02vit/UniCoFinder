@@ -6,35 +6,43 @@ export const COMPARE_METRICS_CONFIG = [
   { 
     key: 'country', 
     label: 'Country', 
-    formatter: (uni) => uni.location?.country || 'N/A' 
+    formatter: (uni) => uni.country || uni.location?.country || 'N/A' 
   },
   { 
     key: 'ranking', 
     label: 'World Ranking', 
-    formatter: (uni) => uni.ranking?.qs ? `#${uni.ranking.qs}` : 'N/A' 
+    formatter: (uni) => uni.ranking ? `#${uni.ranking}` : (uni.ranking?.qs ? `#${uni.ranking.qs}` : 'N/A') 
   },
   { 
     key: 'acceptanceRate', 
     label: 'Acceptance Rate', 
-    formatter: (uni) => uni.stats?.acceptanceRate ? (
-      <span style={{ 
-        color: uni.stats.acceptanceRate < 10 ? 'var(--danger)' : 
-               uni.stats.acceptanceRate < 30 ? 'var(--warning)' : 'inherit'
-      }}>
-        {uni.stats.acceptanceRate}%
-      </span>
-    ) : 'N/A' 
+    formatter: (uni) => {
+      const rate = uni.acceptanceRate || uni.stats?.acceptanceRate;
+      return rate ? (
+        <span style={{ 
+          color: rate < 10 ? 'var(--danger)' : 
+                 rate < 30 ? 'var(--warning)' : 'inherit'
+        }}>
+          {rate}%
+        </span>
+      ) : 'N/A';
+    }
   },
   { 
     key: 'tuition', 
     label: 'Tuition Fee (Annual)', 
-    formatter: (uni) => uni.stats?.tuitionFee ? `$${uni.stats.tuitionFee.toLocaleString()}` : 'N/A' 
+    formatter: (uni) => {
+      const fee = uni.tuitionFee || uni.stats?.tuitionFee;
+      return fee ? `$${fee.toLocaleString()}` : 'N/A';
+    }
   },
   { 
     key: 'livingCost', 
     label: 'Living Cost (Annual)', 
-    // Mock living cost as it's not directly in stats right now
-    formatter: (uni) => uni.stats?.livingCost ? `$${uni.stats.livingCost.toLocaleString()}` : 'Varies' 
+    formatter: (uni) => {
+      const cost = uni.livingCost || uni.stats?.livingCost;
+      return cost ? `$${cost.toLocaleString()}` : 'Varies';
+    }
   },
   { 
     key: 'scholarships', 

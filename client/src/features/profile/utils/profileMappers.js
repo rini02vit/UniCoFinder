@@ -5,25 +5,32 @@
 export const normalizeProfileData = (rawData) => {
   if (!rawData) return getEmptyProfile();
 
+  // Extract inner user object if it's wrapped
+  const user = rawData.data?.user || rawData.data || rawData;
+
+  const names = (user.name || '').split(' ');
+  const firstName = names[0] || '';
+  const lastName = names.slice(1).join(' ') || '';
+
   return {
-    firstName: rawData.firstName || '',
-    lastName: rawData.lastName || '',
-    email: rawData.email || '',
-    phone: rawData.phone || '',
+    firstName,
+    lastName,
+    email: user.email || '',
+    phone: user.phone || '',
     
-    currentDegree: rawData.currentDegree || '',
-    university: rawData.university || '',
-    gpa: rawData.gpa != null ? rawData.gpa : '',
+    currentDegree: user.degree || '',
+    university: '',
+    gpa: user.cgpa != null ? user.cgpa : '',
     
-    preferredCourse: rawData.preferredCourse || '',
-    targetCountries: rawData.targetCountries || '',
+    preferredCourse: user.course || '',
+    targetCountries: user.countryPreference || '',
     
-    tuitionBudget: rawData.tuitionBudget != null ? rawData.tuitionBudget : '',
-    livingBudget: rawData.livingBudget != null ? rawData.livingBudget : '',
+    tuitionBudget: user.budget != null ? user.budget : '',
+    livingBudget: '',
     
-    ielts: rawData.ielts != null ? rawData.ielts : '',
-    toefl: rawData.toefl != null ? rawData.toefl : '',
-    duolingo: rawData.duolingo != null ? rawData.duolingo : '',
+    ielts: user.englishExam === 'IELTS' ? user.examScore : '',
+    toefl: user.englishExam === 'TOEFL' ? user.examScore : '',
+    duolingo: user.englishExam === 'Duolingo' ? user.examScore : '',
   };
 };
 

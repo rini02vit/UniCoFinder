@@ -6,12 +6,17 @@ export const useWishlistMutation = (initialState = false) => {
   const [isSaving, setIsSaving] = useState(false);
 
   const toggleWishlist = async (universityId) => {
+    const wasWishlisted = isWishlisted;
     // Optimistic Update
     setIsWishlisted(prev => !prev);
     setIsSaving(true);
     
     try {
-      await universitiesApi.toggleWishlist(universityId);
+      if (wasWishlisted) {
+        await universitiesApi.removeFromWishlist(universityId);
+      } else {
+        await universitiesApi.addToWishlist(universityId);
+      }
       // Success, toast would go here
     } catch (error) {
       // Rollback on failure

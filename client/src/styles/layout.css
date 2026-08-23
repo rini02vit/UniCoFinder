@@ -142,6 +142,10 @@
 }
 
 /* Responsive */
+.mobile-header {
+  display: none;
+}
+
 @media (max-width: 767px) { /* Using mobile breakpoint */
   .navbar-nav {
     display: none;
@@ -153,10 +157,14 @@
     flex-direction: column;
   }
   .sidebar {
-    width: 100%;
-    height: auto;
-    position: static;
-    border-right: none;
+    display: none;
+  }
+  .mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
     border-bottom: 1px solid var(--border-color);
   }
 }

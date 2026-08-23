@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useDashboardProfile } from '../../providers/DashboardProvider';
 import DashboardWidget from '../../components/primitives/DashboardWidget';
 import { ProfileSkeleton } from '../../components/primitives/Skeletons';
@@ -54,7 +55,9 @@ const ProfileSummary = () => {
         <div style={{ width: `${preferences}%`, height: '100%', background: 'var(--gradient-btn)', borderRadius: '4px' }}></div>
       </div>
 
-      <button className="btn btn-secondary btn-block">Complete Profile</button>
+      <Link to="/profile" className="btn btn-secondary btn-block" style={{ display: 'block', textAlign: 'center', boxSizing: 'border-box' }}>
+        Complete Profile
+      </Link>
     </DashboardWidget>
   );
 };

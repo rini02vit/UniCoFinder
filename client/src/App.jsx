@@ -73,7 +73,7 @@ function App() {
                     <Route element={<ProtectedRoute><ProtectedLayout /></ProtectedRoute>}>
                       <Route path={ROUTES.DASHBOARD || '/dashboard'} element={<Dashboard />} />
                       <Route path={ROUTES.UNIVERSITIES || '/universities'} element={<UniversitiesPage />} />
-                      <Route path={`${ROUTES.UNIVERSITIES || '/universities'}/:id`} element={<UniversityDetailsPage />} />
+                      <Route path={ROUTES.UNIVERSITY_DETAILS || '/university/:id'} element={<UniversityDetailsPage />} />
                       <Route path={ROUTES.COUNTRIES} element={<CountriesPage />} />
                       <Route path={ROUTES.COUNTRY_DETAILS} element={<CountryDetailsPage />} />
                       <Route path={ROUTES.SCHOLARSHIPS || '/scholarships'} element={<ScholarshipsPage />} />

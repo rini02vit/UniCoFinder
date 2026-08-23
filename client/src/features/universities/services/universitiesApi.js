@@ -69,12 +69,34 @@ export const universitiesApi = {
     const cachedData = getCache(cacheKey);
     if (cachedData) return cachedData;
 
+    let endpoint = '/';
+    const apiParams = { ...params };
+    
+    // Route to correct backend endpoints based on active filters
+    if (params.q) {
+      endpoint = '/search';
+    } else if (params.country || params.budget) {
+      endpoint = '/filter';
+      if (params.budget) {
+        apiParams.maxTuition = params.budget; // backend expects maxTuition
+        delete apiParams.budget;
+      }
+    }
+
     // REAL IMPLEMENTATION:
-    // const response = await apiClient.get('/', { params, signal });
-    // setCache(cacheKey, response.data, PUBLIC_CACHE_TTL);
-    // return response.data;
+    const response = await apiClient.get(endpoint, { params: apiParams, signal });
+    
+    // The backend returns { success, message, data: { universities: [], pagination: {} } }
+    const result = {
+      data: response.data.data.universities || [],
+      pagination: response.data.data.pagination || { total: 0, page: 1, pages: 1 }
+    };
+    
+    setCache(cacheKey, result, PUBLIC_CACHE_TTL);
+    return result;
     
     // MOCK IMPLEMENTATION:
+    /*
     const response = await new Promise((resolve, reject) => {
       // Simulate network delay
       const timeout = setTimeout(() => {
@@ -110,6 +132,7 @@ export const universitiesApi = {
 
     setCache(cacheKey, response, PUBLIC_CACHE_TTL);
     return response;
+    */
   },
 
   /**
@@ -118,14 +141,16 @@ export const universitiesApi = {
   getUniversityById: async (id, signal) => {
     const cacheKey = generateCacheKey('GET', `/api/universities/${id}`);
     const cachedData = getCache(cacheKey);
-    if (cachedData) return cachedData;
+    if (cachedData) return { data: cachedData };
 
     // REAL IMPLEMENTATION:
-    // const response = await apiClient.get(`/${id}`, { signal });
-    // setCache(cacheKey, response.data, PUBLIC_CACHE_TTL);
-    // return response.data;
+    const response = await apiClient.get(`/${id}`, { signal });
+    const university = response.data.data.university;
+    setCache(cacheKey, university, PUBLIC_CACHE_TTL);
+    return { data: university };
 
     // MOCK IMPLEMENTATION:
+    /*
     const response = await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         const uni = MOCK_UNIVERSITIES.find(u => u._id === id);
@@ -143,30 +168,36 @@ export const universitiesApi = {
 
     setCache(cacheKey, response, PUBLIC_CACHE_TTL);
     return response;
+    */
   },
 
   /**
    * Toggle a university in the user's wishlist
    */
-  toggleWishlist: async (universityId) => {
-    // REAL IMPLEMENTATION:
-    // const response = await apiClient.post(`/${universityId}/wishlist`);
-    // return response.data;
+  addToWishlist: async (universityId) => {
+    const response = await apiClient.post(`/api/wishlist/${universityId}`, undefined, { baseURL: '/' });
+    return response.data;
+  },
 
-    // MOCK IMPLEMENTATION:
-    return new Promise(resolve => setTimeout(() => resolve({ success: true }), 400));
+  removeFromWishlist: async (universityId) => {
+    const response = await apiClient.delete(`/api/wishlist/${universityId}`, { baseURL: '/' });
+    return response.data;
   },
 
   /**
    * Apply to a university
    */
   applyToUniversity: async (universityId) => {
-    // REAL IMPLEMENTATION:
-    // const response = await apiClient.post(`/${universityId}/apply`);
-    // return response.data;
-
-    // MOCK IMPLEMENTATION:
-    return new Promise((resolve, reject) => setTimeout(() => resolve({ success: true }), 800));
+    const payload = {
+      universityId,
+      course: 'Undecided',
+      term: 'Fall 2025',
+      status: 'Pending',
+      notes: 'Applied via UniCoFinder one-click.',
+      applicationDate: new Date().toISOString()
+    };
+    const response = await apiClient.post(`/api/applications`, payload, { baseURL: '/' });
+    return response.data;
   },
 
   /**

@@ -146,6 +146,7 @@ JSON SCHEMA:
 
     return parsedData;
   } catch (error) {
+    console.error("GROQ API ERROR:", error);
     // Map SDK and custom errors to standard HTTP status codes
     if (!error.statusCode) {
       if (error.status === 429) {

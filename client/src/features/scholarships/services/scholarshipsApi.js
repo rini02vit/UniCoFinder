@@ -78,38 +78,15 @@ export const scholarshipsApi = {
     if (cachedData) return cachedData;
 
     // REAL IMPLEMENTATION:
-    // const response = await apiClient.get('/', { params, signal });
-    // setCache(cacheKey, response.data, PUBLIC_CACHE_TTL);
-    // return response.data;
+    const response = await apiClient.get('/', { params, signal });
     
-    const response = await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        let results = [...MOCK_SCHOLARSHIPS];
-        
-        if (params.q) {
-          const query = params.q.toLowerCase();
-          results = results.filter(s => 
-            s.title.toLowerCase().includes(query) || 
-            s.provider.toLowerCase().includes(query)
-          );
-        }
-
-        resolve({
-          data: results,
-          pagination: { total: results.length, page: 1, pages: 1 }
-        });
-      }, 500);
-
-      if (signal) {
-        signal.addEventListener('abort', () => {
-          clearTimeout(timeout);
-          reject(new DOMException('Aborted', 'AbortError'));
-        });
-      }
-    });
-
-    setCache(cacheKey, response, PUBLIC_CACHE_TTL);
-    return response;
+    const result = {
+      data: response.data.data.scholarships || [],
+      pagination: response.data.data.pagination || { total: 0, page: 1, pages: 1 }
+    };
+    
+    setCache(cacheKey, result, PUBLIC_CACHE_TTL);
+    return result;
   },
 
   getScholarshipById: async (id, signal) => {
@@ -118,26 +95,13 @@ export const scholarshipsApi = {
     if (cachedData) return cachedData;
 
     // REAL IMPLEMENTATION:
-    // const response = await apiClient.get(`/${id}`, { signal });
-    // setCache(cacheKey, response.data, PUBLIC_CACHE_TTL);
-    // return response.data;
-
-    const response = await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        const scholarship = MOCK_SCHOLARSHIPS.find(s => s._id === id);
-        if (scholarship) resolve({ data: scholarship });
-        else reject(new Error('Scholarship not found'));
-      }, 500);
-
-      if (signal) {
-        signal.addEventListener('abort', () => {
-          clearTimeout(timeout);
-          reject(new DOMException('Aborted', 'AbortError'));
-        });
-      }
-    });
-
-    setCache(cacheKey, response, PUBLIC_CACHE_TTL);
-    return response;
+    const response = await apiClient.get(`/${id}`, { signal });
+    
+    const result = {
+      data: response.data.data.scholarship
+    };
+    
+    setCache(cacheKey, result, PUBLIC_CACHE_TTL);
+    return result;
   }
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRecentlyViewed } from '../../../universities/hooks/useRecentlyViewed';
+import { Link } from 'react-router-dom';
 
 const RecentlyViewedWidget = () => {
   const { recentlyViewed } = useRecentlyViewed();
@@ -19,9 +20,9 @@ const RecentlyViewedWidget = () => {
                 {uni.name}
               </div>
               <div className="text-secondary" style={{ fontSize: '0.85rem' }}>{uni.city}, {uni.country}</div>
-              <a href={`/universities/${uni._id}`} className="btn btn-outline" style={{ display: 'block', textAlign: 'center', marginTop: '1rem', padding: '0.3rem', fontSize: '0.9rem' }}>
+              <Link to={`/university/${uni._id}`} className="btn btn-outline" style={{ display: 'block', textAlign: 'center', marginTop: '1rem', padding: '0.3rem', fontSize: '0.9rem' }}>
                 View Again
-              </a>
+              </Link>
             </div>
           ))}
         </div>

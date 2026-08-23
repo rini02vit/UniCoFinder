@@ -24,7 +24,7 @@ export const DashboardProvider = ({ children }) => {
   const applicationsState = useResource(dashboardApi.getApplications, mapApplicationData);
   const scholarshipsState = useResource(dashboardApi.getScholarships, mapScholarshipData);
   const countriesState = useResource(dashboardApi.getRecommendedCountries, mapRecommendationData);
-  const notificationsState = useResource(dashboardApi.getNotifications, (data) => data);
+  const notificationsState = useResource(dashboardApi.getNotifications);
 
   return (
     <ProfileContext.Provider value={profileState}>

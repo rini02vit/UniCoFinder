@@ -5,10 +5,13 @@
 export const mapProfileData = (rawProfile) => {
   if (!rawProfile) return null;
   
-  // Calculate profile completion percentages (stubbed logic for UI demonstration)
-  // In a real app, this might come from backend or complex client logic
-  const academicScore = rawProfile.cgpa ? 100 : (rawProfile.degree ? 50 : 0);
-  const preferenceScore = rawProfile.countryPreference ? 100 : (rawProfile.course ? 50 : 0);
+  const academicFields = ['cgpa', 'degree', 'englishExam', 'examScore'];
+  const filledAcademic = academicFields.filter(f => rawProfile[f] !== undefined && rawProfile[f] !== null).length;
+  const academicScore = Math.round((filledAcademic / academicFields.length) * 100);
+  
+  const preferenceFields = ['course', 'countryPreference', 'budget'];
+  const filledPreference = preferenceFields.filter(f => rawProfile[f] !== undefined && rawProfile[f] !== null).length;
+  const preferenceScore = Math.round((filledPreference / preferenceFields.length) * 100);
   
   return {
     ...rawProfile,

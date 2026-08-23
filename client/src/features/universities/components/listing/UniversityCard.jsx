@@ -75,7 +75,7 @@ const UniversityCard = React.memo(({
         >
           {isSaving ? 'Saving...' : 'Save'}
         </button>
-        <Link to={`/universities/${id}`} className="btn btn-secondary" style={{ flex: 1, textAlign: 'center' }}>
+        <Link to={`/university/${id}`} className="btn btn-secondary" style={{ flex: 1, textAlign: 'center' }}>
           View Details
         </Link>
       </div>

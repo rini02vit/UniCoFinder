@@ -23,7 +23,7 @@ export const PROFILE_SECTIONS = [
     fields: [
       { id: 'currentDegree', label: 'Current Degree', type: 'text', required: true },
       { id: 'university', label: 'University/Institution', type: 'text', required: true },
-      { id: 'gpa', label: 'GPA', type: 'number', min: 0, max: 4.0, step: 0.1, required: true }
+      { id: 'gpa', label: 'CGPA (out of 10)', type: 'number', min: 0, max: 10.0, step: 0.1, required: true }
     ]
   },
   {

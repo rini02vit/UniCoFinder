@@ -12,7 +12,7 @@ const WishlistPage = () => {
   const handleRemove = async (id) => {
     try {
       setUpdatingId(id);
-      await universitiesApi.toggleWishlist(id);
+      await universitiesApi.removeFromWishlist(id);
       await refetch();
     } catch (err) {
       console.error('Failed to remove from wishlist', err);

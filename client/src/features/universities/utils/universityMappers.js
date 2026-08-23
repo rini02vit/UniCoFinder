@@ -6,12 +6,12 @@ export const mapUniversityListItem = (raw) => {
   return {
     id: raw._id || raw.id,
     name: raw.name || 'Unknown University',
-    location: `${raw.location?.city || 'Unknown City'}, ${raw.location?.country || 'Unknown Country'}`,
-    image: raw.images?.cover || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=80',
-    ranking: raw.ranking?.qs || null,
-    matchStatus: raw.matchStatus || 'Unknown',
-    tuition: raw.stats?.tuitionFee || null,
-    acceptanceRate: raw.stats?.acceptanceRate || null
+    location: `${raw.city || 'Unknown City'}, ${raw.country || 'Unknown Country'}`,
+    image: raw.image || raw.images?.cover || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&q=80',
+    ranking: raw.ranking || null,
+    matchStatus: raw.matchStatus || null,
+    tuition: raw.tuitionFee || null,
+    acceptanceRate: raw.acceptanceRate || null
   };
 };
 
@@ -23,22 +23,22 @@ export const mapUniversityDetails = (raw) => {
   return {
     id: raw._id || raw.id,
     name: raw.name || 'Unknown University',
-    location: `${raw.location?.city || 'Unknown'}, ${raw.location?.country || 'Unknown'}`,
-    image: raw.images?.cover || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=80',
-    description: raw.description || `${raw.name} is a leading institution in ${raw.location?.country || 'the world'}.`,
+    location: `${raw.city || 'Unknown City'}, ${raw.country || 'Unknown Country'}`,
+    image: raw.image || raw.images?.cover || 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=80',
+    description: raw.description || `${raw.name} is a leading institution in ${raw.country || 'the world'}.`,
     
     // Statistics for the mapping config
     stats: {
-      qsRanking: raw.ranking?.qs,
-      acceptanceRate: raw.stats?.acceptanceRate,
-      tuitionFee: raw.stats?.tuitionFee,
-      livingCost: raw.stats?.livingCost || 25000, // Fallback for mock
-      minCgpa: raw.stats?.minCgpa
+      qsRanking: raw.ranking,
+      acceptanceRate: raw.acceptanceRate,
+      tuitionFee: raw.tuitionFee,
+      livingCost: raw.livingCost || 25000, 
+      minCgpa: raw.cgpaRequirement
     },
     
     // Predictor data
     predictor: {
-      score: raw.predictorScore || 78, // Mock fallback
+      score: raw.matchPercentage || raw.predictorScore || 78, 
       status: raw.matchStatus || 'Safe Match',
       note: 'Based on your CGPA and test scores.'
     },

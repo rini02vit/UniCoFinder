@@ -12,6 +12,7 @@ import Review from '../models/Review.js';
 import Application from '../models/Application.js';
 import User from '../models/User.js';
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
 
 // @desc    Get all universities with pagination
 // @route   GET /api/universities
@@ -165,14 +166,33 @@ export const getUniversityById = async (req, res) => {
       });
     }
 
-    const university = await University.findById(id);
+    const universityDoc = await University.findById(id);
 
-    if (!university) {
+    if (!universityDoc) {
       return res.status(404).json({
         success: false,
         message: 'University not found',
         errors: [],
       });
+    }
+
+    const university = universityDoc.toObject();
+    university.isWishlisted = false;
+    university.hasApplied = false;
+
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      try {
+        const token = req.headers.authorization.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id);
+        if (user) {
+          university.isWishlisted = user.wishlist.some(item => item.university.toString() === id);
+          const app = await Application.findOne({ user: user._id, university: id });
+          if (app) university.hasApplied = true;
+        }
+      } catch (error) {
+        // Ignore token errors for public endpoint
+      }
     }
 
     res.status(200).json({

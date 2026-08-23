@@ -101,36 +101,15 @@ export const countriesApi = {
     if (cachedData) return cachedData;
 
     // REAL IMPLEMENTATION:
-    // const response = await apiClient.get('/', { params, signal });
-    // setCache(cacheKey, response.data, PUBLIC_CACHE_TTL);
-    // return response.data;
+    const response = await apiClient.get('/', { params, signal });
     
-    // MOCK IMPLEMENTATION:
-    const response = await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        let results = [...MOCK_COUNTRIES];
-        
-        // Simulating pagination wrapper
-        resolve({
-          data: results,
-          pagination: {
-            total: results.length,
-            page: 1,
-            pages: 1
-          }
-        });
-      }, 600);
+    const result = {
+      data: response.data.data.countries || [],
+      pagination: response.data.data.pagination || { total: 0, page: 1, pages: 1 }
+    };
 
-      if (signal) {
-        signal.addEventListener('abort', () => {
-          clearTimeout(timeout);
-          reject(new DOMException('Aborted', 'AbortError'));
-        });
-      }
-    });
-
-    setCache(cacheKey, response, PUBLIC_CACHE_TTL);
-    return response;
+    setCache(cacheKey, result, PUBLIC_CACHE_TTL);
+    return result;
   },
 
   /**
@@ -142,27 +121,13 @@ export const countriesApi = {
     if (cachedData) return cachedData;
 
     // REAL IMPLEMENTATION:
-    // const response = await apiClient.get(`/${id}`, { signal });
-    // setCache(cacheKey, response.data, PUBLIC_CACHE_TTL);
-    // return response.data;
+    const response = await apiClient.get(`/${id}`, { signal });
+    
+    const result = {
+      data: response.data.data.country
+    };
 
-    // MOCK IMPLEMENTATION:
-    const response = await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        const country = MOCK_COUNTRIES.find(c => c._id === id);
-        if (country) resolve({ data: country });
-        else reject(new Error('Country not found'));
-      }, 600);
-
-      if (signal) {
-        signal.addEventListener('abort', () => {
-          clearTimeout(timeout);
-          reject(new DOMException('Aborted', 'AbortError'));
-        });
-      }
-    });
-
-    setCache(cacheKey, response, PUBLIC_CACHE_TTL);
-    return response;
+    setCache(cacheKey, result, PUBLIC_CACHE_TTL);
+    return result;
   }
 };

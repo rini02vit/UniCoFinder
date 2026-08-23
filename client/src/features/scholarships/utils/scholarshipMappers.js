@@ -61,11 +61,11 @@ export const mapScholarshipListItem = (raw) => {
   if (!raw) return null;
   return {
     id: raw._id || raw.id,
-    title: raw.title || 'Unknown Scholarship',
+    title: raw.name || raw.title || 'Unknown Scholarship',
     provider: raw.provider || 'Unknown Provider',
     country: raw.country || 'Global',
-    fundingType: raw.fundingType || 'Varies',
-    deadlineInfo: normalizeDeadline(raw.deadline)
+    fundingType: raw.coverageType || (raw.amount ? `${raw.amount} ${raw.currency || ''}` : 'Varies'),
+    deadlineInfo: normalizeDeadline(raw.applicationDeadline || raw.deadline)
   };
 };
 
@@ -77,24 +77,24 @@ export const mapScholarshipDetails = (raw) => {
   
   return {
     id: raw._id || raw.id,
-    title: raw.title || 'Unknown Scholarship',
+    title: raw.name || raw.title || 'Unknown Scholarship',
     provider: raw.provider || 'Unknown Provider',
     country: raw.country || 'Global',
-    fundingType: raw.fundingType || 'Varies',
+    fundingType: raw.coverageType || (raw.amount ? `${raw.amount} ${raw.currency || ''}` : 'Varies'),
     description: raw.description || 'No description provided.',
-    benefits: raw.benefits || 'No benefits information provided.',
+    benefits: raw.amount ? `Provides ${raw.amount} ${raw.currency || ''} in funding.` : 'No benefits information provided.',
     
-    deadlineInfo: normalizeDeadline(raw.deadline),
-    officialWebsite: validateExternalUrl(raw.officialWebsite),
+    deadlineInfo: normalizeDeadline(raw.applicationDeadline || raw.deadline),
+    officialWebsite: validateExternalUrl(raw.website || raw.officialWebsite),
 
     // Normalized for MetricsGrid consumption
     eligibility: {
-      degreeLevel: Array.isArray(raw.eligibility?.degreeLevel) 
-        ? raw.eligibility.degreeLevel.join(', ') 
-        : (raw.eligibility?.degreeLevel || 'N/A'),
-      targetRegion: raw.eligibility?.targetRegion || 'N/A',
-      minGpa: raw.eligibility?.minGpa ? `${raw.eligibility.minGpa} / 4.0` : 'Not specified',
-      languageReq: raw.eligibility?.languageReq || 'N/A'
+      degreeLevel: Array.isArray(raw.degreeLevels) 
+        ? raw.degreeLevels.join(', ') 
+        : (raw.degreeLevels || 'N/A'),
+      targetRegion: Array.isArray(raw.eligibleCountries) ? raw.eligibleCountries.join(', ') : (raw.eligibleCountries || 'Global'),
+      minGpa: raw.minimumCgpa ? `${raw.minimumCgpa} / 10.0` : 'Not specified',
+      languageReq: Array.isArray(raw.englishExamRequirements) ? raw.englishExamRequirements.join(', ') : (raw.englishExamRequirements || 'N/A')
     }
   };
 };
