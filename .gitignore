@@ -6,3 +6,5 @@ dist
 coverage
 .vscode
 .eslintcache
+*.log
+bundle-stats.json
