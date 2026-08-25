@@ -4,147 +4,111 @@ UniCoFinder is a modern MERN Stack web application designed to help students dis
 
 ---
 
-## Prerequisites
+## 🚀 Production Links
 
-Ensure you have the following installed before starting:
+- **Frontend (Vercel)**: [https://unicofinder.vercel.app/](https://unicofinder.vercel.app/)
+- **Backend API (Render)**: [https://unicofinder.onrender.com](https://unicofinder.onrender.com)
+- **API Health Check**: [https://unicofinder.onrender.com/api/health](https://unicofinder.onrender.com/api/health)
 
-- **Node.js** (v18 or higher recommended)
-- **MongoDB** (Local instance or MongoDB Atlas cluster)
-- **Git**
+## 📖 Overview & Features
 
----
+UniCoFinder combines everything needed for study abroad planning into one platform:
+- **University Recommendation**: Matches CGPA, course, and budget to find universities.
+- **Country Explorer**: Suggests countries based on budget and opportunities.
+- **Scholarship Finder**: Matches scholarships based on academic scores.
+- **Admission Predictor**: Calculates safe, target, and dream university chances.
+- **Wishlist & Tracker**: Save universities and track applications from start to finish.
+- **Budget Calculator**: Compare tuition and living costs.
 
-## Installation
+## 🛠️ Technology Stack & Architecture
 
-The repository is structured into `client` (Frontend) and `server` (Backend) directories.
+- **Frontend**: React, Tailwind CSS, Vite (Deployed on Vercel)
+- **Backend**: Node.js, Express.js, Mongoose (Deployed on Render)
+- **Database**: MongoDB Atlas
+- **Authentication**: JWT
+- **Architecture**: Vercel frontend → Render backend → MongoDB Atlas.
 
-1. **Clone the repository**:
+## 📚 Documentation
 
-   ```bash
-   git clone https://github.com/rini02vit/UniCoFinder.git
-   cd UniCoFinder
-   ```
+Detailed documentation is available in the `docs/` folder:
+- [Installation Guide](docs/Installation.md)
+- [API Documentation](docs/API.md)
+- [System Architecture](docs/architecture.md)
+- [Product Requirements](docs/PRD.md)
+- [Development Roadmap](docs/Todo.md)
 
-2. **Install Root Dependencies** (for linting and formatting):
+## 📸 Application Screenshots
 
+Here are some previews of the live production application:
+
+- **Home Page**:  
+  ![Home](docs/screenshots/home.png)
+- **Universities**:  
+  ![Universities](docs/screenshots/universities.png)
+- **University Details**:  
+  ![University Details](docs/screenshots/university-details.png)
+- **Scholarships**:  
+  ![Scholarships](docs/screenshots/scholarships.png)
+- **Dashboard**:  
+  ![Dashboard](docs/screenshots/dashboard.png)
+- **AI Advisor**:  
+  ![AI Advisor](docs/screenshots/AI-advisor.png)
+- **Admin Dashboard**:  
+  ![Admin Dashboard](docs/screenshots/admin-dashboard.png)
+
+## ⚙️ Prerequisites & Setup
+
+Please refer to the detailed [Installation Guide](docs/Installation.md) for step-by-step instructions.
+
+### Quick Start
+1. **Clone**: `git clone https://github.com/rini02vit/UniCoFinder.git`
+2. **Install**:
    ```bash
    npm install
+   cd client && npm install
+   cd ../server && npm install
    ```
+3. **Configure Environment**: Copy `server/.env.example` to `server/.env` and fill in secrets (like `MONGO_URI`, `JWT_SECRET`). *Never commit real secrets!*
+4. **Run Backend**: `cd server && npm run dev`
+5. **Run Frontend**: `cd client && npm run dev`
 
-3. **Install Frontend Dependencies**:
+### Available Scripts (Root)
+- `npm run lint` — Lints both `client` and `server`.
+- `npm run format` — Formats files via Prettier.
+- `npm run format:check` — Validates formatting.
 
-   ```bash
-   cd client
-   npm install
-   ```
+## 🚀 Deployment
 
-4. **Install Backend Dependencies**:
-   ```bash
-   cd ../server
-   npm install
-   ```
+The app is configured for seamless deployment:
+- **Frontend** is deployed automatically via Vercel.
+- **Backend** is deployed via Render. Ensure environment variables (like `MONGO_URI` and `FRONTEND_URL`) are configured in the Render dashboard.
 
----
+## 🔮 Future Improvements
 
-## Environment Setup
+Based on our completed implementations and roadmap, future improvements may include:
+- AI-powered SOP Generator & Resume Analyzer
+- Visa Interview Simulator
+- Scholarship Success Predictor
+- Real-time University API Integration
+- Mobile App (React Native) or Progressive Web App (PWA)
+- Multi-language Support
+- Multi-instance-safe scheduled jobs / external job queue for background tasks
+- Stronger production observability & error tracking
 
-The backend requires a strict database connection to boot up. You must configure the environment variables before starting the server.
-
-1. Navigate to the `server` directory:
-   ```bash
-   cd server
-   ```
-2. Copy the example environment file:
-   ```bash
-   cp .env.example .env
-   ```
-3. Open `.env` and configure your variables:
-   - `PORT`: (Optional) The port the backend server runs on (defaults to `5000` in code if absent, `5005` in example).
-   - `MONGO_URI`: **(Strictly Required)** The MongoDB connection string (e.g., `mongodb://localhost:27017/unicofinder`).
-
----
-
-## Running the Application
-
-### Running the Backend
-
-The backend server must connect successfully to MongoDB. If it fails to connect, the process will crash safely.
-
-```bash
-cd server
-npm run dev
-```
-
-### Running the Frontend
-
-```bash
-cd client
-npm run dev
-```
-
----
-
-## Available Scripts
-
-We enforce strict code quality using centrally managed ESLint and Prettier configurations. You can run these from the **root** folder:
-
-- `npm run lint` — Lints both the `client` and `server` codebase.
-- `npm run format` — Formats all supported files in the repository using Prettier.
-- `npm run format:check` — Validates that all files conform to the Prettier standards without making changes.
-
----
-
-## Development Health Check
-
-The backend exposes a public health endpoint to easily verify the status of the server and its database connection.
-
-**Endpoint**: `GET /api/health`
-
-**Expected Response (HTTP 200 OK)**:
-
-```json
-{
-  "status": "ok",
-  "database": "connected",
-  "uptime": 12.345,
-  "timestamp": "2026-06-30T12:00:00.000Z"
-}
-```
-
-_Note: The `database` field dynamically returns `connected`, `disconnected`, `connecting`, or `uninitialized`._
-
----
-
-## Folder Structure
+## 📁 Folder Structure
 
 ```text
 UniCoFinder/
 ├── client/                 # React Frontend (Vite)
-│   ├── public/
-│   └── src/
-│       ├── assets/         # Static assets (images, icons)
-│       ├── components/     # Reusable UI components
-│       ├── context/        # React Context providers
-│       ├── hooks/          # Custom React hooks
-│       ├── layouts/        # Page layouts (wrappers)
-│       ├── pages/          # Main application pages/routes
-│       ├── routes/         # Routing configurations
-│       ├── services/       # API integration services
-│       └── utils/          # Helper functions
-│
 ├── server/                 # Express Backend
-│   ├── config/             # Config files (e.g., db.js)
+│   ├── config/             # DB & Config
 │   ├── controllers/        # Route controllers
-│   ├── middleware/         # Custom Express middleware
-│   ├── models/             # Mongoose database schemas
+│   ├── middleware/         # Custom middleware
+│   ├── models/             # Mongoose schemas
 │   ├── routes/             # API route definitions
-│   ├── seed/               # Database seed scripts
-│   ├── services/           # Backend business logic services
-│   ├── utils/              # Helper functions
-│   └── server.js           # Entry point and connection orchestrator
-│
-├── docs/                   # Documentation and UI Prototypes
+│   └── server.js           # Entry point
+├── docs/                   # Documentation
 ├── eslint.config.js        # Global ESLint rules
-├── .prettierrc             # Global Prettier formatting rules
-└── package.json            # Root dependency manager (Lint/Format scripts)
+├── .prettierrc             # Global Prettier rules
+└── package.json            # Root dependency manager
 ```
